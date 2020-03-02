@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import {Link} from 'react-router-dom'
-
-// import logo from './logo.svg';
-// import './App.css';
+import aboutUs from './aboutUs'
+import Home from './Home'
 
 import Navbar from './components/Navbar';
 import { render } from '@testing-library/react';
@@ -16,6 +15,12 @@ class App extends Component {
       <BrowserRouter>
         <div id="App">
           <Navbar />
+          <Switch>
+             <Route path="/" component={Home} exact/>
+             <Route path="/aboutUs" component={aboutUs}/>
+             
+            {/* <Route component={Error}/> */}
+           </Switch>
         </div>
         {/* <BackgroundCarousel /> */}
       </BrowserRouter>

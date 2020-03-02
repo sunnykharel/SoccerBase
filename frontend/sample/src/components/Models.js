@@ -14,7 +14,7 @@ const Models = () => {
         <li style={{
         paddingLeft: '360px',
         paddingRight: '20px'
-      }}><NavLink to='/'>About Us</NavLink></li>
+      }}><NavLink to='./aboutUs'>About Us</NavLink></li>
 
         {/* <li><NavLink to='/' className="btn btn-floating pink lighten-1">NN</NavLink></li> */}
       </ul>
