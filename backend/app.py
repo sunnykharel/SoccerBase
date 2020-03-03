@@ -1,0 +1,50 @@
+from flask import Flask
+import http.client
+from os import environ
+import requests
+from pprint import pprint
+import json
+from mongoengine import *
+
+
+app = Flask(__name__)
+
+API_FOOTBALL_KEY_1 = environ.get('API_FOOTBALL_KEY_1')
+
+
+@app.route('/')
+def index():
+    return "hello world"
+
+@app.route("/updateteams", methods=["GET"])
+def update_teams():
+    url = "https://api-football-v1.p.rapidapi.com/v2/leagues/country/estonia/2020"
+    headers = {
+        'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
+        'x-rapidapi-key': API_FOOTBALL_KEY_1
+        }
+    response = requests.request("GET", url, headers=headers).json()
+    return "Hello there"
+
+@app.route("/updatecountries", methods=["GET"])
+def update_countries():
+    return "hello there"
+
+@app.route("/updateleagues", methods=["GET"])
+def update_leagues():
+
+    url = "https://api-football-v1.p.rapidapi.com/v2/leagues/2020"
+    headers = {
+        'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
+        'x-rapidapi-key': API_FOOTBALL_KEY_1
+        }
+    response = requests.request("GET", url, headers=headers).json()
+
+
+
+    return "Hello there"
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
