@@ -28,7 +28,7 @@ def _deactivate(args):
 _deactivate(["nondestructive"])
 aliases["deactivate"] = _deactivate
 
-$VIRTUAL_ENV = r"/mnt/c/Users/sunny/Desktop/EE461L/SoccerBase/pythonenv"
+$VIRTUAL_ENV = r"/mnt/c/Users/sunny/Desktop/EE461L/SoccerBase/backend/pythonenv"
 
 $_OLD_VIRTUAL_PATH = $PATH
 $PATH = $PATH[:]

@@ -56,7 +56,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/mnt/c/Users/sunny/Desktop/EE461L/SoccerBase/pythonenv"
+set -gx VIRTUAL_ENV "/mnt/c/Users/sunny/Desktop/EE461L/SoccerBase/backend/pythonenv"
 
 # https://github.com/fish-shell/fish-shell/issues/436 altered PATH handling
 if test (echo $FISH_VERSION | tr "." "\n")[1] -lt 3
