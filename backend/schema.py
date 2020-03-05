@@ -14,12 +14,17 @@ import json
 
 
 
-connect("mongo-dev-db")
+connect("coutrydatabase", alias = 'country')
+connect("leaguedatabase", alias = 'league')
+connect("teamdatabase", alias = 'team')
+
 print("connected to the database")
 
 class Country(Document):
     name = StringField(required=True)
-
+    meta = {
+        "db_alias":"country" 
+    }
 
 class League(Document):
     name = StringField(required=True)
@@ -38,8 +43,12 @@ class League(Document):
 
     meta = {
         "indexes": ["name", "country"],
-        "ordering": ["name"]
+        "ordering": ["name"],
+        "db_alias":"league"
     }
     
 class Team(Document):
     name = StringField(required=True)
+    meta = {
+        "db_alias":"team"
+    }
