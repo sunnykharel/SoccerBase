@@ -21,16 +21,27 @@ connect("teamdatabase", alias = 'team')
 print("connected to the database")
 
 class Country(Document):
-    name = StringField(required=True)
+    name = StringField(unique=True, required=True)
+    code = StringField(required=True)
+    flag = StringField(required=True)
+    population = IntField()
+    leaguecount = IntField()
     meta = {
         "db_alias":"country" 
     }
 
 class League(Document):
+    league_id = IntField(required=True)
     name = StringField(required=True)
-    logo = StringField(required=True)
+    type_ = StringField()
     country = StringField(required=True)
-    season = StringField(required=True)
+    country_code = StringField()
+    season = IntField(required=True)
+    season_start = StringField()
+    season_end = StringField()
+    logo = StringField()
+    flag = StringField()
+    coverage = DictField()
 
     def json(self):
         league_dict = {
