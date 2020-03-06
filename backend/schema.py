@@ -14,16 +14,16 @@ import json
 
 
 
-connect("coutrydatabase", alias = 'country')
-connect("leaguedatabase", alias = 'league')
-connect("teamdatabase", alias = 'team')
+connect(db="countrydatabase", alias = 'country')
+connect(db="leaguedatabase", alias = 'default')
+connect(db="teamdatabase", alias = 'team')
 
 print("connected to the database")
 
 class Country(Document):
-    name = StringField(unique=True, required=True)
-    code = StringField(required=True)
-    flag = StringField(required=True)
+    name = StringField(required=False)
+    code = StringField(required=False)
+    flag = StringField(required=False)
     population = IntField()
     leaguecount = IntField()
     meta = {
@@ -55,11 +55,15 @@ class League(Document):
     meta = {
         "indexes": ["name", "country"],
         "ordering": ["name"],
-        "db_alias":"league"
+        "db_alias":"default"
     }
     
 class Team(Document):
     name = StringField(required=True)
+    logo = StringField()
+    country = StringField()
+    founded = IntField()
+    venue_name = StringField()
     meta = {
         "db_alias":"team"
     }

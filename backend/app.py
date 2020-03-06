@@ -13,6 +13,26 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+
+
+app.config['MONGODB_SETTINGS'] = [
+    {
+     "ALIAS": "default",
+     "DB":    'business',
+     "HOST": 'localhost',
+     "PORT": 27017
+    },
+    {
+     "ALIAS": "league",
+     "DB": 'leaguedatabase',
+     "HOST": 'localhost',
+     "PORT": 27017
+    }
+]
+
+
+
+
 API_FOOTBALL_KEY_1 = environ.get('API_FOOTBALL_KEY_1')
 
 @app.route('/')
@@ -21,18 +41,30 @@ def index():
 
 @app.route("/updateteams", methods=["GET"])
 def update_teams():
-    # url = "https://api-football-v1.p.rapidapi.com/v2/leagues/country/estonia/2020"
-    # headers = {
-    #     'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
-    #     'x-rapidapi-key': API_FOOTBALL_KEY_1
-    #     }
-    # response = requests.request("GET", url, headers=headers).json()
-    # league_objects = League.objects()
-    # for league_object in league_objects:
-    team = Team(
-        name ="sample team"
-    ).save()
+    url = "https://api-football-v1.p.rapidapi.com/v2/teams/league/154"
+    headers = {
+         'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
+         'x-rapidapi-key': API_FOOTBALL_KEY_1
+         }
+    response = requests.request("GET", url, headers=headers).json()
+    
+    #league_objects = League.objects()
+    
+    for team_object in response['api']['teams']:
+        team = Team(
+            name = team_object['name'],
+            logo = team_object['logo'],
+            country = team_object['country'],
+            founded = team_object['founded'],
+            venue_name = team_object['venue_name'],
+        ).save()
     return "team successfully saved"
+
+
+
+
+
+
 
 @app.route("/updatecountries", methods=["GET"])
 def update_countries():
@@ -44,11 +76,15 @@ def update_countries():
     response = requests.request("GET", url, headers=headers).json()
 
     for country_entry in response['api']['countries']:
+        #country_db_instance = Country.objects(country=country_entry['country'])
+        #print(len(country_db_instance) == 0)
+        #if(  country_db_instance == None):
         country = Country(
             name = country_entry['country'],
             code = country_entry['code'],
             flag = country_entry['flag']
         ).save()
+        
 
     return Response(json.dumps({}), status=200, mimetype="application/json")
 
@@ -64,7 +100,7 @@ def update_leagues():
     print('now updating leagues')
     response = requests.request("GET", url, headers=headers).json()
 
-    pprint(response)
+    #pprint(response)
 
     for league_entry in response['api']['leagues']:
         league = League(
