@@ -18,7 +18,7 @@ httpCommits.onreadystatechange = (error) => {
 const httpIssues = new XMLHttpRequest();
 const urlIssues = "https://api.github.com/repos/sunnykharel/SoccerBase/issues";
 httpIssues.open("GET",urlIssues);
-httpIssues.setRequestHeader("Authorization", "Basic " + btoa("grewalparm:Verybadpassword1!"));
+httpIssues.setRequestHeader("Authorization", "Basic " + btoa("tempforproj:Verybadpassword1!"));
 httpIssues.send();
 
 httpIssues.onreadystatechange = (error) => {
@@ -61,7 +61,7 @@ class About extends Component {
             </div>
 
             <div>
-                <h1> Add GitHub Stuff here:</h1>
+                <h1> Team Stats :</h1>
                 <h5> Total Commits: {this.state.totalCommits} </h5>
                 <h5> Total Issues: {this.state.totalIssues} </h5>
                 <h5> Total Unit Tests: {this.state.totalUnitTests} </h5>
@@ -71,10 +71,6 @@ class About extends Component {
        </div>
      
     );
-  }
-
-  componentDidMount() {
-    
   }
 }
  
