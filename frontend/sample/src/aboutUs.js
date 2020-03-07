@@ -1,9 +1,9 @@
+import React, { Component } from 'react'
 import Askar from './Askar.png';
 import Nithin from './Nithin.png';
 import Sunny from './Sunny.png';
 import Parm from './Parmdeep.png';
 import Tanay from './Tanay.png';
-import React, { Component } from 'react'
 
 import './aboutUs.css'
 
