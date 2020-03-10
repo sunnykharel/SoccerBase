@@ -23,16 +23,21 @@ httpIssues.open("GET",urlIssues);
 httpIssues.setRequestHeader("Authorization", "Basic " + btoa("tempforproj:Verybadpassword1!"));
 httpIssues.send();
 
-httpIssues.onreadystatechange = (error) => {
+/*httpIssues.onreadystatechange = (error) => {
   console.log(httpIssues.responseText);
   console.log(JSON.parse(httpIssues.response).length);
-}
+}*/
 
 class About extends Component {
   constructor(props) {
     super(props);
-    var commits = JSON.parse(httpCommits.response)
-    this.state = {totalCommits: commits[commits.length - 1].total, 
+    var commits = JSON.parse(httpCommits.response);
+
+    var totalCommits = 0;
+    for (let i = 0; i < commits.length; i++) {
+        totalCommits += commits[i].total;
+    }
+    this.state = {totalCommits: totalCommits, 
         totalIssues: JSON.parse(httpIssues.response).length, 
         totalUnitTests: 0};
   }
