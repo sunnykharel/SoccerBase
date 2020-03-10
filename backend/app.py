@@ -3,7 +3,8 @@
 #to exit venv do the deactivate command to terminal
 from flask import Flask, Response
 from schema import *
-import http.client
+#import http.client
+import httplib
 from os import environ
 import requests
 from pprint import pprint
@@ -13,7 +14,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
-API_FOOTBALL_KEY_1 = environ.get('API_FOOTBALL_KEY_1')
+#API_FOOTBALL_KEY_1 = environ.get('API_FOOTBALL_KEY_1')
 
 @app.route('/')
 def index():
@@ -84,7 +85,5 @@ def update_leagues():
     return Response(json.dumps({}), status=200, mimetype="application/json")
 
 
-
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
