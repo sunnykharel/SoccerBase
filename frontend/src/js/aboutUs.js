@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import Askar from './Askar.png';
-import Nithin from './Nithin.png';
-import Sunny from './Sunny.png';
-import Parm from './Parmdeep.png';
-import Tanay from './Tanay.png';
+import Askar from './../images/Askar.png';
+import Nithin from './../images/Nithin.png';
+import Sunny from './../images/Sunny.png';
+import Parm from './../images/Parmdeep.png';
+import Tanay from './../images/Tanay.png';
 
-import './aboutUs.css'
+import './../css/aboutUs.css'
 
 const httpCommits = new XMLHttpRequest();
 const urlCommits = "https://api.github.com/repos/sunnykharel/SoccerBase/stats/commit_activity";

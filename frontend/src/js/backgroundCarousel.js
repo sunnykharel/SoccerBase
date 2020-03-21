@@ -2,9 +2,9 @@ import React, { Component } from 'react'
  
 import BackgroundSlideshow from 'react-background-slideshow'
  
-import image1 from './a.png'
-import image2 from './b.png'
-import image3 from './c.png'
+import image1 from './../images/a.png'
+import image2 from './../images/b.png'
+import image3 from './../images/c.png'
  
 
 const BackgroundCarousel = () =>  {
