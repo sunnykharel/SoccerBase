@@ -42,6 +42,25 @@ class About extends Component {
         totalUnitTests: 0};
   }
   render() {
+
+    function DisplayDeveloper(props){
+      return (
+        <div style={{backgroundColor : props.bckgndcolor,  paddingTop : "10px", paddingBottom: "10px"}}>
+          <div style={{display: "inline-block" , marginRight: "10px", marginBottom: "-100px", width : "400px", height : "20px"}}>
+          <img src= {props.imgsrc} style={{display: "inline-block", width: "350px"  }}class = "members"/>
+          </div >
+          <div style={{display: "inline-block", width: "200px" }}>
+          <h1 style={{display: "inline-block", width: "200px" }}>stuff </h1>
+          </div>
+          <div>
+          <h6 class = "memberName" id = "askar"> {props.name} </h6>
+          </div>
+        </div>
+      );
+    }
+
+
+
     return (
        <div style={{backgroundColor : "#5F9EA0", paddingTop : "10px"}}>
           <h1 style = {{textAlign: "center"}} >About Us</h1>
@@ -54,100 +73,12 @@ class About extends Component {
             <p style = {{textAlign: "center"}}>This database was brought to you by the following EE 461L group 9 members:</p>
           </div>
 
-          
-            
-            <div style={{backgroundColor : "#00FFFF",  paddingTop : "10px", paddingBottom: "10px"}}>
-                <div style={{display: "inline-block" , marginRight: "10px", marginBottom: "-100px", width : "400px", height : "20px"}}>
-                <img src={Askar} style={{display: "inline-block", width: "350px"  }}class = "members"/>
-
-                </div >
-                <div style={{display: "inline-block", width: "200px" }}>
-                <h1 style={{display: "inline-block", width: "200px" }}>stuff </h1>
-
-                </div>
-                <div>
-                <h6 class = "memberName" id = "askar"> Askar Poudyal </h6>
-
-                </div>
-
-            </div>
-
-            <div style={{backgroundColor : "#FFFFFF",  paddingTop : "10px", paddingBottom: "10px"}}>
-                <div style={{display: "inline-block" , marginRight: "10px", marginBottom: "-100px", width : "400px", height : "20px"}}>
-                <img src={Sunny} style={{display: "inline-block", width: "350px"  }}class = "members"/>
-
-                </div >
-                <div style={{display: "inline-block", width: "200px" }}>
-                <h1 style={{display: "inline-block", width: "200px" }}>stuff </h1>
-
-                </div>
-                <div>
-                <h6 class = "memberName" id = "askar"> Sunny Kharel </h6>
-
-                </div>
-
-            </div>
-
-            <div style={{backgroundColor : "#00FFFF",  paddingTop : "10px", paddingBottom: "10px"}}>
-                <div style={{display: "inline-block" , marginRight: "10px", marginBottom: "-100px", width : "400px", height : "20px"}}>
-                <img src={Nithin} style={{display: "inline-block", width: "350px"  }}class = "members"/>
-
-                </div >
-                <div style={{display: "inline-block", width: "200px" }}>
-                <h1 style={{display: "inline-block", width: "200px" }}>stuff </h1>
-
-                </div>
-                <div>
-                <h6 class = "memberName" id = "askar"> Nithin Panchakarla </h6>
-
-                </div>
-
-            </div>
-
-            <div style={{backgroundColor : "#FFFFFF",  paddingTop : "10px", paddingBottom: "10px"}}>
-                <div style={{display: "inline-block" , marginRight: "10px", marginBottom: "-100px", width : "400px", height : "20px"}}>
-                <img src={Tanay} style={{display: "inline-block", width: "350px"  }}class = "members"/>
-
-                </div >
-                <div style={{display: "inline-block", width: "200px" }}>
-                <h1 style={{display: "inline-block", width: "200px" }}>stuff </h1>
-
-                </div>
-                <div>
-                <h6 class = "memberName" id = "askar"> Tanay Bidnurkar  </h6>
-
-                </div>
-
-            </div>
-
-            <div style={{backgroundColor : "#00FFFF",  paddingTop : "10px", paddingBottom: "10px"}}>
-                <div style={{display: "inline-block" , marginRight: "10px", marginBottom: "-100px", width : "400px", height : "20px"}}>
-                <img src={Parm} style={{display: "inline-block", width: "350px"  }}class = "members"/>
-
-                </div >
-                <div style={{display: "inline-block", width: "200px" }}>
-                <h1 style={{display: "inline-block", width: "200px" }}>stuff </h1>
-
-                </div>
-                <div>
-                <h6 class = "memberName" id = "askar"> Parmdeep Grewal </h6>
-
-                </div>
-
-            </div>
-
-
-            {/* <img src={Sunny} class = "members"/>
-            <img src={Nithin} class = "members"/>
-            <img src={Askar} class = "members"/>
-            <img src={Parm} class = "members"/>
-              <h6 class = "memberName" id = "sunny"> Sunny Kharel</h6>  
-              <h6 class = "memberName" id = "nithin"> Nithin Panchakarla</h6>  
-              <h6 class = "memberName" id = "tanay"> Tanay Bidnurkar</h6>  
-             */}
-            
-              <div style={{backgroundColor : "#B0C4DE", paddingTop : "10px", paddingBottom: "1200px"}}>
-            
+          <DisplayDeveloper name = "Askar Poudyal" imgsrc = {Askar} bckgndcolor = "#FFFFFF"/>
+          <DisplayDeveloper name = "Sunny Kharel" imgsrc = {Sunny} bckgndcolor = "#00FFFF"/>
+          <DisplayDeveloper name = "Nithin" imgsrc = {Nithin} bckgndcolor = "#FFFFFF"/>
+          <DisplayDeveloper name = "Tanay" imgsrc = {Tanay} bckgndcolor = "#00FFFF"/>
+          <DisplayDeveloper name = "Parmdeep" imgsrc = {Parm} bckgndcolor = "#FFFFFF"/>            
+          <div style={{backgroundColor : "#B0C4DE", paddingTop : "10px", paddingBottom: "1200px"}}>
             <div>
                 <h1> Team Stats :</h1>
                 <h5> Total Commits: {this.state.totalCommits} </h5>
