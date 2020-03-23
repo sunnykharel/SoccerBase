@@ -15,7 +15,6 @@ class DisplayGitHubStatisticsClass extends Component {
       totalUnitTests: "loading unit tests ..."
     };
   }
-
   componentDidMount() {
     const scope = this;
     var httpCommits = new XMLHttpRequest();
@@ -24,7 +23,6 @@ class DisplayGitHubStatisticsClass extends Component {
     httpCommits.setRequestHeader("Authorization", "Basic " + btoa("grewalparm:Verybadpassword1!"));
     httpCommits.onload = function(){
       if (this.status == 200){
-        console.log(httpCommits.response);
         var commits = JSON.parse(httpCommits.responseText);
         var totalCommits_ = 0;
         for (let i = 0; i < commits.length; i++) {
@@ -43,9 +41,7 @@ class DisplayGitHubStatisticsClass extends Component {
     var httpIssues = new XMLHttpRequest();
     var urlIssues = "https://api.github.com/repos/sunnykharel/SoccerBase/issues";
     httpIssues.open("GET",urlIssues, true);
-
     httpIssues.setRequestHeader("Authorization", "Basic " + btoa("tempforproj:Verybadpassword1!"));
-    
     httpIssues.onload = function() {
       if (this.status == 200){
         var issues = JSON.parse(httpIssues.responseText);
@@ -58,14 +54,11 @@ class DisplayGitHubStatisticsClass extends Component {
       }
     }
     httpIssues.send();
+    
     scope.setState({
       totalUnitTests: 0,
     });  
-     
   }
-
-
-
   render(){
     return (
       <div style={{backgroundColor : "#B0C4DE", paddingTop : "10px", paddingBottom: "1200px"}}>
@@ -83,40 +76,7 @@ class DisplayGitHubStatisticsClass extends Component {
 
 class About extends Component {
   render() {
-    function DisplayGitHubStatistics(props){
-      var httpCommits = new XMLHttpRequest();
-      var urlCommits = "https://api.github.com/repos/sunnykharel/SoccerBase/stats/commit_activity";
-      
-      httpCommits.open("GET",urlCommits, true);
-      httpCommits.setRequestHeader("Authorization", "Basic " + btoa("grewalparm:Verybadpassword1!"));
-      httpCommits.send();
-      httpCommits.onreadystatechange = (error) => {
-        console.log(httpCommits.responseText);
-      }
-      var httpIssues = new XMLHttpRequest();
-      var urlIssues = "https://api.github.com/repos/sunnykharel/SoccerBase/issues";
-
-      httpIssues.open("GET",urlIssues, true );
-      httpIssues.setRequestHeader("Authorization", "Basic " + btoa("tempforproj:Verybadpassword1!"));
-      httpIssues.send();
-      var commits = httpCommits.response;
-      var totalCommits = 0;
-      for (let i = 0; i < commits.length; i++) {
-          totalCommits += commits[i].total;
-      }
-      return (
-        <div style={{backgroundColor : "#B0C4DE", paddingTop : "10px", paddingBottom: "1200px"}}>
-              <div>
-                  <h1> Team Stats :</h1>
-                  <h5> Total Commits: {totalCommits} </h5>
-                  <h5> Total Issues: {httpIssues.response.length} </h5>
-                  <h5> Total Unit Tests: 0 </h5>
-              </div>
-  
-        </div>
-      );
-    }
-
+    
     function DisplayDeveloper(props){
       return (
         <div style={{backgroundColor : props.bckgndcolor,  paddingTop : "10px", paddingBottom: "10px"}}>
@@ -152,7 +112,6 @@ class About extends Component {
           <DisplayDeveloper name = "Parmdeep" imgsrc = {Parm} bckgndcolor = "#FFFFFF"/>            
           <DisplayGitHubStatisticsClass/> 
        </div>
-     
     );
   }
 }
