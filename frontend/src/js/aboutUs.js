@@ -6,42 +6,116 @@ import Parm from './../images/Parmdeep.png';
 import Tanay from './../images/Tanay.png';
 
 import './../css/aboutUs.css'
-
-const httpCommits = new XMLHttpRequest();
-const urlCommits = "https://api.github.com/repos/sunnykharel/SoccerBase/stats/commit_activity";
-httpCommits.open("GET",urlCommits);
-httpCommits.setRequestHeader("Authorization", "Basic " + btoa("grewalparm:Verybadpassword1!"));
-httpCommits.send();
-
-httpCommits.onreadystatechange = (error) => {
-  console.log(httpCommits.responseText);
-}
-
-const httpIssues = new XMLHttpRequest();
-const urlIssues = "https://api.github.com/repos/sunnykharel/SoccerBase/issues";
-httpIssues.open("GET",urlIssues);
-httpIssues.setRequestHeader("Authorization", "Basic " + btoa("tempforproj:Verybadpassword1!"));
-httpIssues.send();
-
-/*httpIssues.onreadystatechange = (error) => {
-  console.log(httpIssues.responseText);
-  console.log(JSON.parse(httpIssues.response).length);
-}*/
-
-class About extends Component {
+class DisplayGitHubStatisticsClass extends Component {
   constructor(props) {
     super(props);
-    var commits = JSON.parse(httpCommits.response);
-
-    var totalCommits = 0;
-    for (let i = 0; i < commits.length; i++) {
-        totalCommits += commits[i].total;
-    }
-    this.state = {totalCommits: totalCommits, 
-        totalIssues: JSON.parse(httpIssues.response).length, 
-        totalUnitTests: 0};
+    this.state = {
+      totalCommits: "loading commits ...", 
+      totalIssues: "loading issues ...", 
+      totalUnitTests: "loading unit tests ..."
+    };
   }
+
+  componentDidMount() {
+    const scope = this;
+    var httpCommits = new XMLHttpRequest();
+    var urlCommits = "https://api.github.com/repos/sunnykharel/SoccerBase/stats/commit_activity";  
+    httpCommits.open("GET",urlCommits, true);
+    httpCommits.setRequestHeader("Authorization", "Basic " + btoa("grewalparm:Verybadpassword1!"));
+    httpCommits.onload = function(){
+      if (this.status == 200){
+        console.log(httpCommits.response);
+        var commits = JSON.parse(httpCommits.responseText);
+        var totalCommits_ = 0;
+        for (let i = 0; i < commits.length; i++) {
+            totalCommits_ += commits[i].total;
+        }
+        scope.setState({
+          totalCommits: totalCommits_,
+        });
+      }
+      else {
+        console.warn("Let's assume this works");
+      }
+    }
+    httpCommits.send();
+
+    var httpIssues = new XMLHttpRequest();
+    var urlIssues = "https://api.github.com/repos/sunnykharel/SoccerBase/issues";
+    httpIssues.open("GET",urlIssues, true);
+
+    httpIssues.setRequestHeader("Authorization", "Basic " + btoa("tempforproj:Verybadpassword1!"));
+    
+    httpIssues.onload = function() {
+      if (this.status == 200){
+        var issues = JSON.parse(httpIssues.responseText);
+        scope.setState({
+          totalIssues:issues.length,
+        });
+      }
+      else {
+        console.warn("Let's assume this works");
+      }
+    }
+    httpIssues.send();
+    scope.setState({
+      totalUnitTests: 0,
+    });  
+     
+  }
+
+
+
+  render(){
+    return (
+      <div style={{backgroundColor : "#B0C4DE", paddingTop : "10px", paddingBottom: "1200px"}}>
+            <div>
+                <h1> Team Stats :</h1>
+                <h5> Total Commits: {this.state.totalCommits} </h5>
+                <h5> Total Issues: {this.state.totalIssues} </h5>
+                <h5> Total Unit Tests: {this.state.totalUnitTests} </h5>
+            </div>
+      </div>
+    );
+  }
+}
+
+
+class About extends Component {
   render() {
+    function DisplayGitHubStatistics(props){
+      var httpCommits = new XMLHttpRequest();
+      var urlCommits = "https://api.github.com/repos/sunnykharel/SoccerBase/stats/commit_activity";
+      
+      httpCommits.open("GET",urlCommits, true);
+      httpCommits.setRequestHeader("Authorization", "Basic " + btoa("grewalparm:Verybadpassword1!"));
+      httpCommits.send();
+      httpCommits.onreadystatechange = (error) => {
+        console.log(httpCommits.responseText);
+      }
+      var httpIssues = new XMLHttpRequest();
+      var urlIssues = "https://api.github.com/repos/sunnykharel/SoccerBase/issues";
+
+      httpIssues.open("GET",urlIssues, true );
+      httpIssues.setRequestHeader("Authorization", "Basic " + btoa("tempforproj:Verybadpassword1!"));
+      httpIssues.send();
+      var commits = httpCommits.response;
+      var totalCommits = 0;
+      for (let i = 0; i < commits.length; i++) {
+          totalCommits += commits[i].total;
+      }
+      return (
+        <div style={{backgroundColor : "#B0C4DE", paddingTop : "10px", paddingBottom: "1200px"}}>
+              <div>
+                  <h1> Team Stats :</h1>
+                  <h5> Total Commits: {totalCommits} </h5>
+                  <h5> Total Issues: {httpIssues.response.length} </h5>
+                  <h5> Total Unit Tests: 0 </h5>
+              </div>
+  
+        </div>
+      );
+    }
 
     function DisplayDeveloper(props){
       return (
@@ -58,8 +132,6 @@ class About extends Component {
         </div>
       );
     }
-
-
 
     return (
        <div style={{backgroundColor : "#5F9EA0", paddingTop : "10px"}}>
@@ -78,15 +150,7 @@ class About extends Component {
           <DisplayDeveloper name = "Nithin" imgsrc = {Nithin} bckgndcolor = "#FFFFFF"/>
           <DisplayDeveloper name = "Tanay" imgsrc = {Tanay} bckgndcolor = "#00FFFF"/>
           <DisplayDeveloper name = "Parmdeep" imgsrc = {Parm} bckgndcolor = "#FFFFFF"/>            
-          <div style={{backgroundColor : "#B0C4DE", paddingTop : "10px", paddingBottom: "1200px"}}>
-            <div>
-                <h1> Team Stats :</h1>
-                <h5> Total Commits: {this.state.totalCommits} </h5>
-                <h5> Total Issues: {this.state.totalIssues} </h5>
-                <h5> Total Unit Tests: {this.state.totalUnitTests} </h5>
-            </div>
-
-          </div>
+          <DisplayGitHubStatisticsClass/> 
        </div>
      
     );
