@@ -6,32 +6,29 @@ import Home from './Home'
 import Teams from './Teams'
 import Leagues from './Leagues'
 import Players from "./Players"
-
-
-import Navbar from './components/Navbar';
+import './../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './../css/App.css'
 import { render } from '@testing-library/react';
-import BackgroundCarousel from './backgroundCarousel'
+import SoccerBaseNavBar from './components/Navbar';
 
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <div id="App">
-          <Navbar />
-          <Switch>
-             <Route path="/" component={Home} exact/>
-             <Route path ="/Teams" component={Teams}/>
-             <Route path ="/Leagues" component={Leagues}/>
-             <Route path ="/Players" component={Players}/>
-             <Route path="/aboutUs" component={aboutUs}/>
-             
-            {/* <Route component={Error}/> */}
-           </Switch>
-        </div>
-        {/* <BackgroundCarousel /> */}
-      </BrowserRouter>
       
+        <BrowserRouter>
+          <div>
+          <SoccerBaseNavBar /> 
+             <Switch>
+                <Route path="/" component={Home} exact/>
+                <Route path ="/Teams" component={Teams}/>
+                <Route path ="/Leagues" component={Leagues}/>
+                <Route path ="/Players" component={Players}/>
+                <Route path="/aboutUs" component={aboutUs}/>
+            </Switch> 
+          </div>  
+        </BrowserRouter>
+         
     );
   }
 }

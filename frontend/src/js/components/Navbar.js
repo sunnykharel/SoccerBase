@@ -1,23 +1,45 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
-import Models from './Models'
-import { NavLink } from 'react-router-dom'
+import React, { useState } from 'react';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink
+} from 'reactstrap';
 
+const SoccerBaseNavBar = (props) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
 
-
-const Navbar = () => {
-    return(
-        <nav className = "nav-wrapper grey darken-3">
-            <div id = "nav" className = "container" >
-                <Link to ='/' className ="brand-logo">SoccerBase</Link>
-                <Models />
-                <img src="../../Logo2.png" class="rotate" width="100" height="100" style={{
-        // paddingTop: '20px',
-        }}/>
-            </div>
-        </nav>
-    )
-               
+  return (
+    <div>
+      <Navbar color="light" light expand="md">
+        <NavbarBrand href="/">SoccerBase</NavbarBrand>
+        <NavbarToggler onClick={toggle} />
+        <Collapse isOpen={isOpen} navbar>
+            <Nav className="mr-auto" navbar>
+                <NavItem>
+                    <NavLink href="/">Home</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink href='/Teams'>Teams</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink href='/Leagues'>Leagues</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink href='/Players'>Players</NavLink>
+                </NavItem>
+            </Nav>
+            <Nav className = "ml-auto" navbar>
+                <NavLink href='/aboutUs'>About Us</NavLink>
+            </Nav>
+        </Collapse>
+      </Navbar>
+    </div>
+  );
 }
 
-export default Navbar;
+export default SoccerBaseNavBar;
