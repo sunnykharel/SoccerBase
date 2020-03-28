@@ -1,43 +1,43 @@
 html{
-  /* min-height: 100%; */
-}
-
-body {
-  margin: 50;
-  padding: 0;
-  font-family: sans-serif; 
-  background: url(/background.png) no-repeat;
-  background-size: 100%;
-  background-position: top;
-  background-color: #95e8f3;
-  min-height: 100%;
-}
-
-#slideshow{
+    /* min-height: 100%; */
+  }
   
-}
-
-#nav{
-  padding-bottom: 50px;
-
-}
-
-#App {
-} 
-
-.rotate {
-  animation: rotation 8s infinite linear;
-  border-radius: 50%;
-  height: 60px;
-  width: 60px;
-  /* padding-top: 10px; */
-}
-
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
+  body {
+    margin: 50;
+    padding: 0;
+    font-family: sans-serif; 
+    background: url(/background.png) no-repeat;
+    background-size: 100%;
+    background-position: top;
+    background-color: #95e8f3;
+    min-height: 100%;
   }
-  to {
-    transform: rotate(359deg);
+  
+  #slideshow{
+    
   }
-}
+  
+  #nav{
+    padding-bottom: 50px;
+  
+  }
+  
+  #App {
+  } 
+  
+  .rotate {
+    animation: rotation 8s infinite linear;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    /* padding-top: 10px; */
+  }
+  
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }

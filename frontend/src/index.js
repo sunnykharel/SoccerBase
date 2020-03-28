@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './css/index.css';
 import App from './js/App';
 import * as serviceWorker from './js/serviceWorker';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-// ReactDOM.render(carosoul, document.getElementById('root'));
-
-
-// const element = <h1>Hello World!</h1>
-// ReactDOM.render(element, document.getElementById('root'));
+ReactDOM.render(
+    <Router>
+      <App />
+    </Router>,
+  document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+// Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
