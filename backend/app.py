@@ -12,6 +12,7 @@ import json
 from mongoengine import *   
 from flask_cors import CORS
 import time
+from newsapi import NewsApiClient
 
 app = Flask(__name__)
 CORS(app)
@@ -53,10 +54,14 @@ def update_teams():
             name = team_object['name'],
             logo = team_object['logo'],
             country = team_object['country'],
-            founded = team_object['founded'],
+            founded = team_object['founded'], 
             venue_name = team_object['venue_name'],
         ).save()
     return "team successfully saved"
+
+
+    
+
 
 
 @app.route("/updatecountries", methods=["GET"])
@@ -112,20 +117,86 @@ def update_leagues():
 
     return Response(json.dumps({}), status=200, mimetype="application/json")
 
+@app.route("/updatenews", methods=["GET"])
+def update_news():
+    newsClient = NewsApiClient(api_key="bad068d6ce6c4ccfb30eb5785c360efe")
+    url = "https://api-football-v1.p.rapidapi.com/v2/leagues/country/spain"
+    headers = {
+        'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
+        'x-rapidapi-key': "c114e8403emsh6c4e6c8d45757cbp131072jsn941330efea5f"
+        }
+    print('now updating leagues')
+    response = requests.request("GET", url, headers=headers).json()
+
+    league_names = []
+    country_names = []
+    for league_entry in response['api']['leagues']:
+        league_names.append(league_entry['name'])
+    for country_entry in response['api']['leagues']:
+        country_names.append(country_entry['country'])
+    for i in range(len(league_names)):
+        topLeagueHeadlines = newsClient.get_top_headlines(q = league_names[i], category="sports", language="en")
+        articles = topLeagueHeadlines['articles'][:3]
+        news = News(
+            topic_name = league_names[i],
+            headline_1 = articles[0]['title'],
+            description_1 = articles[0]['description'],
+            img_url_1 = articles[0]['urlToImage'],
+            url_1 = articles[0]['url'],
+
+            headline_2 = articles[1]['title'],
+            description_2 = articles[1]['description'],
+            img_url_2 = articles[1]['urlToImage'],
+            url_2 = articles[1]['url'],
+
+            headline_3 = articles[2]['title'],
+            description_3 = articles[2]['description'],
+            img_url_3 = articles[2]['urlToImage'],
+            url_3 = articles[2]['url']
+        ).save()
+    for i in range(len(country_names)):
+        topCountryHeadlines = newsClient.get_top_headlines(q = country_names[i] + " soccer", category="sports", language="en")
+        articles = topCountryHeadlines['articles'][:3]
+        news = News(
+            topic_name = country_names[i],
+            headline_1 = articles[0]['title'],
+            description_1 = articles[0]['description'],
+            img_url_1 = articles[0]['urlToImage'],
+            url_1 = articles[0]['url'],
+
+            headline_2 = articles[1]['title'],
+            description_2 = articles[1]['description'],
+            img_url_2 = articles[1]['urlToImage'],
+            url_2 = articles[1]['url'],
+
+            headline_3 = articles[2]['title'],
+            description_3 = articles[2]['description'],
+            img_url_3 = articles[2]['urlToImage'],
+            url_3 = articles[2]['url']
+        ).save()
+
+        return Response(json.dumps({}), status=200, mimetype="application/json")
+
+    
+
+
 
 @app.route("/updateall", methods=["GET"])
 def update_all():
+    newsClient = NewsApiClient(api_key="bad068d6ce6c4ccfb30eb5785c360efe")
     url = "https://api-football-v1.p.rapidapi.com/v2/countries"
     headers = {
         'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
         'x-rapidapi-key': "c114e8403emsh6c4e6c8d45757cbp131072jsn941330efea5f"
         }
     response = requests.request("GET", url, headers=headers).json()
-
+    league_names = []
+    country_names = []
     for country_entry in response['api']['countries']:
         #country_db_instance = Country.objects(country=country_entry['country'])
         #print(len(country_db_instance) == 0)
         #if(  country_db_instance == None):
+        country_names.append(country_entry['country'])
         country = Country(
             name = country_entry['country'],
             code = country_entry['code'],
@@ -140,6 +211,7 @@ def update_all():
         #pprint(leaguesInCountryResponse)
 
         for league_entry in leaguesInCountryResponse['api']['leagues']:
+            league_names.append(league_entry['name'])
             league = League(
                 league_id = league_entry['league_id'],
                 name = league_entry['name'],
@@ -155,8 +227,49 @@ def update_all():
             ).save()
 
             time.sleep(3)
+    for i in range(len(league_names)):
+        topLeagueHeadlines = newsClient.get_top_headlines(q = league_names[i], category="sports", language="en")
+        articles = topLeagueHeadlines['articles'][:3]
+        news = News(
+            topic_name = league_names[i],
+            headline_1 = articles[0]['title'],
+            description_1 = articles[0]['description'],
+            img_url_1 = articles[0]['urlToImage'],
+            url_1 = articles[0]['url'],
+
+            headline_2 = articles[1]['title'],
+            description_2 = articles[1]['description'],
+            img_url_2 = articles[1]['urlToImage'],
+            url_2 = articles[1]['url'],
+
+            headline_3 = articles[2]['title'],
+            description_3 = articles[2]['description'],
+            ima9og_url_3 = articles[2]['urlToImage'],
+            url_3 = articles[2]['url']
+        ).save()
+    for i in range(len(country_names)):
+        topCountryHeadlines = newsClient.get_top_headlines(q = country_names[i] + " soccer", category="sports", language="en")
+        articles = topCountryHeadlines['articles'][:3]
+        news = News(
+            topic_name = country_names[i],
+            headline_1 = articles[0]['title'],
+            description_1 = articles[0]['description'],
+            img_url_1 = articles[0]['urlToImage'],
+            url_1 = articles[0]['url'],
+
+            headline_2 = articles[1]['title'],
+            description_2 = articles[1]['description'],
+            img_url_2 = articles[1]['urlToImage'],
+            url_2 = articles[1]['url'],
+
+            headline_3 = articles[2]['title'],
+            description_3 = articles[2]['description'],
+            img_url_3 = articles[2]['urlToImage'],
+            url_3 = articles[2]['url']
+        ).save()
 
     return Response(json.dumps({}), status=200, mimetype="application/json")
+    
 
 
 if __name__ == "__main__":

@@ -17,6 +17,7 @@ import json
 connect(db="countrydatabase", alias = 'country')
 connect(db="leaguedatabase", alias = 'default')
 connect(db="teamdatabase", alias = 'team')
+#connect(db="newsdatabase", alias = 'news')
 
 print("connected to the database")
 
@@ -66,4 +67,22 @@ class Team(Document):
     venue_name = StringField()
     meta = {
         "db_alias":"team"
+    }
+
+class News(Document):
+    topic_name = StringField(required=True)
+    headline_1 = StringField()
+    description_1 = StringField()
+    img_url_1 = StringField()
+    url_1 = StringField(required=True)
+    headline_2 = StringField()
+    description_2 = StringField()
+    img_url_2 = StringField()
+    url_2 = StringField(required=True)
+    headline_3 = StringField()
+    description_3 = StringField()
+    img_url_3 = StringField()
+    url_3 = StringField(required=True)
+    meta = {
+        "db_alias": "news"
     }
