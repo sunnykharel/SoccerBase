@@ -4,13 +4,14 @@
 from flask import Flask, Response
 from schema import *
 #import http.client
-import httplib
+import http.client
 from os import environ
 import requests
 from pprint import pprint
 import json
-from mongoengine import *
+from mongoengine import *   
 from flask_cors import CORS
+import time
 
 app = Flask(__name__)
 CORS(app)
@@ -32,7 +33,7 @@ app.config['MONGODB_SETTINGS'] = [
 
 API_FOOTBALL_KEY_1 = environ.get('API_FOOTBALL_KEY_1')
 
-
+@app.route('/')
 def index():
     return "hello world"
 
@@ -108,6 +109,52 @@ def update_leagues():
             flag = league_entry['flag'],
             coverage = league_entry['coverage']
         ).save()
+
+    return Response(json.dumps({}), status=200, mimetype="application/json")
+
+
+@app.route("/updateall", methods=["GET"])
+def update_all():
+    url = "https://api-football-v1.p.rapidapi.com/v2/countries"
+    headers = {
+        'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
+        'x-rapidapi-key': "c114e8403emsh6c4e6c8d45757cbp131072jsn941330efea5f"
+        }
+    response = requests.request("GET", url, headers=headers).json()
+
+    for country_entry in response['api']['countries']:
+        #country_db_instance = Country.objects(country=country_entry['country'])
+        #print(len(country_db_instance) == 0)
+        #if(  country_db_instance == None):
+        country = Country(
+            name = country_entry['country'],
+            code = country_entry['code'],
+            flag = country_entry['flag']
+        ).save()
+
+        #get all leagues in 2019 in this country
+        leaguesInCountry = "https://api-football-v1.p.rapidapi.com/v2/leagues/country/{}/2019".format(country_entry['country'])
+
+        leaguesInCountryResponse = requests.request("GET", leaguesInCountry, headers=headers).json()
+
+        #pprint(leaguesInCountryResponse)
+
+        for league_entry in leaguesInCountryResponse['api']['leagues']:
+            league = League(
+                league_id = league_entry['league_id'],
+                name = league_entry['name'],
+                type_ = league_entry['type'],
+                country = league_entry['country'],
+                country_code = league_entry['country_code'],
+                season = league_entry['season'],
+                season_start = league_entry['season_start'],
+                season_end = league_entry['season_end'],
+                logo = league_entry['logo'],
+                flag = league_entry['flag'],
+                coverage = league_entry['coverage']
+            ).save()
+
+            time.sleep(3)
 
     return Response(json.dumps({}), status=200, mimetype="application/json")
 
