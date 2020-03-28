@@ -6,6 +6,8 @@ import { NavLink } from 'react-router-dom'
 
 
 const Navbar = () => {
+
+    
     return(
         <nav className = "nav-wrapper grey darken-3">
             <div id = "nav" className = "container" >
