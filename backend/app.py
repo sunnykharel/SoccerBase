@@ -133,10 +133,13 @@ def update_news():
 
     league_names = []
     country_names = []
+    team_names = []
     for league_entry in response['api']['leagues']:
         league_names.append(league_entry['name'])
     for country_entry in response['api']['leagues']:
         country_names.append(country_entry['country'])
+    for team_entry in response['api']['teams']:
+        team_names.append(team_entry['name'])
     for i in range(len(league_names)):
         topLeagueHeadlines = newsClient.get_top_headlines(q = league_names[i], category="sports", language="en")
         articles = topLeagueHeadlines['articles'][:3]
@@ -177,6 +180,26 @@ def update_news():
             img_url_3 = articles[2]['urlToImage'],
             url_3 = articles[2]['url']
         ).save()
+        for i in range(len(team_names)):
+            topTeamHeadlines = newsClient.get_top_headlines(q = team_names[i], category="sports", language="en")
+            articles = topTeamHeadlines['articles'][:3]
+            news = News(
+                topic_name = team_names[i],
+                headline_1 = articles[0]['title'],
+                description_1 = articles[0]['description'],
+                img_url_1 = articles[0]['urlToImage'],
+                url_1 = articles[0]['url'],
+
+                headline_2 = articles[1]['title'],
+                description_2 = articles[1]['description'],
+                img_url_2 = articles[1]['urlToImage'],
+                url_2 = articles[1]['url'],
+
+                headline_3 = articles[2]['title'],
+                description_3 = articles[2]['description'],
+                img_url_3 = articles[2]['urlToImage'],
+                url_3 = articles[2]['url']
+            ).save()
 
         return Response(json.dumps({}), status=200, mimetype="application/json")
 
@@ -195,6 +218,7 @@ def update_all():
     response = requests.request("GET", url, headers=headers).json()
     league_names = []
     country_names = []
+    team_names = []
     for country_entry in response['api']['countries']:
         #country_db_instance = Country.objects(country=country_entry['country'])
         #print(len(country_db_instance) == 0)
@@ -240,6 +264,7 @@ def update_all():
             teamsInLeagueResponse = requests.request("GET", teamsInLeague, headers=headers).json()
 
             for team_object in teamsInLeagueResponse['api']['teams']:
+                team_names.append(team_object['name'])
                 team = Team(
                     name = team_object['name'],
                     logo = team_object['logo'],
@@ -292,6 +317,26 @@ def update_all():
             img_url_3 = articles[2]['urlToImage'],
             url_3 = articles[2]['url']
         ).save()
+        for i in range(len(team_names)):
+            topTeamHeadlines = newsClient.get_top_headlines(q = team_names[i], category="sports", language="en")
+            articles = topTeamHeadlines['articles'][:3]
+            news = News(
+                topic_name = team_names[i],
+                headline_1 = articles[0]['title'],
+                description_1 = articles[0]['description'],
+                img_url_1 = articles[0]['urlToImage'],
+                url_1 = articles[0]['url'],
+
+                headline_2 = articles[1]['title'],
+                description_2 = articles[1]['description'],
+                img_url_2 = articles[1]['urlToImage'],
+                url_2 = articles[1]['url'],
+
+                headline_3 = articles[2]['title'],
+                description_3 = articles[2]['description'],
+                img_url_3 = articles[2]['urlToImage'],
+                url_3 = articles[2]['url']
+            ).save()
 
     return Response(json.dumps({}), status=200, mimetype="application/json")
     
