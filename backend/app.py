@@ -56,6 +56,9 @@ def update_teams():
             country = team_object['country'],
             founded = team_object['founded'], 
             venue_name = team_object['venue_name'],
+            venue_surface = team_object['venue_surface'],
+            venue_city = team_object['venue_city'],
+            venue_capacity = team_object['venue_capacity']
         ).save()
     return "team successfully saved"
 
@@ -196,12 +199,16 @@ def update_all():
         #country_db_instance = Country.objects(country=country_entry['country'])
         #print(len(country_db_instance) == 0)
         #if(  country_db_instance == None):
+
         country_names.append(country_entry['country'])
+        
+        """
         country = Country(
             name = country_entry['country'],
             code = country_entry['code'],
             flag = country_entry['flag']
         ).save()
+        """
 
         #get all leagues in 2019 in this country
         leaguesInCountry = "https://api-football-v1.p.rapidapi.com/v2/leagues/country/{}/2019".format(country_entry['country'])
@@ -212,6 +219,7 @@ def update_all():
 
         for league_entry in leaguesInCountryResponse['api']['leagues']:
             league_names.append(league_entry['name'])
+            """
             league = League(
                 league_id = league_entry['league_id'],
                 name = league_entry['name'],
@@ -225,6 +233,23 @@ def update_all():
                 flag = league_entry['flag'],
                 coverage = league_entry['coverage']
             ).save()
+            """
+
+            teamsInLeague = "https://api-football-v1.p.rapidapi.com/v2/teams/league/{}".format(league_entry['league_id'])
+
+            teamsInLeagueResponse = requests.request("GET", teamsInLeague, headers=headers).json()
+
+            for team_object in teamsInLeagueResponse['api']['teams']:
+                team = Team(
+                    name = team_object['name'],
+                    logo = team_object['logo'],
+                    country = team_object['country'],
+                    founded = team_object['founded'],
+                    venue_name = team_object['venue_name'],
+                    venue_surface = team_object['venue_surface'],
+                    venue_city = team_object['venue_city'],
+                    venue_capacity = team_object['venue_capacity']
+                ).save()
 
             time.sleep(3)
     for i in range(len(league_names)):

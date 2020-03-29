@@ -65,6 +65,9 @@ class Team(Document):
     country = StringField()
     founded = IntField()
     venue_name = StringField()
+    venue_surface = StringField()
+    venue_city = StringField()
+    venue_capacity = IntField()
     meta = {
         "db_alias":"team"
     }
