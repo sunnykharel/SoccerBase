@@ -1,0 +1,361 @@
+{
+	"variables": [],
+	"info": {
+		"name": "SoccerBase",
+		"_postman_id": "180b1f87-cc74-e654-bcf3-ff5507d394a8",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "all Countries - Valid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//Tests for general query response. Our top level model is countries, and we are querying for all countries, so we should",
+							"//get 129 of them.",
+							"",
+							"",
+							"//basic tests to make sure it worked",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response time less than 1 s\"] = responseTime < 1000;",
+							"",
+							"tests[\"Response is JSON\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+							"",
+							"",
+							"//testing specific data in the JSON",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Number of coutries = 129\"] = jsonData.api.results === 129;",
+							"",
+							"tests[\"First country is Albania\"] = jsonData.api.countries[0].country === \"Albania\";",
+							"",
+							"tests[\"Albania flag url is not null\"] = jsonData.api.countries[0].flag !== \"\";",
+							"",
+							"",
+							"//pick a random index between 0 and 128 inclusive - country, code, and flag fields should not be null",
+							"",
+							"tests[\"Random index #1, country not null\"] = jsonData.api.countries[23].country !== \"\";",
+							"tests[\"Random index #1, code not null\"] = jsonData.api.countries[23].code       !== \"\";",
+							"tests[\"Random index #1, flag not null\"] = jsonData.api.countries[23].flag       !== \"\";",
+							"",
+							"tests[\"Random index #2, country not null\"] = jsonData.api.countries[108].country !== \"\";",
+							"tests[\"Random index #2, code not null\"] = jsonData.api.countries[108].code       !== \"\";",
+							"tests[\"Random index #2, flag not null\"] = jsonData.api.countries[108].flag       !== \"\";",
+							"",
+							"",
+							"tests[\"Random index #3, country not null\"] = jsonData.api.countries[51].country !== \"\";",
+							"tests[\"Random index #3, code not null\"] = jsonData.api.countries[51].code       !== \"\";",
+							"tests[\"Random index #3, flag not null\"] = jsonData.api.countries[51].flag       !== \"\";",
+							"",
+							"",
+							"tests[\"Random index #4, country not null\"] = jsonData.api.countries[78].country !== \"\";",
+							"tests[\"Random index #4, code not null\"] = jsonData.api.countries[78].code       !== \"\";",
+							"tests[\"Random index #4, flag not null\"] = jsonData.api.countries[78].flag       !== \"\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api-football-v1.p.rapidapi.com/v2/countries",
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-rapidapi-host",
+						"value": "api-football-v1.p.rapidapi.com",
+						"description": ""
+					},
+					{
+						"key": "x-rapidapi-key",
+						"value": "53ae476b3dmsh69a5085cd429f71p1b67d1jsn42625c81d012",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "all Teams in League - Valid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//Tests for general query response. This request has the same format as the way we get teams. Here, we are getting all teams in the league",
+							"//with league_id = 154.",
+							"",
+							"",
+							"//basic tests to make sure it worked",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response time less than 1 s\"] = responseTime < 1000;",
+							"",
+							"tests[\"Response is JSON\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+							"",
+							"",
+							"//testing specific data in the JSON",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Number of teams = 104\"] = jsonData.api.results === 104;",
+							"",
+							"",
+							"//pick a random index between 0 and 103 inclusive - country, code, and flag fields should not be null",
+							"",
+							"tests[\"Random index #1, team id not null\"] = jsonData.api.teams[8].team_id !== \"\";",
+							"tests[\"Random index #1, name not null\"] = jsonData.api.teams[8].name !== \"\";",
+							"tests[\"Random index #1, logo not null\"] = jsonData.api.teams[8].logo !== \"\";",
+							"tests[\"Random index #1, country not null\"] = jsonData.api.teams[8].country !== \"\";",
+							"tests[\"Random index #1, venue name not null\"] = jsonData.api.teams[8].venue_name !== \"\";",
+							"tests[\"Random index #1, venue capacity not null\"] = jsonData.api.teams[8].venue_capacity > 0;",
+							"",
+							"",
+							"tests[\"Random index #2, team id not null\"] = jsonData.api.teams[72].team_id !== \"\";",
+							"tests[\"Random index #2, name not null\"] = jsonData.api.teams[72].name !== \"\";",
+							"tests[\"Random index #2, logo not null\"] = jsonData.api.teams[72].logo !== \"\";",
+							"tests[\"Random index #2, country not null\"] = jsonData.api.teams[72].country !== \"\";",
+							"tests[\"Random index #2, venue name not null\"] = jsonData.api.teams[72].venue_name !== \"\";",
+							"tests[\"Random index #2, venue capacity not null\"] = jsonData.api.teams[72].venue_capacity > 0;",
+							"",
+							"",
+							"tests[\"Random index #3, team id not null\"] = jsonData.api.teams[87].team_id !== \"\";",
+							"tests[\"Random index #3, name not null\"] = jsonData.api.teams[87].name !== \"\";",
+							"tests[\"Random index #3, logo not null\"] = jsonData.api.teams[87].logo !== \"\";",
+							"tests[\"Random index #3, country not null\"] = jsonData.api.teams[87].country !== \"\";",
+							"tests[\"Random index #3, venue name not null\"] = jsonData.api.teams[87].venue_name !== \"\";",
+							"tests[\"Random index #3, venue capacity not null\"] = jsonData.api.teams[87].venue_capacity > 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api-football-v1.p.rapidapi.com/v2/teams/league/154",
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-rapidapi-host",
+						"value": "api-football-v1.p.rapidapi.com",
+						"description": ""
+					},
+					{
+						"key": "x-rapidapi-key",
+						"value": "53ae476b3dmsh69a5085cd429f71p1b67d1jsn42625c81d012",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "all Leagues in Country - Valid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//Tests for general query response. Our second level model is leagues, and we are querying for all leagues in Spain in 2019, so we should",
+							"//get 27 of them.",
+							"",
+							"",
+							"//basic tests to make sure it worked",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response time less than 1 s\"] = responseTime < 1000;",
+							"",
+							"tests[\"Response is JSON\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+							"",
+							"",
+							"//testing specific data in the JSON",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Number of leagues is 27\"] = jsonData.api.results === 27;",
+							"",
+							"",
+							"",
+							"//pick a random index between 0 and 26 inclusive - country, code, and flag fields should not be null",
+							"",
+							"tests[\"Random index #1, id not null\"] = jsonData.api.leagues[4].league_id !== \"\";",
+							"tests[\"Random index #1, name not null\"] = jsonData.api.leagues[4].name !== \"\";",
+							"tests[\"Random index #1, type not null\"] = jsonData.api.leagues[4].type !== \"\";",
+							"tests[\"Random index #1, country is Spain\"] = jsonData.api.leagues[4].country === \"Spain\";",
+							"tests[\"Random index #1, season is 2019\"] = jsonData.api.leagues[4].season === 2019;",
+							"tests[\"Random index #1, logo not null\"] = jsonData.api.leagues[4].logo !== \"\";",
+							"",
+							"",
+							"tests[\"Random index #2, id not null\"] = jsonData.api.leagues[24].league_id !== \"\";",
+							"tests[\"Random index #2, name not null\"] = jsonData.api.leagues[24].name !== \"\";",
+							"tests[\"Random index #2, type not null\"] = jsonData.api.leagues[24].type !== \"\";",
+							"tests[\"Random index #2, country is Spain\"] = jsonData.api.leagues[24].country === \"Spain\";",
+							"tests[\"Random index #2, season is 2019\"] = jsonData.api.leagues[24].season === 2019;",
+							"tests[\"Random index #2, logo not null\"] = jsonData.api.leagues[24].logo !== \"\";",
+							"",
+							"",
+							"",
+							"tests[\"Random index #3, id not null\"] = jsonData.api.leagues[11].league_id !== \"\";",
+							"tests[\"Random index #3, name not null\"] = jsonData.api.leagues[11].name !== \"\";",
+							"tests[\"Random index #3, type not null\"] = jsonData.api.leagues[11].type !== \"\";",
+							"tests[\"Random index #3, country is Spain\"] = jsonData.api.leagues[11].country === \"Spain\";",
+							"tests[\"Random index #3, season is 2019\"] = jsonData.api.leagues[11].season === 2019;",
+							"tests[\"Random index #3, logo not null\"] = jsonData.api.leagues[11].logo !== \"\";",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api-football-v1.p.rapidapi.com/v2/leagues/country/spain/2019",
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-rapidapi-host",
+						"value": "api-football-v1.p.rapidapi.com",
+						"description": ""
+					},
+					{
+						"key": "x-rapidapi-key",
+						"value": "53ae476b3dmsh69a5085cd429f71p1b67d1jsn42625c81d012",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "all Countries - Invalid API Key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//This is an invalid test, since the API key is not valid, should get error message and 401 error code",
+							"",
+							"//basic tests to make sure it worked",
+							"tests[\"Status code is 401\"] = responseCode.code === 401;",
+							"",
+							"tests[\"Response time less than 1 s\"] = responseTime < 1000;",
+							"",
+							"tests[\"Response is JSON\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Invalid API key\"] = jsonData.message === \"Invalid X-Rapidapi-Key\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api-football-v1.p.rapidapi.com/v2/countries",
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-rapidapi-host",
+						"value": "api-football-v1.p.rapidapi.com",
+						"description": ""
+					},
+					{
+						"key": "x-rapidapi-key",
+						"value": "53ae476b3dmsh69a5085cd429f71p1b67d1jsn42625c81d0120",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "all Teams in League - Invalid API Key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//This is an invalid test, since the API key is not valid, should get error message and 401 error code",
+							"",
+							"//basic tests to make sure it worked",
+							"tests[\"Status code is 401\"] = responseCode.code === 401;",
+							"",
+							"tests[\"Response time less than 1 s\"] = responseTime < 1000;",
+							"",
+							"tests[\"Response is JSON\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Invalid API key\"] = jsonData.message === \"Invalid X-Rapidapi-Key\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api-football-v1.p.rapidapi.com/v2/teams/league/154",
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-rapidapi-host",
+						"value": "api-football-v1.p.rapidapi.com",
+						"description": ""
+					},
+					{
+						"key": "x-rapidapi-key",
+						"value": "53ae476b3dmsh69a5085cd429f71p1b67d1jsn42625c81d0120",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "all Leagues in Country - Invalid API Key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//This is an invalid test, since the API key is not valid, should get error message and 401 error code",
+							"",
+							"//basic tests to make sure it worked",
+							"tests[\"Status code is 401\"] = responseCode.code === 401;",
+							"",
+							"tests[\"Response time less than 1 s\"] = responseTime < 1000;",
+							"",
+							"tests[\"Response is JSON\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Invalid API key\"] = jsonData.message === \"Invalid X-Rapidapi-Key\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api-football-v1.p.rapidapi.com/v2/leagues/country/spain/2019",
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-rapidapi-host",
+						"value": "api-football-v1.p.rapidapi.com",
+						"description": ""
+					},
+					{
+						"key": "x-rapidapi-key",
+						"value": "53ae476b3dmsh69a5085cd429f71p1b67d1jsn42625c81d0120",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
