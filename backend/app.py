@@ -1,48 +1,38 @@
 #to run this code make sure to install the virtual environment: virtualenv
 #then do source pythonenv/bin/activate
 #to exit venv do the deactivate command to terminal
-from flask import Flask
-#from flask_mongoengine import MongoEngine
 from flask import Flask, Response
 from schema import *
-#import http.client
 import http.client
 from os import environ
 import requests
 from pprint import pprint
 import json
-#from mongoengine import *   
+from mongoengine import *   
 from flask_cors import CORS
 import time
-from newsapi import NewsApiClient
-
-from pymongo import MongoClient
-
-
+#from newsapi import NewsApiClient
+from flask_mongoengine import MongoEngine
 
 app = Flask(__name__)
 CORS(app)
+DB_URI= 'mongodb+srv://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/SoccerBase?retryWrites=true&w=majority'
+app.config["MONGODB_HOST"] = DB_URI
 
-# app.config['MONGODB_SETTINGS'] = [
-#     {
-#      "ALIAS": "default",
-#      "DB":    'business',
-#      "HOST": 'localhost',
-#      "PORT": 27017
-#     },
-#     {
-#      "ALIAS": "league",
-#      "DB": 'leaguedatabase',
-#      "HOST": 'localhost',
-#      "PORT": 27017
-#     }
-# ]
 
+
+db = MongoEngine(app)
 API_FOOTBALL_KEY_1 = environ.get('API_FOOTBALL_KEY_1')
 
 @app.route('/')
 def index():
     return "hello world"
+
+
+@app.route('/testconnectiontodb')
+def testconnectiontodb():
+    tester = Tester( name = 'test').save()
+    return "success"
 
 @app.route("/updateteams", methods=["GET"])
 def update_teams():
@@ -68,9 +58,11 @@ def update_teams():
         ).save()
     return "team successfully saved"
 
+# @app.route("/getallteams", methods=["GET"])
+# def get_all_teams():
+
 
     
-
 
 
 @app.route("/updatecountries", methods=["GET"])
@@ -78,7 +70,7 @@ def update_countries():
     url = "https://api-football-v1.p.rapidapi.com/v2/countries"
     headers = {
         'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
-        'x-rapidapi-key': "53ae476b3dmsh69a5085cd429f71p1b67d1jsn42625c81d012"
+        'x-rapidapi-key': "c114e8403emsh6c4e6c8d45757cbp131072jsn941330efea5f"
         }
     response = requests.request("GET", url, headers=headers).json()
 
@@ -346,42 +338,6 @@ def update_all():
 
     return Response(json.dumps({}), status=200, mimetype="application/json")
     
-
-
-@app.route("/returncountries", methods=["GET"])
-def return_countries():
-
-    client = MongoClient("mongodb+srv://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority")
-    db=client.SoccerBase
-
-    serverStatusResult=db.command("serverStatus")
-    pprint(serverStatusResult)
-
-    # client = pymongo.MongoClient("mongodb://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority")
-    # #client = pymongo.MongoClient("mongodb+srv://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority")
-    # db = client.get_database('SoccerBase')
-    # countryCollection = db.Countries
-    
-    # countries = countryCollection.find()
-
-    #connect(db='SoccerBase', host="mongodb://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority")
-
-    #print(Country.objects)
-
-
-    # DB_URI = "mongodb+srv://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority"
-
-    # client = pymongo.MongoClient(DB_URI)
-    # db = client.get_database('SoccerBase')
-    countries = db.Countries.find()
-
-    for country in countries:
-        print(country)
-
-    return "done"
-
-
-
 
 
 if __name__ == "__main__":
