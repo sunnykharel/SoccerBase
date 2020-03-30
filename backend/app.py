@@ -1,7 +1,7 @@
 #to run this code make sure to install the virtual environment: virtualenv
 #then do source pythonenv/bin/activate
 #to exit venv do the deactivate command to terminal
-from flask import Flask, Response
+from flask import Flask, Response, jsonify
 from schema import *
 #import http.client
 import http.client
@@ -88,6 +88,61 @@ def update_countries():
         
 
     return Response(json.dumps({}), status=200, mimetype="application/json")
+
+@app.route("/getnews/<string:topic>", methods=["GET"])
+def get_news(topic):
+    newsClient = NewsApiClient(api_key="bad068d6ce6c4ccfb30eb5785c360efe")
+    #                                              q is search terms, category for category of news, language is english
+    #                                              if possible (foreign news may not be english)
+    topHeadlines = newsClient.get_top_headlines(q = topic + "soccer", category="sports", language="en")
+    articles = topHeadlines['articles'][:3]
+
+    return {
+        "articles": [
+            {
+                "topic_name"    :   topic,
+                "headline"    :   articles[0]['title'],
+                "description" :   articles[0]['description'],
+                "img_url"     :   articles[0]['urlToImage'],
+                "url"     :   articles[0]['url']
+            },
+            {
+                "topic_name"    :   topic,
+                "headline"    :   articles[1]['title'],
+                "description" :   articles[1]['description'],
+                "img_url"     :   articles[1]['urlToImage'],
+                "url"     :   articles[1]['url']
+            },
+            {
+                "topic_name"    :   topic,
+                "headline"    :   articles[2]['title'],
+                "description" :   articles[2]['description'],
+                "img_url"     :   articles[2]['urlToImage'],
+                "url"     :   articles[2]['url']
+            }
+        ]
+    }
+    
+    """
+    news = News(
+    topic_name = topic,
+    headline_1 = articles[0]['title'],
+    description_1 = articles[0]['description'],
+    img_url_1 = articles[0]['urlToImage'],
+    url_1 = articles[0]['url'],
+
+    headline_2 = articles[1]['title'],
+    description_2 = articles[1]['description'],
+    img_url_2 = articles[1]['urlToImage'],
+    url_2 = articles[1]['url'],
+
+    headline_3 = articles[2]['title'],
+    description_3 = articles[2]['description'],
+    img_url_3 = articles[2]['urlToImage'],
+    url_3 = articles[2]['url']
+    ).json()
+    return news
+    """
 
 
 

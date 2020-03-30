@@ -17,7 +17,7 @@ import json
 connect(db="countrydatabase", alias = 'country')
 connect(db="leaguedatabase", alias = 'default')
 connect(db="teamdatabase", alias = 'team')
-#connect(db="newsdatabase", alias = 'news')
+connect(db="newsdatabase", alias = 'news')
 
 print("connected to the database")
 
