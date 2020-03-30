@@ -58,8 +58,13 @@ def update_teams():
         ).save()
     return "team successfully saved"
 
-# @app.route("/getallteams", methods=["GET"])
-# def get_all_teams():
+@app.route("/getallteams", methods=["GET"])
+def get_all_teams():
+    teams_list = [team.json() for team in Team.objects()]
+    #print(teams_list)
+    teams_list_dict = {}
+    teams_list_dict['teams_list'] = teams_list
+    return json.dumps(teams_list_dict)
 
 
     
