@@ -1,6 +1,8 @@
 #to run this code make sure to install the virtual environment: virtualenv
 #then do source pythonenv/bin/activate
 #to exit venv do the deactivate command to terminal
+from flask import Flask
+#from flask_mongoengine import MongoEngine
 from flask import Flask, Response
 from schema import *
 #import http.client
@@ -9,27 +11,31 @@ from os import environ
 import requests
 from pprint import pprint
 import json
-from mongoengine import *   
+#from mongoengine import *   
 from flask_cors import CORS
 import time
+
+from pymongo import MongoClient
+
+
 
 app = Flask(__name__)
 CORS(app)
 
-app.config['MONGODB_SETTINGS'] = [
-    {
-     "ALIAS": "default",
-     "DB":    'business',
-     "HOST": 'localhost',
-     "PORT": 27017
-    },
-    {
-     "ALIAS": "league",
-     "DB": 'leaguedatabase',
-     "HOST": 'localhost',
-     "PORT": 27017
-    }
-]
+# app.config['MONGODB_SETTINGS'] = [
+#     {
+#      "ALIAS": "default",
+#      "DB":    'business',
+#      "HOST": 'localhost',
+#      "PORT": 27017
+#     },
+#     {
+#      "ALIAS": "league",
+#      "DB": 'leaguedatabase',
+#      "HOST": 'localhost',
+#      "PORT": 27017
+#     }
+# ]
 
 API_FOOTBALL_KEY_1 = environ.get('API_FOOTBALL_KEY_1')
 
@@ -67,7 +73,7 @@ def update_countries():
     url = "https://api-football-v1.p.rapidapi.com/v2/countries"
     headers = {
         'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
-        'x-rapidapi-key': "c114e8403emsh6c4e6c8d45757cbp131072jsn941330efea5f"
+        'x-rapidapi-key': "53ae476b3dmsh69a5085cd429f71p1b67d1jsn42625c81d012"
         }
     response = requests.request("GET", url, headers=headers).json()
 
@@ -180,6 +186,42 @@ def update_all():
             time.sleep(3)
 
     return Response(json.dumps({}), status=200, mimetype="application/json")
+
+
+@app.route("/returncountries", methods=["GET"])
+def return_countries():
+
+    client = MongoClient("mongodb+srv://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority")
+    db=client.SoccerBase
+
+    serverStatusResult=db.command("serverStatus")
+    pprint(serverStatusResult)
+
+    # client = pymongo.MongoClient("mongodb://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority")
+    # #client = pymongo.MongoClient("mongodb+srv://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority")
+    # db = client.get_database('SoccerBase')
+    # countryCollection = db.Countries
+    
+    # countries = countryCollection.find()
+
+    #connect(db='SoccerBase', host="mongodb://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority")
+
+    #print(Country.objects)
+
+
+    # DB_URI = "mongodb+srv://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority"
+
+    # client = pymongo.MongoClient(DB_URI)
+    # db = client.get_database('SoccerBase')
+    countries = db.Countries.find()
+
+    for country in countries:
+        print(country)
+
+    return "done"
+
+
+
 
 
 if __name__ == "__main__":

@@ -14,9 +14,19 @@ import json
 
 
 
-connect(db="countrydatabase", alias = 'country')
-connect(db="leaguedatabase", alias = 'default')
-connect(db="teamdatabase", alias = 'team')
+# connect(db="countrydatabase", alias = 'country')
+# connect(db="leaguedatabase", alias = 'default')
+#connect(db="Country", alias = 'default')
+
+
+#connect(db='SoccerBase', host="mongodb://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority")
+
+# connect(
+#     db='SoccerBase',
+#     username='tbidnurkar',
+#     password='abcd1234',
+#     host='mongodb://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/test?retryWrites=true&w=majority'
+# )
 
 print("connected to the database")
 
@@ -26,9 +36,9 @@ class Country(Document):
     flag = StringField(required=False)
     population = IntField()
     leaguecount = IntField()
-    meta = {
-        "db_alias":"country" 
-    }
+    # meta = {
+    #     "db_alias":"Country" 
+    # }
 
 class League(Document):
     league_id = IntField(required=True)
@@ -52,11 +62,11 @@ class League(Document):
         }
         return json.dumps(league_dict)
 
-    meta = {
-        "indexes": ["name", "country"],
-        "ordering": ["name"],
-        "db_alias":"default"
-    }
+    # meta = {
+    #     "indexes": ["name", "country"],
+    #     "ordering": ["name"],
+    #     "db_alias":"default"
+    # }
     
 class Team(Document):
     name = StringField(required=True)
@@ -67,6 +77,6 @@ class Team(Document):
     venue_surface = StringField()
     venue_city = StringField()
     venue_capacity = IntField()
-    meta = {
-        "db_alias":"team"
-    }
+    # meta = {
+    #     "db_alias":"Team"
+    # }
