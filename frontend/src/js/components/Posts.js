@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{ Component } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -7,12 +7,12 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import {Link} from 'react-router-dom'
 
-// const useStyles = makeStyles({
-//   root: {
-//     maxWidth: 345,
-//   },
-// });
+import PostPage from '../PostPage'
+import { Redirect } from 'react-router-dom';
+
 const useStyles = makeStyles({
     root: {
       maxWidth: 345,
@@ -28,45 +28,32 @@ const Posts = ({ posts, loading }) => {
   }
 
 //   const classes = useStyles();
+  
+
+function newPost(aPost){
+    var a = aPost.title;
+    // thePost = aPost;
+    alert(a);
+    var b = document.getElementById("PostList");
+    b.parentElement.innerHTML = a
+    // <PostPage thePost = {aPost}/>
+    
+}
 
   return (
-//     <Card className={classes.root}>
-//     <CardActionArea>
-//       <CardMedia
-//         className={classes.media}
-//           image="/static/images/cards/contemplative-reptile.jpg"
-//           title="Contemplative Reptile"
-//         />
-//         <CardContent>
-//           <Typography gutterBottom variant="h5" component="h2">
-//             Lizard
-//           </Typography>
-//           <Typography variant="body2" color="textSecondary" component="p">
-//             Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-//             across all continents except Antarctica
-//           </Typography>
-//         </CardContent>
-//       </CardActionArea>
-//       <CardActions>
-//         <Button size="small" color="primary">
-//           Share
-//         </Button>
-//         <Button size="small" color="primary">
-//           Learn More
-//         </Button>
-//       </CardActions>
-//     </Card>
 
 
-<ul className='list-group mb-4'>
+<ul className='list-group mb-4'id = "PostList">
 {posts.map(post => (
   <li key={post.id} className='list-group-item'>
-    {post.title}
+    <a href  = '#' onClick={() => newPost(post)}> {post.title} </a>
   </li>
 ))}
 </ul>
 
   );
+
+ 
 };
 
 export default Posts;
