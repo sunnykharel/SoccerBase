@@ -66,6 +66,22 @@ def get_all_teams():
     teams_list_dict['teams_list'] = teams_list
     return json.dumps(teams_list_dict)
 
+@app.route("/getallleagues", methods=["GET"])
+def get_all_leagues():
+    leagues_list = [league.json() for league in League.objects()]
+    #print(teams_list)
+    leagues_list_dict = {}
+    leagues_list_dict['leagues_list'] = leagues_list
+    return json.dumps(leagues_list_dict)
+
+@app.route("/getallcountries", methods=["GET"])
+def get_all_countries():
+    countries_list = [country.json() for country in Country.objects()]
+    #print(teams_list)
+    countries_list_dict = {}
+    countries_list_dict['countries_list'] = countries_list
+    return json.dumps(countries_list_dict)
+
 
     
 
