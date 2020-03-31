@@ -11,12 +11,8 @@ import json
 from mongoengine import *   
 from flask_cors import CORS
 import time
-<<<<<<< HEAD
 from newsapi.newsapi_client import NewsApiClient
 import datetime
-=======
-#from newsapi import NewsApiClient
->>>>>>> fd351d9afa32f5a5357d14bf97ac4272bd2cd2a3
 
 app = Flask(__name__)
 CORS(app)
