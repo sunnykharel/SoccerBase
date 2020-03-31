@@ -16,14 +16,12 @@ class Card extends Component {
                     <div className="cardContent">
                         <h3 className="cardTitle"> {this.props.name} </h3>
                         <p className="bio">
-                            Bio <br/>
-                            Area of Study: ECE Software/AE <br/>
-                            Primary Responsibilities: frontend
+                            {this.props.bio}<br/>
                         </p>
                         <p className="gitStats">
-                            Total Commits:{this.props.numCommits} <br/>
-                            Total Issues:{this.props.numIssues} <br/>
-                            Total tests:{this.props.numTests}
+                            Number of Commits: {this.props.numCommits} <br/>
+                            Number of Issues: {this.props.numIssues} <br/>
+                            Number of Tests: {this.props.numTests}
                         </p>
                     </div>
                     <img src={this.props.img} />
@@ -47,6 +45,7 @@ class CardList extends Component {
                             numCommits = {user.commits}
                             numTests = {user.tests}
                             numIssues = {user.issues}
+                            bio = {user.bio}
                         />
                     );
                 })}
@@ -184,11 +183,12 @@ class About extends Component {
         httpIssues.send();
         
         scope.setState({
-          totalUnitTests: 21,
+          totalUnitTests: 25,
           nithinUnitTests: 6,
           askarUnitTests: 4,
           sunnyUnitTests: 6,
-          parmUnitTests: 5
+          parmUnitTests: 5,
+          tanayUnitTests: 4
         });         
     }
 
@@ -201,7 +201,8 @@ class About extends Component {
                 img: Parm,
                 commits: this.state.parmCommits,
                 issues: this.state.parmIssues,
-                tests: this.state.parmUnitTests
+                tests: this.state.parmUnitTests,
+                bio: "Software Engineering Senior, likes playing, recording, and coding music. Focused on frontend."
             },
             {
                 name: "Tanay",
@@ -209,7 +210,8 @@ class About extends Component {
                 img: Tanay,
                 commits: this.state.tanayCommits,
                 issues: this.state.tanayIssues,
-                tests: this.state.tanayUnitTests
+                tests: this.state.tanayUnitTests,
+                bio: "Hometown: Coppell TX, Junior, Software Engineering, likes playing ultimate frisbee and watching football. worked mainly on backend."
             },
             {
                 name: "Askar",
@@ -217,7 +219,8 @@ class About extends Component {
                 img: Askar,
                 commits: this.state.askarCommits,
                 issues: this.state.askarIssues,
-                tests: this.state.askarUnitTests
+                tests: this.state.askarUnitTests,
+                bio: "Senior, Software Engineer, enjoys sports and video games. Focused on the frontend."
             },
             {
                 name: "Sunny",
@@ -225,7 +228,8 @@ class About extends Component {
                 img: Sunny,
                 commits: this.state.sunnyCommits,
                 issues: this.state.sunnyIssues,
-                tests: this.state.sunnyUnitTests
+                tests: this.state.sunnyUnitTests,
+                bio: "Junior Software engineering, enjoys to basketball and bike on free time. Was Fullstack and helped mainly wi    th backend"
             },
             {
                 name: "Nithin",
@@ -233,7 +237,8 @@ class About extends Component {
                 img: Nithin,
                 commits: this.state.nithinCommits,
                 issues: this.state.nithinIssues,
-                tests: this.state.nithinUnitTests
+                tests: this.state.nithinUnitTests,
+                bio: "Hometown: Coppell, TX, Junior, Software Engineering, enjoys ESports and working out. Focused on specific API issues and news attribute."
             }
         ];
     
