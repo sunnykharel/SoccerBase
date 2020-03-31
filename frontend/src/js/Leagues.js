@@ -1,5 +1,5 @@
 import { NavLink , Route, Switch, BrowserRouter} from 'react-router-dom'
-import {Link} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 
 import React, { useState, useEffect ,Component} from 'react';
 import Posts from './components/Posts';
@@ -7,9 +7,27 @@ import Pagination from './components/Pagination';
 import axios from 'axios';
 // import './App.css';
 
+function League() {
+    let {id} = useParams();
+    this.props.hideComponents();
+    return(
+        <h1>{id}</h1>
+    );
+}
 
-const Leagues = () => {
+class Leagues extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isHidden: true
+        }
+    }
 
+    hideComponents(){
+        this.setState({isHidden: false});
+    }
+
+    render() {
         const [posts, setPosts] = useState([]);
         const [loading, setLoading] = useState(false);
         const [currentPage, setCurrentPage] = useState(1);
@@ -36,25 +54,35 @@ const Leagues = () => {
         const paginate = pageNumber => setCurrentPage(pageNumber);
 
 
-    return (
-        <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
-        <h1>Leagues</h1>
-        <Posts posts={currentPosts} loading={loading} />
-        
-        {/* let match = useRouteMatch(); */}
+        if (this.state.isHidden == false) { 
+            return (
+                <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
+                   <h1>Leagues</h1>
+                    <ul className='list-group mb-4'id = "PostList">
+                        {currentPosts.map(post => (
+                            <li key={post.id} className='list-group-item'>
+                                <Link to={"/Leagues/" + post.title}>{post.title}</Link>
+                            </li>
+                        ))}
+                    </ul>
+                    <Switch>
+                        <Route path={this.props.match.url + "/:id"}>
+                            <League hideComponents = {this.hideComponents}/>
+                        </Route>
+                    </Switch>
 
-        <Pagination
-          postsPerPage={postsPerPage}
-          totalPosts={posts.length}
-          paginate={paginate}
-
-
-        />
-      </div>
-        
-    );
-
-
+                    <Pagination
+                        postsPerPage={postsPerPage}
+                        totalPosts={posts.length}
+                        paginate={paginate}
+                    />
+              </div>
+            
+            );
+        } else {
+            return (<h1>Stookymoombajambopoo</h1>);
+        }
+    }
 }
 
 

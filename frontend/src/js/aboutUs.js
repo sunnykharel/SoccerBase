@@ -133,6 +133,7 @@ class About extends Component {
                     }
                 }
             } else {
+                console.log(httpContCommits.responseText);
                 console.log("ERROR: failed to fetch commits by contributor");
             }
         
