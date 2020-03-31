@@ -12,17 +12,9 @@ from mongoengine import *
 from flask_cors import CORS
 import time
 #from newsapi import NewsApiClient
-from flask_mongoengine import MongoEngine
 
 app = Flask(__name__)
 CORS(app)
-DB_URI= 'mongodb+srv://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/SoccerBase?retryWrites=true&w=majority'
-app.config["MONGODB_HOST"] = DB_URI
-
-
-
-db = MongoEngine(app)
-API_FOOTBALL_KEY_1 = environ.get('API_FOOTBALL_KEY_1')
 
 @app.route('/')
 def index():

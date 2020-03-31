@@ -1,14 +1,18 @@
 from datetime import datetime
 import os
 import json
-from app import db
+from mongoengine import *
 
-class Country(db.Document):
-    name = db.StringField(required=False)
-    code = db.StringField(required=False)
-    flag = db.StringField(required=False)
-    population = db.IntField()
-    leaguecount = db.IntField()
+
+connect(host='mongodb+srv://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/SoccerBase?retryWrites=true&w=majority')
+print('connect to the database')
+
+class Country(Document):
+    name = StringField(required=False)
+    code = StringField(required=False)
+    flag = StringField(required=False)
+    population = IntField()
+    leaguecount = IntField()
     
     def json(self):
         country_dict = {
@@ -24,18 +28,18 @@ class Country(db.Document):
     meta = {
             "collection":"Countries" 
         }
-class League(db.Document):
-    league_id = db.IntField(required=True)
-    name = db.StringField(required=True)
-    type_ = db.StringField()
-    country = db.StringField(required=True)
-    country_code = db.StringField()
-    season = db.IntField(required=True)
-    season_start = db.StringField()
-    season_end = db.StringField()
-    logo = db.StringField()
-    flag = db.StringField()
-    coverage = db.DictField()
+class League(Document):
+    league_id = IntField(required=True)
+    name = StringField(required=True)
+    type_ = StringField()
+    country = StringField(required=True)
+    country_code = StringField()
+    season = IntField(required=True)
+    season_start = StringField()
+    season_end = StringField()
+    logo = StringField()
+    flag = StringField()
+    coverage = DictField()
 
     def json(self):
         league_dict = {
@@ -58,15 +62,15 @@ class League(db.Document):
         "collection":"Leagues"
     }
     
-class Team(db.Document):
-    name = db.StringField(required=True)
-    logo = db.StringField()
-    country = db.StringField()
-    founded = db.IntField()
-    venue_name = db.StringField()
-    venue_surface = db.StringField()
-    venue_city = db.StringField()
-    venue_capacity = db.IntField()
+class Team(Document):
+    name = StringField(required=True)
+    logo = StringField()
+    country = StringField()
+    founded = IntField()
+    venue_name = StringField()
+    venue_surface = StringField()
+    venue_city = StringField()
+    venue_capacity = IntField()
     def json(self):
         team_dict = {
             "name": self.name,
@@ -85,8 +89,8 @@ class Team(db.Document):
     }
     
 
-class Tester(db.Document):
-    name = db.StringField()
+class Tester(Document):
+    name = StringField()
     meta = {
         "collection": "Test"
     }
