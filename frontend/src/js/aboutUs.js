@@ -16,14 +16,14 @@ class Card extends Component {
                     <div className="cardContent">
                         <h3 className="cardTitle"> {this.props.name} </h3>
                         <p className="bio">
-                            Bio <br>
-                            Area of Study: ECE Software/AE <br>
+                            Bio <br/>
+                            Area of Study: ECE Software/AE <br/>
                             Primary Responsibilities: frontend
                         </p>
                         <p className="gitStats">
-                            Total Commits:{this.props.commits}
-                            Total Issues:{this.props.issues}
-                            Total tests:{this.props.tests}
+                            Total Commits:{this.props.numCommits} <br/>
+                            Total Issues:{this.props.numIssues} <br/>
+                            Total tests:{this.props.numTests}
                         </p>
                     </div>
                     <img src={this.props.img} />
@@ -108,7 +108,37 @@ class About extends Component {
         httpCommits.send();
 
         //Getting commits by contributor
+        var httpContCommits = new XMLHttpRequest();
+        var urlContCommits = "https://api.github.com/repos/sunnykharel/SoccerBase/stats/contributors";
+        httpContCommits.open("GET", urlContCommits, true);
+        httpContCommits.setRequestHeader("Authorization", "Basic " + btoa("tempforproj:Verybadpassword1!"));
         
+        //Parse response
+        httpContCommits.onload = function() {
+            console.log(httpContCommits.responseText);
+            if (this.status == 200) {
+                var commsByContr = JSON.parse(httpContCommits.responseText);
+                for (let i = 0; i < commsByContr.length; i++) {
+                    let commit = commsByContr[i];
+                    let user = commit.author.login;
+                    if ("nithinsaurus" == user) {
+                        scope.setState({ nithinCommits: String(commit.total)});
+                    } else if ("sunnykharel" == user) {
+                        scope.setState({ sunnyCommits: String(commit.total)});
+                    } else if ("askarpoudyal" == user) {
+                        scope.setState({ askarCommits: String(commit.total)});
+                    } else if ("tanay-bidnurkar" == user) {
+                        scope.setState({ tanayCommits: String(commit.total)});
+                    } else if ("grewalparm" == user) {
+                        scope.setState({ parmCommits: String(commit.total)});
+                    }
+                }
+            } else {
+                console.log("ERROR: failed to fetch commits by contributor");
+            }
+        
+        }
+        httpContCommits.send()
 
         //Getting issues by contributor and total issues
         var httpIssues = new XMLHttpRequest();
@@ -125,8 +155,8 @@ class About extends Component {
             let nithin = 0;
             let askar = 0;
             for (let i = 0; i < issues.length; i++) {
-                issue = issues[i];
-                if ("grewalparm" = issue.user.login) {
+                var issue = issues[i];
+                if ("grewalparm" == issue.user.login) {
                     parm++;
                 } else if ("sunnykharel" == issue.user.login) {
                     sunny++;
@@ -180,7 +210,7 @@ class About extends Component {
             {
                 name: "Askar",
                 ghUsername: "askarpoudyal",
-                img: Askar
+                img: Askar,
                 commits: this.state.askarCommits,
                 issues: this.state.askarIssues,
                 tests: this.state.askarUnitTests
@@ -188,7 +218,7 @@ class About extends Component {
             {
                 name: "Sunny",
                 ghUsername: "sunnykharel",
-                img: Sunny
+                img: Sunny,
                 commits: this.state.sunnyCommits,
                 issues: this.state.sunnyIssues,
                 tests: this.state.sunnyUnitTests
@@ -196,7 +226,7 @@ class About extends Component {
             {
                 name: "Nithin",
                 ghUsername: "nithinsaurus",
-                img: Nithin
+                img: Nithin,
                 commits: this.state.nithinCommits,
                 issues: this.state.nithinIssues,
                 tests: this.state.nithinUnitTests
