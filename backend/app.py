@@ -3,7 +3,6 @@
 #to exit venv do the deactivate command to terminal
 from flask import Flask, Response, jsonify
 from schema import *
-#import http.client
 import http.client
 from os import environ
 import requests
@@ -12,32 +11,25 @@ import json
 from mongoengine import *   
 from flask_cors import CORS
 import time
+<<<<<<< HEAD
 from newsapi.newsapi_client import NewsApiClient
 import datetime
+=======
+#from newsapi import NewsApiClient
+>>>>>>> fd351d9afa32f5a5357d14bf97ac4272bd2cd2a3
 
 app = Flask(__name__)
 CORS(app)
 
-app.config['MONGODB_SETTINGS'] = [
-    {
-     "ALIAS": "default",
-     "DB":    'business',
-     "HOST": 'localhost',
-     "PORT": 27017
-    },
-    {
-     "ALIAS": "league",
-     "DB": 'leaguedatabase',
-     "HOST": 'localhost',
-     "PORT": 27017
-    }
-]
-
-API_FOOTBALL_KEY_1 = environ.get('API_FOOTBALL_KEY_1')
-
 @app.route('/')
 def index():
     return "hello world"
+
+
+@app.route('/testconnectiontodb')
+def testconnectiontodb():
+    tester = Tester( name = 'test').save()
+    return "success"
 
 @app.route("/updateteams", methods=["GET"])
 def update_teams():
@@ -63,9 +55,32 @@ def update_teams():
         ).save()
     return "team successfully saved"
 
+@app.route("/getallteams", methods=["GET"])
+def get_all_teams():
+    teams_list = [team.json() for team in Team.objects()]
+    #print(teams_list)
+    teams_list_dict = {}
+    teams_list_dict['teams_list'] = teams_list
+    return json.dumps(teams_list_dict)
+
+@app.route("/getallleagues", methods=["GET"])
+def get_all_leagues():
+    leagues_list = [league.json() for league in League.objects()]
+    #print(teams_list)
+    leagues_list_dict = {}
+    leagues_list_dict['leagues_list'] = leagues_list
+    return json.dumps(leagues_list_dict)
+
+@app.route("/getallcountries", methods=["GET"])
+def get_all_countries():
+    countries_list = [country.json() for country in Country.objects()]
+    #print(teams_list)
+    countries_list_dict = {}
+    countries_list_dict['countries_list'] = countries_list
+    return json.dumps(countries_list_dict)
+
 
     
-
 
 
 @app.route("/updatecountries", methods=["GET"])
