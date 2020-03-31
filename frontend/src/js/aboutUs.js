@@ -184,7 +184,11 @@ class About extends Component {
         httpIssues.send();
         
         scope.setState({
-          totalUnitTests: 0,
+          totalUnitTests: 21,
+          nithinUnitTests: 6,
+          askarUnitTests: 4,
+          sunnyUnitTests: 6,
+          parmUnitTests: 5
         });         
     }
 
