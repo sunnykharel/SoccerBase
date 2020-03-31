@@ -37,7 +37,7 @@ const Leagues = () => {
 
 
     return (
-        <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "800px"}}>
+        <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
         <h1>Leagues</h1>
         <Posts posts={currentPosts} loading={loading} />
         

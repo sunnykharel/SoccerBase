@@ -1,9 +1,8 @@
 #to run this code make sure to install the virtual environment: virtualenv
 #then do source pythonenv/bin/activate
 #to exit venv do the deactivate command to terminal
-from flask import Flask, Response
+from flask import Flask, Response, jsonify
 from schema import *
-#import http.client
 import http.client
 from os import environ
 import requests
@@ -12,31 +11,21 @@ import json
 from mongoengine import *   
 from flask_cors import CORS
 import time
-from newsapi import NewsApiClient
+from newsapi.newsapi_client import NewsApiClient
+import datetime
 
 app = Flask(__name__)
 CORS(app)
 
-app.config['MONGODB_SETTINGS'] = [
-    {
-     "ALIAS": "default",
-     "DB":    'business',
-     "HOST": 'localhost',
-     "PORT": 27017
-    },
-    {
-     "ALIAS": "league",
-     "DB": 'leaguedatabase',
-     "HOST": 'localhost',
-     "PORT": 27017
-    }
-]
-
-API_FOOTBALL_KEY_1 = environ.get('API_FOOTBALL_KEY_1')
-
 @app.route('/')
 def index():
     return "hello world"
+
+
+@app.route('/testconnectiontodb')
+def testconnectiontodb():
+    tester = Tester( name = 'test').save()
+    return "success"
 
 @app.route("/updateteams", methods=["GET"])
 def update_teams():
@@ -62,9 +51,32 @@ def update_teams():
         ).save()
     return "team successfully saved"
 
+@app.route("/getallteams", methods=["GET"])
+def get_all_teams():
+    teams_list = [team.json() for team in Team.objects()]
+    #print(teams_list)
+    teams_list_dict = {}
+    teams_list_dict['teams_list'] = teams_list
+    return json.dumps(teams_list_dict)
+
+@app.route("/getallleagues", methods=["GET"])
+def get_all_leagues():
+    leagues_list = [league.json() for league in League.objects()]
+    #print(teams_list)
+    leagues_list_dict = {}
+    leagues_list_dict['leagues_list'] = leagues_list
+    return json.dumps(leagues_list_dict)
+
+@app.route("/getallcountries", methods=["GET"])
+def get_all_countries():
+    countries_list = [country.json() for country in Country.objects()]
+    #print(teams_list)
+    countries_list_dict = {}
+    countries_list_dict['countries_list'] = countries_list
+    return json.dumps(countries_list_dict)
+
 
     
-
 
 
 @app.route("/updatecountries", methods=["GET"])
@@ -88,6 +100,38 @@ def update_countries():
         
 
     return Response(json.dumps({}), status=200, mimetype="application/json")
+
+@app.route("/getnews/<topic>", methods=["GET"])
+def get_news(topic):
+
+    newsClient = NewsApiClient(api_key="bad068d6ce6c4ccfb30eb5785c360efe")
+    #                                              q is search terms, category for category of news, language is english
+    #                                              if possible (foreign news may not be english)
+    topHeadlines = newsClient.get_top_headlines(q = topic, category="sports", language="en")
+
+    articles = topHeadlines['articles'][:3]
+    return json.dumps(articles)
+    
+    """
+    news = News(
+    topic_name = topic,
+    headline_1 = articles[0]['title'],
+    description_1 = articles[0]['description'],
+    img_url_1 = articles[0]['urlToImage'],
+    url_1 = articles[0]['url'],
+
+    headline_2 = articles[1]['title'],
+    description_2 = articles[1]['description'],
+    img_url_2 = articles[1]['urlToImage'],
+    url_2 = articles[1]['url'],
+
+    headline_3 = articles[2]['title'],
+    description_3 = articles[2]['description'],
+    img_url_3 = articles[2]['urlToImage'],
+    url_3 = articles[2]['url']
+    ).json()
+    return news
+    """
 
 
 

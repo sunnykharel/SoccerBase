@@ -1,25 +1,11 @@
-from mongoengine import *
 from datetime import datetime
 import os
 import json
-
-# 
-# Here you insert the connection.
-# you can insert multiple connections, 
-# so that we can have many connections per each database.
-# you specify the name of the specific database you want a 
-# document object to connecet to in the "meta" parameter of the object
-
-# 
+from mongoengine import *
 
 
-
-connect(db="countrydatabase", alias = 'country')
-connect(db="leaguedatabase", alias = 'default')
-connect(db="teamdatabase", alias = 'team')
-#connect(db="newsdatabase", alias = 'news')
-
-print("connected to the database")
+connect(host='mongodb+srv://tbidnurkar:abcd1234@teams-igt1c.gcp.mongodb.net/SoccerBase?retryWrites=true&w=majority')
+print('connect to the database')
 
 class Country(Document):
     name = StringField(required=False)
@@ -27,10 +13,21 @@ class Country(Document):
     flag = StringField(required=False)
     population = IntField()
     leaguecount = IntField()
-    meta = {
-        "db_alias":"country" 
-    }
+    
+    def json(self):
+        country_dict = {
+            "name": self.name,
+            "code": self.code,
+            "flag": self.flag,
+            "population": self.population,
+            "leagecount": self.leaguecount
+        }
+        return country_dict
+        #return json.dumps(country_dict)
 
+    meta = {
+            "collection":"Countries" 
+        }
 class League(Document):
     league_id = IntField(required=True)
     name = StringField(required=True)
@@ -46,17 +43,23 @@ class League(Document):
 
     def json(self):
         league_dict = {
-            "name": self.name,
-            "logo": self.logo,
-            "country": self.country,
-            "season": self.season,
+            "league_id" : self.league_id,
+            "name" : self.name,
+            "type" : self.type_,
+            "country" : self.country,
+            "country_code" : self.country_code,
+            "season" : self.season,
+            "season_start" : self.season_start,
+            "season_end" : self.season_end,
+            "logo" : self.logo,
+            "flag" : self.flag,
+            "coverage" : self.coverage
         }
-        return json.dumps(league_dict)
+        return league_dict
+        #return json.dumps(league_dict)
 
     meta = {
-        "indexes": ["name", "country"],
-        "ordering": ["name"],
-        "db_alias":"default"
+        "collection":"Leagues"
     }
     
 class Team(Document):
@@ -68,24 +71,26 @@ class Team(Document):
     venue_surface = StringField()
     venue_city = StringField()
     venue_capacity = IntField()
+    def json(self):
+        team_dict = {
+            "name": self.name,
+            "logo": self.logo,
+            "country": self.country,
+            "founded": self.founded,
+            "venue_name": self.venue_name,
+            "venue_surface": self.venue_surface,
+            "venue_city":self.venue_city,
+            "venue_capacity":self.venue_capacity
+        }
+        return team_dict
+        #return json.dumps(team_dict)
     meta = {
-        "db_alias":"team"
+        "collection":"Teams"
     }
+    
 
-class News(Document):
-    topic_name = StringField(required=True)
-    headline_1 = StringField()
-    description_1 = StringField()
-    img_url_1 = StringField()
-    url_1 = StringField(required=True)
-    headline_2 = StringField()
-    description_2 = StringField()
-    img_url_2 = StringField()
-    url_2 = StringField(required=True)
-    headline_3 = StringField()
-    description_3 = StringField()
-    img_url_3 = StringField()
-    url_3 = StringField(required=True)
+class Tester(Document):
+    name = StringField()
     meta = {
-        "db_alias": "news"
+        "collection": "Test"
     }

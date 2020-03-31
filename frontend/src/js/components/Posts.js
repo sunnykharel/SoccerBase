@@ -9,15 +9,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import {Link} from 'react-router-dom'
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink
-  } from 'reactstrap';
+
 import PostPage from '../PostPage'
 import { Redirect } from 'react-router-dom';
 
@@ -43,8 +35,8 @@ function newPost(aPost){
     // thePost = aPost;
    // alert(a);
     var b = document.getElementById("PostList");
-    // b.parentElement.innerHTML = <PostPage thepost = {aPost}/>;
     b.parentElement.innerHTML = a;
+    // b.props.router.push('/foo');
 }
 
   return (
@@ -54,9 +46,11 @@ function newPost(aPost){
 {posts.map(post => (
   <li key={post.id} className='list-group-item'>
     {/* <Route path = {"/" + post.title} component={PostPage} /> */}
-    {/* <a href  = '#' onClick={() => newPost(post)}> {post.title} </a> */}
+    <a href  = '#' onClick={() => newPost(post)}> {post.title} </a>
     {/* <h1> {post.title}</h1> */}
-    <Link to={"/Leagues/" + post.title} onClick={() => newPost(post)}>{post.title}</Link>
+    <Link to={"/" + post.title}></Link>
+
+    
   </li>
 ))}
 </ul>
