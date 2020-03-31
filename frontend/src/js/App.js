@@ -10,6 +10,7 @@ import './../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './../css/App.css'
 import { render } from '@testing-library/react';
 import SoccerBaseNavBar from './components/Navbar';
+import PostPage from './PostPage';
 
 
 class App extends Component {
@@ -25,6 +26,9 @@ class App extends Component {
                 <Route path ="/Leagues" component={Leagues}/>
                 <Route path ="/Players" component={Players}/>
                 <Route path="/aboutUs" component={aboutUs}/>
+                <Route path="/Leagues/:id" component={<PostPage/>}/>
+                {/* <Route path="/result" component={Result}/> */}
+
             </Switch> 
           </div>  
         </BrowserRouter>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, useParams } from 'react-router-dom';
 import {Link} from 'react-router-dom'
 import { render } from '@testing-library/react';
 import aPost from './components/Posts'
@@ -20,7 +20,23 @@ import aPost from './components/Posts'
 
 
 // };
-const PostPage = ({ thepost}) => {
+// class PostPage extends Component {
+
+//     render(){
+//         // let {id} = useParams();
+//         console.log(useParams)
+//         return(
+//             <div>
+//                 <h1> anyone here?</h1>
+//             </div>
+//         );
+//     };
+// };
+
+//  }; ({thepost}) => {
+    
+           
+    const PostPage = ({ thepost}) => {
     
            
         return (

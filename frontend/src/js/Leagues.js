@@ -40,10 +40,15 @@ const Leagues = () => {
         <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "800px"}}>
         <h1>Leagues</h1>
         <Posts posts={currentPosts} loading={loading} />
+        
+        {/* let match = useRouteMatch(); */}
+
         <Pagination
           postsPerPage={postsPerPage}
           totalPosts={posts.length}
           paginate={paginate}
+
+
         />
       </div>
         
