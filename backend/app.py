@@ -164,6 +164,9 @@ def update_leagues():
 
     return Response(json.dumps({}), status=200, mimetype="application/json")
 
+
+#not going to use unless we plan to populate database with news, unlikely.
+#DO NOT USE METHOD W/O READING8
 @app.route("/updatenews", methods=["GET"])
 def update_news():
     newsClient = NewsApiClient(api_key="bad068d6ce6c4ccfb30eb5785c360efe")
