@@ -369,6 +369,103 @@ class TestBackendAPI(unittest.TestCase):
         #print(type(list))
         self.assertNotEqual(list['teams_list'][194]['venue_city'], '')
 
+    #testing NewsAPI calls for checking news ------------------------------------------
+    
+    #testing get_news(topic) for random countries-------------------------------------------
+    def test_country_news_1(self):
+        list = get_news("Spain")
+        print(type(list))
+        self.assertNotEqual(list[1], [])
+
+    def test_country_news_2(self):
+        list = get_news("India")
+        print(type(list))
+        self.assertNotEqual(list[1], [])
+
+    def test_country_news_3(self):
+        list = get_news("Japan")
+        print(type(list))
+        self.assertNotEqual(list[1], [])
+
+    def test_country_news_4(self):
+        list = get_news("Albania")
+        print(type(list))
+        self.assertNotEqual(list[1], [])
+
+    def test_country_news_5(self):
+        list = get_news("Guyana")
+        print(type(list))
+        self.assertNotEqual(list[1], [])
+    
+    # testing get_news(topic) for random leagues-------------------------------------------------
+
+    def test_league_news_1(self):
+        list = get_news("La%20Liga")
+        #print(type(list))
+        self.assertNotEqual(list[1], [])
+
+    def test_league_news_2(self):
+        list = get_news("Premier%20League")
+        #print(type(list))
+        self.assertNotEqual(list[1], [])
+    
+    def test_league_news_3(self):
+        list = get_news("MLS")
+        #print(type(list))
+        self.assertNotEqual(list[1], [])
+    
+    def test_league_news_4(self):
+        list = get_news("ISL")
+        #print(type(list))
+        self.assertNotEqual(list[1], [])
+    
+    def test_league_news_5(self):
+        list = get_news("Bundes%20Liga")
+        #print(type(list))
+        self.assertNotEqual(list[1], [])
+
+    def test_league_news_6(self):
+        list = get_news("Eredivisie")
+        #print(type(list))
+        self.assertNotEqual(list[1], [])
+
+    # testing get_news(topic)--------------------------------------------------
+
+    def test_team_news_1(self):
+        list = get_news("FC%20Barcelona")
+        print(type(list))
+        self.assertNotEqual(list[1], [])
+
+    def test_team_news_2(self):
+        list = get_news("Real%20Madrid")
+        print(type(list))
+        self.assertNotEqual(list[1], [])
+
+    def test_team_news_3(self):
+        list = get_news("Manchester%20United")
+        print(type(list))
+        self.assertNotEqual(list[1], [])
+
+    def test_team_news_4(self):
+        list = get_news("Chelsea%20FC")
+        print(type(list))
+        self.assertNotEqual(list[1], [])
+
+    def test_team_news_5(self):
+        list = get_news("FC%20Barcelona")
+        print(type(list))
+        self.assertNotEqual(list[1], [])
+    
+    def test_team_news_6(self):
+        list = get_news("FC%20Barcelona")
+        print(type(list))
+        self.assertNotEqual(list[1], [])
+    
+    
+    
+
+    
+
 
 if __name__ == '__main__':
     unittest.main()
