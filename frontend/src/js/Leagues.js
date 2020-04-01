@@ -42,7 +42,6 @@ function Leagues({match}) {
          // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
         
-        if (isHidden == false) {
             return (
                 <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
                    <h1>Leagues</h1>
@@ -67,18 +66,6 @@ function Leagues({match}) {
               </div>
             
             );
-        } else {
-            return (
-                <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
-                    <h1>LESSSDFSF</h1>
-                    <Switch>
-                        <Route path={match.url + "/:id"}>
-                            <League isHidden={isHidden} setIsHidden={setIsHidden}/>
-                        </Route>
-                    </Switch>
-                </div>
-            );
-        }
 }
 
 
