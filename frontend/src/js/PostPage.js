@@ -36,7 +36,7 @@ import aPost from './components/Posts'
 //  }; ({thepost}) => {
     
            
-    const PostPage = ({ thepost}) => {
+    const PostPage = () => {
     
            
         return (

@@ -1,30 +1,13 @@
 import { NavLink , Route, Switch, BrowserRouter} from 'react-router-dom'
 import {Link, useParams} from 'react-router-dom'
-
+import { withRouter } from "react-router";
 import React, { useState, useEffect ,Component} from 'react';
 import Posts from './components/Posts';
 import Pagination from './components/Pagination';
 import axios from 'axios';
+import LeagueInstance from './LeagueInstance'
 // import './App.css';
 
-function League(props) {
-    let {id} = useParams();
-    props.setIsHidden(true);
-    var team = props.selectedTeam
-    return(
-            <ul>
-                <li className="card">
-                    <div className="cardContent">
-                        <h3 className="cardTitle"> {props.selectedTeam.name} </h3>
-                        <p className="bio">
-                            {props.selectedTeam.country}<br/>
-                        </p>
-                    </div>
-                    <img src={props.selectedTeam.logo} />
-                </li>
-            </ul>
-        );
-}
 
 function Leagues({match}) {
         const [isHidden, setIsHidden] = useState(false);
@@ -32,16 +15,15 @@ function Leagues({match}) {
         const [loading, setLoading] = useState(false);
         const [currentPage, setCurrentPage] = useState(1);
         const [postsPerPage] = useState(10);
-
-        const res = null;
         useEffect((res) => {
             const fetchPosts = async () => {
               setLoading(true);
               res = await axios.get('https://still-waters-10895.herokuapp.com/getallleagues');
               console.log(res.data);
               setPosts(res.data.leagues_list);
+              console.log(listante)
               setLoading(false);
-            };
+        };
         
             fetchPosts();
           }, []);
@@ -50,29 +32,29 @@ function Leagues({match}) {
         const indexOfLastPost = currentPage * postsPerPage;
         const indexOfFirstPost = indexOfLastPost - postsPerPage;
         const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
+        const listante = posts.slice(0, posts.length);
+        // const selectedPost = null;
          // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
-        const [selectedTeam, setSelectedTeam] = useState(null);
         if (isHidden == false) {
             return (
                 <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
                    <h1>Leagues</h1>
                     <ul className='list-group mb-4'id = "PostList">
                         {currentPosts.map(post => {
-                            setSelectedTeam(post)
                             return(
                             <li key={post.id} className='list-group-item'>
-                                <Link to={"/Leagues/" + post.name}>{post.name}</Link>
+                                <Link to={"/Leagues/" + post.league_id}>{post.name}</Link>
                                 <img src = {post.logo}/>
                                 <h1>  {post.country} </h1>
+                                {/* {selectedPost = post.id} */}
                             </li>);
                         })}
                     </ul>
-                    {console.log(selectedTeam)}
+                    {console.log(listante)}
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <League isHidden={isHidden} setIsHidden={setIsHidden} selectedTeam={selectedTeam} />
+                            <LeagueInstance  leagues_list={listante} isHidden={isHidden} setIsHidden={setIsHidden} />
                         </Route>
                     </Switch>
 
@@ -87,10 +69,10 @@ function Leagues({match}) {
         } else {
             return (
                 <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
-                    <h1>LESSSDFSF</h1>
+                    
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <League isHidden={isHidden} setIsHidden={setIsHidden} selectedTeam={selectedTeam}/>
+                            <LeagueInstance leagues_list = {listante} isHidden={isHidden} setIsHidden={setIsHidden}/>
                         </Route>
                     </Switch>
                 </div>
