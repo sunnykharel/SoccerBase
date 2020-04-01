@@ -10,9 +10,20 @@ import axios from 'axios';
 function League(props) {
     let {id} = useParams();
     props.setIsHidden(true);
+    var team = props.selectedTeam
     return(
-        <h1>{id}{String(props.isHidden)}</h1>
-    );
+            <ul>
+                <li className="card">
+                    <div className="cardContent">
+                        <h3 className="cardTitle"> {props.selectedTeam.name} </h3>
+                        <p className="bio">
+                            {props.selectedTeam.country}<br/>
+                        </p>
+                    </div>
+                    <img src={props.selectedTeam.logo} />
+                </li>
+            </ul>
+        );
 }
 
 function Leagues({match}) {
@@ -22,12 +33,13 @@ function Leagues({match}) {
         const [currentPage, setCurrentPage] = useState(1);
         const [postsPerPage] = useState(10);
 
-
-        useEffect(() => {
+        const res = null;
+        useEffect((res) => {
             const fetchPosts = async () => {
               setLoading(true);
-              const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
-              setPosts(res.data);
+              res = await axios.get('https://still-waters-10895.herokuapp.com/getallleagues');
+              console.log(res.data);
+              setPosts(res.data.leagues_list);
               setLoading(false);
             };
         
@@ -41,21 +53,26 @@ function Leagues({match}) {
 
          // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
-        
+        const [selectedTeam, setSelectedTeam] = useState(null);
         if (isHidden == false) {
             return (
                 <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
                    <h1>Leagues</h1>
                     <ul className='list-group mb-4'id = "PostList">
-                        {currentPosts.map(post => (
+                        {currentPosts.map(post => {
+                            setSelectedTeam(post)
+                            return(
                             <li key={post.id} className='list-group-item'>
-                                <Link to={"/Leagues/" + post.title}>{post.title}</Link>
-                            </li>
-                        ))}
+                                <Link to={"/Leagues/" + post.name}>{post.name}</Link>
+                                <img src = {post.logo}/>
+                                <h1>  {post.country} </h1>
+                            </li>);
+                        })}
                     </ul>
+                    {console.log(selectedTeam)}
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <League isHidden={isHidden} setIsHidden={setIsHidden}/>
+                            <League isHidden={isHidden} setIsHidden={setIsHidden} selectedTeam={selectedTeam} />
                         </Route>
                     </Switch>
 
@@ -73,7 +90,7 @@ function Leagues({match}) {
                     <h1>LESSSDFSF</h1>
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <League isHidden={isHidden} setIsHidden={setIsHidden}/>
+                            <League isHidden={isHidden} setIsHidden={setIsHidden} selectedTeam={selectedTeam}/>
                         </Route>
                     </Switch>
                 </div>
