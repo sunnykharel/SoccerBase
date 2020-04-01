@@ -10,17 +10,16 @@ import axios from 'axios';
 function League(props) {
     let {id} = useParams();
     props.setIsHidden(true);
-    var team = props.selectedTeam
     return(
             <ul>
                 <li className="card">
                     <div className="cardContent">
-                        <h3 className="cardTitle"> {props.selectedTeam.name} </h3>
+                        <h3 className="cardTitle">  </h3>
                         <p className="bio">
-                            {props.selectedTeam.country}<br/>
+                            <br/>
                         </p>
                     </div>
-                    <img src={props.selectedTeam.logo} />
+                    {/*<img src= />*/}
                 </li>
             </ul>
         );
@@ -53,14 +52,12 @@ function Leagues({match}) {
 
          // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
-        const [selectedTeam, setSelectedTeam] = useState(null);
         if (isHidden == false) {
             return (
                 <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
                    <h1>Leagues</h1>
                     <ul className='list-group mb-4'id = "PostList">
                         {currentPosts.map(post => {
-                            setSelectedTeam(post)
                             return(
                             <li key={post.id} className='list-group-item'>
                                 <Link to={"/Leagues/" + post.name}>{post.name}</Link>
@@ -69,10 +66,9 @@ function Leagues({match}) {
                             </li>);
                         })}
                     </ul>
-                    {console.log(selectedTeam)}
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <League isHidden={isHidden} setIsHidden={setIsHidden} selectedTeam={selectedTeam} />
+                            <League isHidden={isHidden} setIsHidden={setIsHidden} />
                         </Route>
                     </Switch>
 
@@ -90,7 +86,7 @@ function Leagues({match}) {
                     <h1>LESSSDFSF</h1>
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <League isHidden={isHidden} setIsHidden={setIsHidden} selectedTeam={selectedTeam}/>
+                            <League isHidden={isHidden} setIsHidden={setIsHidden}/>
                         </Route>
                     </Switch>
                 </div>
