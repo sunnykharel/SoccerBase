@@ -12,7 +12,8 @@ class LeagueInstance extends Component {
         super(props)
         props.setIsHidden(true)
         this.state = {
-            responses_arrays: ["Saab", "Volvo", "BMW"]  
+            responses_arrays: ["Saab", "Volvo", "BMW"],  
+            function: props.setIsHidden
         }
     }
     componentDidMount() {
@@ -54,6 +55,12 @@ class LeagueInstance extends Component {
             <h1> {this.state.responses_arrays[0].name}</h1>
         )
     }
+
+
+    // componentWillUnmount() {
+    //     this.state.setIsHidden(false)
+    // }
+
   
 }
 

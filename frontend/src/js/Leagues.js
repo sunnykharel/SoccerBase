@@ -51,10 +51,10 @@ function Leagues({match}) {
                             </li>);
                         })}
                     </ul>
-                    {console.log(listante)}
+
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <LeagueInstance  leagues_list={listante} isHidden={isHidden} setIsHidden={setIsHidden} />
+                            <LeagueInstance isHidden={isHidden} setIsHidden={setIsHidden} />
                         </Route>
                     </Switch>
 
@@ -72,7 +72,7 @@ function Leagues({match}) {
                     
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <LeagueInstance leagues_list = {listante} isHidden={isHidden} setIsHidden={setIsHidden}/>
+                            <LeagueInstance isHidden={isHidden} setIsHidden={setIsHidden}/>
                         </Route>
                     </Switch>
                 </div>
