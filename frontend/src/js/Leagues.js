@@ -7,27 +7,16 @@ import Pagination from './components/Pagination';
 import axios from 'axios';
 // import './App.css';
 
-function League() {
+function League(props) {
     let {id} = useParams();
-    this.props.hideComponents();
+    props.setIsHidden(true);
     return(
-        <h1>{id}</h1>
+        <h1>{id}{String(props.isHidden)}</h1>
     );
 }
 
-class Leagues extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            isHidden: true
-        }
-    }
-
-    hideComponents(){
-        this.setState({isHidden: false});
-    }
-
-    render() {
+function Leagues({match}) {
+        const [isHidden, setIsHidden] = useState(false);
         const [posts, setPosts] = useState([]);
         const [loading, setLoading] = useState(false);
         const [currentPage, setCurrentPage] = useState(1);
@@ -52,9 +41,8 @@ class Leagues extends Component {
 
          // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
-
-
-        if (this.state.isHidden == false) { 
+        
+        if (isHidden == false) {
             return (
                 <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
                    <h1>Leagues</h1>
@@ -66,8 +54,8 @@ class Leagues extends Component {
                         ))}
                     </ul>
                     <Switch>
-                        <Route path={this.props.match.url + "/:id"}>
-                            <League hideComponents = {this.hideComponents}/>
+                        <Route path={match.url + "/:id"}>
+                            <League isHidden={isHidden} setIsHidden={setIsHidden}/>
                         </Route>
                     </Switch>
 
@@ -80,9 +68,17 @@ class Leagues extends Component {
             
             );
         } else {
-            return (<h1>Stookymoombajambopoo</h1>);
+            return (
+                <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
+                    <h1>LESSSDFSF</h1>
+                    <Switch>
+                        <Route path={match.url + "/:id"}>
+                            <League isHidden={isHidden} setIsHidden={setIsHidden}/>
+                        </Route>
+                    </Switch>
+                </div>
+            );
         }
-    }
 }
 
 
