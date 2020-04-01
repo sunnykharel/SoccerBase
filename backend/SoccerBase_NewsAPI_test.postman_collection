@@ -1,0 +1,83 @@
+{
+	"info": {
+		"_postman_id": "34dda702-f4d7-4d3f-b327-d3b3b3554f71",
+		"name": "SoccerBase_NewsAPI_Postman",
+		"description": "Collection for Postman testing of Python3 NewsAPI Library used in SoccerBase backend implementation.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://newsapi.org/v2/top-headlines?q=fc%20barcelona&category=sports&apiKey=bad068d6ce6c4ccfb30eb5785c360efe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9acfbad4-4902-4e00-9f8c-92735babc5ca",
+						"exec": [
+							"//Tests for general news response, we query the api for \"FC Barcelona\" (URL encoded) in the category \"sports\". We will assume that prompt return of relevant results indicates proper function.",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"Response time less than 10 seconds\", function () {",
+							"    pm.response.responseTime < 10000;",
+							"})",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"//we know that result exists, testing for any null fields where there shouldn't be (only for fields we use in our backend)",
+							"",
+							"tests[\"Total results is greater than 0\"] = jsonData.totalResults > 0",
+							"//Assumption is that Source, Title, and Description are relevant data assuming that they are not empty fields.",
+							"tests[\"Source of first article is not empty string\"] = jsonData.articles[0].source.name !== \"\";",
+							"",
+							"tests[\"Title of first article is not empty string\"] = jsonData.articles[0].title !== \"\";",
+							"",
+							"tests[\"Description of first article is not empty string\"] = jsonData.articles[0].description !== \"\";",
+							"// the URL tests check for empty string AND URL because it only is true if it begins with \"http\" (and by parity is not an empty string)",
+							"tests[\"URL to article is not empty string AND is URL\"] = jsonData.articles[0].url.substring(0, 4) === \"http\";",
+							"",
+							"tests[\"URL to image is not empty string AND is URL\"] = jsonData.articles[0].urlToImage.substring(0, 4) === \"http\";",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://newsapi.org/v2/top-headlines?q=fc%20barcelona&category=sports&apiKey=bad068d6ce6c4ccfb30eb5785c360efe",
+					"protocol": "https",
+					"host": [
+						"newsapi",
+						"org"
+					],
+					"path": [
+						"v2",
+						"top-headlines"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "fc%20barcelona"
+						},
+						{
+							"key": "category",
+							"value": "sports"
+						},
+						{
+							"key": "apiKey",
+							"value": "bad068d6ce6c4ccfb30eb5785c360efe"
+						}
+					]
+				},
+				"description": "Request to check on recent headlines for FC Barcelona to check that NewsAPI is able to return the fields used in server-side implementation of project SoccerBase."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
