@@ -13,6 +13,10 @@ import {Link} from 'react-router-dom'
 import PostPage from '../PostPage'
 import { Redirect } from 'react-router-dom';
 
+var check = false;
+
+
+
 const useStyles = makeStyles({
     root: {
       maxWidth: 345,
@@ -29,31 +33,40 @@ const Posts = ({ posts, loading }) => {
 
 //   const classes = useStyles();
   
+    function newPost(aPost){
+        var a = aPost.title;
+        const c = b ;
+        // thePost = aPost;
+    // alert(a);
+        //console.log(<PostPage thepost = {aPost}/>);
+        
+        var b = document.getElementById("PostList");
+        b.parentElement.innerHTML = a;
+        
+    }
 
-function newPost(aPost){
-    var a = aPost.title;
-    // thePost = aPost;
-   // alert(a);
-    var b = document.getElementById("PostList");
-    b.parentElement.innerHTML = a;
-    // b.props.router.push('/foo');
-}
-
-  return (
-
-
-<ul className='list-group mb-4'id = "PostList">
-{posts.map(post => (
-  <li key={post.id} className='list-group-item'>
-    {/* <Route path = {"/" + post.title} component={PostPage} /> */}
-    <a href  = '#' onClick={() => newPost(post)}> {post.title} </a>
-    {/* <h1> {post.title}</h1> */}
-    <Link to={"/" + post.title}></Link>
 
     
-  </li>
-))}
-</ul>
+
+return (
+
+    
+
+    <ul className='list-group mb-4'id = "PostList">
+    {posts.map(post => (
+    
+    <li key={post.id} className='list-group-item'>
+        {/* <Route path = {"/" + post.title} component={PostPage} /> */}
+        {/* <a href  = '#' onClick={() => newPost(post)}> {post.title} </a> */}
+        {/* <h1> {post.title}</h1> */}
+        <Link to={"/Leagues/" + post.title} onClick={() => <PostPage thepost = {post} />}> {post.title} </Link>
+        
+        
+    </li>
+    ))}
+    </ul>
+
+
 
   );
 

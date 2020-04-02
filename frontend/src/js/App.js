@@ -5,7 +5,7 @@ import aboutUs from './aboutUs'
 import Home from './Home'
 import Teams from './Teams'
 import Leagues from './Leagues'
-import Players from "./Players"
+import Countries from "./Countries"
 import './../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './../css/App.css'
 import { render } from '@testing-library/react';
@@ -24,9 +24,9 @@ class App extends Component {
                 <Route path="/" component={Home} exact/>
                 <Route path ="/Teams" component={Teams}/>
                 <Route path ="/Leagues" component={Leagues}/>
-                <Route path ="/Players" component={Players}/>
+                <Route path ="/Countries" component={Countries}/>
                 <Route path="/aboutUs" component={aboutUs}/>
-                <Route path="/Leagues/:id" component={<PostPage/>}/>
+                {/* <Route path="/Leagues/:id" component={<PostPage/>}/> */}
                 {/* <Route path="/result" component={Result}/> */}
 
             </Switch> 

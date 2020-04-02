@@ -5,11 +5,11 @@ import React, { useState, useEffect ,Component} from 'react';
 import Posts from './components/Posts';
 import Pagination from './components/Pagination';
 import axios from 'axios';
-import TeamsInstance from './TeamsInstance'
+import CountryInstance from './CountryInstance'
 // import './App.css';
 
 
-function Teams({match}) {
+function Countries({match}) {
         const [isHidden, setIsHidden] = useState(false);
         const [posts, setPosts] = useState([]);
         const [loading, setLoading] = useState(false);
@@ -18,9 +18,9 @@ function Teams({match}) {
         useEffect((res) => {
             const fetchPosts = async () => {
               setLoading(true);
-              res = await axios.get('https://still-waters-10895.herokuapp.com/getallteams');
-              console.log(res.data);
-              setPosts(res.data.teams_list);
+              res = await axios.get('https://still-waters-10895.herokuapp.com/getallcountries');
+              setPosts(res.data.countries_list);
+              console.log(res.data.countries_list)
               setLoading(false);
         };
         
@@ -37,22 +37,21 @@ function Teams({match}) {
         if (isHidden == false) {
             return (
                 <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
-                   <h1>Teams</h1>
+                   <h1>Countries</h1>
                     <ul className='list-group mb-4'id = "PostList">
                         {currentPosts.map(post => {
                             return(
                             <li key={post.id} className='list-group-item'>
-                                <Link to={"/Teams/" + post.name}>{post.name}</Link>
-                                <img src = {post.logo}/>
-                                <h1>  {post.country} </h1>
-                                {/* {selectedPost = post.id} */}
+                                <Link to={"/Countries/" + post.name}>{post.name}</Link>
+                                <img src = {post.flag}/>
+                                <h1>  {post.population} </h1>
                             </li>);
                         })}
                     </ul>
 
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <TeamsInstance isHidden={isHidden} setIsHidden={setIsHidden} />
+                            <CountryInstance isHidden={isHidden} setIsHidden={setIsHidden} />
                         </Route>
                     </Switch>
 
@@ -70,7 +69,7 @@ function Teams({match}) {
                     
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <TeamsInstance isHidden={isHidden} setIsHidden={setIsHidden}/>
+                            <CountryInstance isHidden={isHidden} setIsHidden={setIsHidden}/>
                         </Route>
                     </Switch>
                 </div>
@@ -79,4 +78,4 @@ function Teams({match}) {
 }
 
 
-export default Teams;
+export default Countries;
