@@ -1,14 +1,20 @@
 import React, { Component } from 'react'
+import FrontEnd from './../images/Front-End.png'
+
+
+var sectionStyle = {
+  width: "1536px",
+  height: "690px",
+  backgroundImage: "url(" +  FrontEnd  + ")",
+  backgroundSize: "cover"
+};
 
 class Home extends Component {
   render() {
     return (
-      <div className="home container">
-        <div className="row" style={{backgroundImage : `url(require("src/images/a.png"))`}}>
-          
-          <h1> HomePage is here</h1>
-         
-        </div> 
+      <div> 
+      <section style={ sectionStyle }>
+       </section>
       </div>
     )
   }

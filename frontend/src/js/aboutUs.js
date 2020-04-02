@@ -11,6 +11,7 @@ class Card extends Component {
     
     render() {
         return(
+            
             <ul>
                 <li className="card">
                     <div className="cardContent">
@@ -35,7 +36,13 @@ class CardList extends Component {
     
     render() {
         return(
+            
             <div className="cardDiv">
+                <h1 style = {{textAlign: "center"}} >About Us:</h1>
+            <p style = {{textAlign: "center"}}>More about the team that brought you this Soccer Database
+            SoccerBase is a database for searching information about International Soccer
+            The Database houses information ranging from Leagues to Players
+            This database was brought to you by the following EE 461L group 9 members:</p>
                 {this.props.users.map((user) => {
                     return (
                         <Card 
@@ -49,6 +56,8 @@ class CardList extends Component {
                         />
                     );
                 })}
+
+                
             </div>
         );
     }
@@ -195,6 +204,7 @@ class About extends Component {
 
     render () {
         //team member meta data
+        
         var users = [
             {
                 name: "Parm",

@@ -8,7 +8,7 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
-
+import Twitt from './../../images/twit.png'
 const SoccerBaseNavBar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
@@ -34,6 +34,12 @@ const SoccerBaseNavBar = (props) => {
                 </NavItem>
             </Nav>
             <Nav className = "ml-auto" navbar>
+            <a href="https://twitter.com/SoccerbaseD">
+        
+              <img src = {Twitt} style={{width: "50px" ,height:"50px"}}/>
+        
+             </a>
+             <NavLink href = "mailto:webmastersoccerbase@gmail.com">Contact Us</NavLink> 
                 <NavLink href='/TermsOfUse'>Terms Of Use</NavLink>
                 <NavLink href='/aboutUs'>About Us</NavLink>
             </Nav>
