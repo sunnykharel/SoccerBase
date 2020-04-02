@@ -26,7 +26,7 @@ class App extends Component {
                 <Route path ="/Leagues" component={Leagues}/>
                 <Route path ="/Players" component={Players}/>
                 <Route path="/aboutUs" component={aboutUs}/>
-                <Route path="/Leagues/:id" component={<PostPage/>}/>
+                {/* <Route path="/Leagues/:id" component={<PostPage/>}/> */}
                 {/* <Route path="/result" component={Result}/> */}
 
             </Switch> 
