@@ -34,6 +34,7 @@ const SoccerBaseNavBar = (props) => {
                 </NavItem>
             </Nav>
             <Nav className = "ml-auto" navbar>
+                <NavLink href='/TermsOfUse'>Terms Of Use</NavLink>
                 <NavLink href='/aboutUs'>About Us</NavLink>
             </Nav>
         </Collapse>

@@ -11,6 +11,7 @@ import './../css/App.css'
 import { render } from '@testing-library/react';
 import SoccerBaseNavBar from './components/Navbar';
 import PostPage from './PostPage';
+import TermsOfUse from './TermsOfUse';
 
 
 class App extends Component {
@@ -25,6 +26,7 @@ class App extends Component {
                 <Route path ="/Teams" component={Teams}/>
                 <Route path ="/Leagues" component={Leagues}/>
                 <Route path ="/Countries" component={Countries}/>
+                <Route path ="/TermsOfUse" component={TermsOfUse}/>
                 <Route path="/aboutUs" component={aboutUs}/>
                 {/* <Route path="/Leagues/:id" component={<PostPage/>}/> */}
                 {/* <Route path="/result" component={Result}/> */}
