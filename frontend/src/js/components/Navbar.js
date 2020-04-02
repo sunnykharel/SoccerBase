@@ -30,7 +30,7 @@ const SoccerBaseNavBar = (props) => {
                     <NavLink href='/Leagues'>Leagues</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink href='/Players'>Players</NavLink>
+                    <NavLink href='/Countries'>Countries</NavLink>
                 </NavItem>
             </Nav>
             <Nav className = "ml-auto" navbar>

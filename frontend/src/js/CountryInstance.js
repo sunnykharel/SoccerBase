@@ -7,12 +7,12 @@ import Pagination from './components/Pagination';
 import axios from 'axios';
 // import './App.css';
 
-class LeagueInstance extends Component {
+class CountryInstance extends Component {
     constructor(props){
         super(props)
         props.setIsHidden(true)
         this.state = {
-            responses_arrays : Array(514).fill(""),
+            responses_arrays : Array(2000).fill(""),
             i: 0, 
             function: props.setIsHidden,
         }
@@ -21,12 +21,12 @@ class LeagueInstance extends Component {
         const id = this.props.match.params.id
         //var i;
         const scopez = this;
-        axios.get('https://still-waters-10895.herokuapp.com/getallleagues')
+        axios.get('https://still-waters-10895.herokuapp.com/getallcountries')
         .then(function (res) {
             console.log(id)
             console.log(res)
             scopez.setState({
-                responses_arrays: res.data.leagues_list.slice(0, res.data.leagues_list.length),
+                responses_arrays: res.data.countries_list.slice(0, res.data.countries_list.length),
             }); 
         })
         
@@ -36,13 +36,11 @@ class LeagueInstance extends Component {
 
         //var i;
         for(let indx = 0; indx < this.state.responses_arrays.length; indx++ ){
-            if(this.props.match.params.id == this.state.responses_arrays[indx].league_id){
+            if(this.props.match.params.id == this.state.responses_arrays[indx].name){
                 this.state.i = indx;
                 break;
             }
         }
-         
-        //console.log(typeof this.state.i);
         return (   
             <h1>{this.state.responses_arrays[this.state.i].name}</h1>
         );
@@ -56,4 +54,4 @@ class LeagueInstance extends Component {
   
 }
 
-export default withRouter(LeagueInstance);
+export default withRouter(CountryInstance);
