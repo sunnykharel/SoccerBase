@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import {Link} from 'react-router-dom'
 
-import PostPage from '../PostPage'
 import { Redirect } from 'react-router-dom';
 
 var check = false;
@@ -59,7 +58,6 @@ return (
         {/* <Route path = {"/" + post.title} component={PostPage} /> */}
         {/* <a href  = '#' onClick={() => newPost(post)}> {post.title} </a> */}
         {/* <h1> {post.title}</h1> */}
-        <Link to={"/Leagues/" + post.title} onClick={() => <PostPage thepost = {post} />}> {post.title} </Link>
         
         
     </li>
