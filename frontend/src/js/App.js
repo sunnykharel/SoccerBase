@@ -12,14 +12,13 @@ import { render } from '@testing-library/react';
 import SoccerBaseNavBar from './components/Navbar';
 import TermsOfUse from './TermsOfUse';
 
-
 class App extends Component {
   render() {
     return (
       
         <BrowserRouter>
           <div>
-          <SoccerBaseNavBar /> 
+          <SoccerBaseNavBar />
              <Switch>
                 <Route path="/" component={Home} exact/>
                 <Route path ="/Teams" component={Teams}/>

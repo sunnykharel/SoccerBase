@@ -4,61 +4,66 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
+import Grid from '@material-ui/core/Grid';
+
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
+import 'typeface-roboto';
 
 const useStyles = makeStyles({
     root: {
-    //   maxWidth: 345,
-    },
+        flexGrow: 1,
+      },
+      card: {
+        maxWidth: 345
+      },
+      cardButton: {
+        textAlign: "initial"
+      },
+      media: {
+        height: 200
+      }
   });
 
 export default function ModelComponent(props) {
     const classes = useStyles();
-    
+    console.log(props)
     return(
-        <Card className={classes.root}>
-        <Link to= {props.modelPageLink}>
-        <CardActionArea>
+        <Grid item xs={4}>
+        <Card className={classes.card}>
             <CardMedia
-            component="img"
-            alt="image does not exist"
-            height="140"
-            image={props.modelImage}
-            title={props.modelName}
+            className={classes.media}
+            image={props.info.modelImage}
+            title={props.info.modelName}
             />
             <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-                {props.modelName}
+            <Typography variant="headline" component="h2">
+                {props.info.modelName}
             </Typography>
             </CardContent>
-        </CardActionArea>
-        </Link>
         <CardActions>
             <Button size="small" color="primary">
-            {props.modelLink1}
+            {props.info.modelName1}
             </Button>
             <Button size="small" color="primary">
-            {props.modelLink2}
+            {props.info.modelName2}
             </Button>
         </CardActions>
         </Card>
-        );
-    
+        </Grid>
+        );   
 }
-
-// ModelComponent.defaultProps = {
-//     modelPageLink : "",
-//     modelImage: "",
-//     modelName: "",
-//     modelName1:"",
-//     modelName2:"",
-//     modelLink1:"",
-//     modelLink2:""    
-// }
+ModelComponent.defaultProps = {
+    modelPageLink : "",
+    modelImage: "",
+    modelName: "modelName",
+    modelName1:"modelName1",
+    modelName2:"modelName2",
+    modelLink1:"Link1",
+    modelLink2:"link2"    
+}
 
 
 

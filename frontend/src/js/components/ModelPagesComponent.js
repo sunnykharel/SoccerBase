@@ -5,31 +5,29 @@ import ModelComponent from './ModelComponent'
 
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-}));
+    root: {
+        flexGrow: 1,
+      }
+  }));
 //Props into this function should be the list of things you are Making components of and how many instances per row/ page
 export default function ModelPagesComponent(props) {
   const classes = useStyles();
   //pass in the elements of the row into props
   function FormRow(props) {
+      console.log(props.modelInstancesSlice)
     return (
       <React.Fragment>
         {props.modelInstancesSlice.map((modelInstance) => {
             return (
-                <ModelComponent props = {
+                <ModelComponent info = {
                     {
                         modelPageLink : modelInstance.modelPageLink,
                         modelImage: modelInstance.modelImage,
                         modelName: modelInstance.modelName,
                         modelLink1:modelInstance.modelLink1,
-                        modelLink2:modelInstance.modelLink2
+                        modelLink2:modelInstance.modelLink2,
+                        modelName1: modelInstance.modelName1,
+                        modelName2: modelInstance.modelName2
                     }
                 }/>
             );
@@ -41,14 +39,17 @@ export default function ModelPagesComponent(props) {
   return (
     <div className={classes.root}>
       <Grid container spacing={1}>
-        <Grid container item xs={12} spacing={4}>
-          <FormRow modelInstancesSlice = {props.modelInstances.slice(0,4)}/>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow modelInstancesSlice = {props.modelInstances.slice(0,3)}/>
         </Grid>
-        <Grid container item xs={12} spacing={4}>
-          <FormRow modelInstancesSlice ={props.modelInstances.slice(4,8)} />
+        <Grid container item xs={12} spacing={3}>
+          <FormRow modelInstancesSlice ={props.modelInstances.slice(3,6)} />
         </Grid>
-        <Grid container item xs={12} spacing={4}>
-          <FormRow modelInstancesSlice = {props.modelInstances.slice(8,12)} />
+        <Grid container item xs={12} spacing={3}>
+          <FormRow modelInstancesSlice = {props.modelInstances.slice(6,9)} />
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <FormRow modelInstancesSlice = {props.modelInstances.slice(9,12)} />
         </Grid>
       </Grid>
     </div>
