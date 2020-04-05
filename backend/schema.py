@@ -25,7 +25,13 @@ class Country(Document):
     code = StringField(required=False)
     flag = StringField(required=False)
     population = IntField()
-    leaguecount = IntField()
+    demonym = StringField()
+    area = IntField()
+    capital = StringField()
+    region = StringField()
+    subregion = StringField()
+    num_leagues = IntField()
+    
     meta = {
         "db_alias":"country" 
     }
@@ -42,6 +48,7 @@ class League(Document):
     logo = StringField()
     flag = StringField()
     coverage = DictField()
+    num_teams = IntField()
 
     def json(self):
         league_dict = {
@@ -59,14 +66,21 @@ class League(Document):
     }
     
 class Team(Document):
-    name = StringField(required=True)
-    logo = StringField()
+    team_name = StringField(required=True)
+    team_id = IntField()
+    team_logo = StringField()
+    is_national = BooleanField()
+    league_id = IntField()
+    league_name = StringField()
+    league_logo = StringField()
     country = StringField()
+    country_flag = StringField()
     founded = IntField()
     venue_name = StringField()
     venue_surface = StringField()
     venue_city = StringField()
     venue_capacity = IntField()
+   
     meta = {
         "db_alias":"team"
     }
