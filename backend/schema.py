@@ -100,17 +100,17 @@ class Team(Document):
             "team_name": self.team_name,
             "team_id": self.team_id,
             "team_logo": self.team_logo,
-            "is_national" = self.is_national,
-            "league_id" = self.league_id,
-            "league_name" = self.league_name,
-            "league_logo" = self.league_logo,
-            "country" = self.country,
-            "country_flag" = self.country_flag,
-            "founded" = self.founded,
-            "venue_name" = self.venue_name,
-            "venue_surface" = self.venue_surface,
-            "venue_city" = self.venue_city,
-            "venue_capacity" = self.venue_capacity
+            "is_national" : self.is_national,
+            "league_id" : self.league_id,
+            "league_name" : self.league_name,
+            "league_logo" : self.league_logo,
+            "country" : self.country,
+            "country_flag" : self.country_flag,
+            "founded" : self.founded,
+            "venue_name" : self.venue_name,
+            "venue_surface" : self.venue_surface,
+            "venue_city" : self.venue_city,
+            "venue_capacity" : self.venue_capacity
         }
         return team_dict
         #return json.dumps(team_dict)
