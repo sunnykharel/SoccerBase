@@ -12,6 +12,9 @@ from mongoengine import *
 from flask_cors import CORS
 import time
 
+import pymongo
+from pymongo import MongoClient
+
 app = Flask(__name__)
 CORS(app)
 
@@ -115,10 +118,88 @@ def update_leagues():
     return Response(json.dumps({}), status=200, mimetype="application/json")
 
 
+@app.route("/test", methods=["GET"])
+def test():
+
+    client = MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false")
+    
+    #removing duplicate countries
+    db = client.countrydatabase
+
+    all_countries = db.country.find()
+
+    for country in all_countries:
+        duplicates = db.country.count({'name':country['name']})
+
+        if(duplicates > 1):
+            duplicate_entries = db.country.find({'name':country['name']})
+            index = 0
+            for duplicate_entry in duplicate_entries:
+                if(index>0):
+                    db.country.remove({'_id':duplicate_entry['_id']})
+                index = index+1
+
+    
+
+    #removing duplicate leagues
+    db = client.leaguedatabase
+
+    all_leagues = db.league.find()
+
+    for league in all_leagues:
+        duplicates = db.league.count({'league_id':league['league_id']})
+
+        if(duplicates > 1):
+            duplicate_entries = db.league.find({'league_id':league['league_id']})
+            index = 0
+            for duplicate_entry in duplicate_entries:
+                if(index>0):
+                    db.league.remove({'league_id':league['league_id']})
+                index = index+1
+
+
+    #removing duplicate teams
+    db = client.teamdatabase
+
+    all_teams = db.team.find()
+
+    for team in all_teams:
+        duplicates = db.team.count({'team_id':team['team_id']})
+
+        if(duplicates > 1):
+            duplicate_entries = db.team.find({'team_id':team['team_id']})
+            index = 0
+            for duplicate_entry in duplicate_entries:
+                if(index>0):
+                    db.team.remove({'team_id':team['team_id']})
+                index = index+1
+
+
+    return "done"
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route("/updateall", methods=["GET"])
 def update_all():
 
-    api_key = "c114e8403emsh6c4e6c8d45757cbp131072jsn941330efea5f"
+    client = MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false")
+   
+    country_db = client.countrydatabase
+    league_db = client.leaguedatabase
+    team_db = client.teamdatabase
+
+
+    #api_key = "c114e8403emsh6c4e6c8d45757cbp131072jsn941330efea5f"
+    api_key = "53ae476b3dmsh69a5085cd429f71p1b67d1jsn42625c81d012"
 
     #country api to get more attributes about a country
     country_url = "https://ajayakv-rest-countries-v1.p.rapidapi.com/rest/v1/all"
@@ -139,10 +220,6 @@ def update_all():
     response = requests.request("GET", url, headers=headers).json()
 
     for country_entry in response['api']['countries']:
-        #time.sleep(15)
-        country_saved = 0
-        league_saved  = 0
-        team_saved    = 0
 
         #country_db_instance = Country.objects(country=country_entry['country'])
         #print(len(country_db_instance) == 0)
@@ -178,7 +255,8 @@ def update_all():
 
         leaguesInCountryResponse = requests.request("GET", leaguesInCountry, headers=headers).json()
 
-        if(country_saved == 0):
+        num_countries = country_db.country.count({'name':country_entry['country']})
+        if(num_countries == 0):
             country = Country(
                 name = country_entry['country'],
                 code = country_entry['code'],
@@ -191,7 +269,6 @@ def update_all():
                 region = _region,
                 subregion = _subregion
             ).save()
-            country_saved = 1
 
         #pprint(leaguesInCountryResponse)
         
@@ -202,7 +279,8 @@ def update_all():
 
             teamsInLeagueResponse = requests.request("GET", teamsInLeague, headers=headers).json()
 
-            if(league_saved == 0):
+            num_leagues = league_db.league.count({'league_id':league_entry['league_id']})
+            if(num_leagues == 0):
                 league = League(
                     league_id = league_entry['league_id'],
                     name = league_entry['name'],
@@ -217,16 +295,12 @@ def update_all():
                     coverage = league_entry['coverage'],
                     num_teams = len(teamsInLeagueResponse['api']['teams'])
                 ).save()
-                league_saved = 1
+  
 
-            
-
-            for team_object in teamsInLeagueResponse['api']['teams']:
+            for team_object in teamsInLeagueResponse['api']['teams']:    
                 time.sleep(1)
-                # count = 1000000
-                # while (count > 0):
-                #     count = count - 1
-                if(team_saved == 0):
+                num_teams = team_db.team.count({'team_id':team_object['team_id']})
+                if(num_teams == 0):
                     team = Team(
                         team_name = team_object['name'],
                         team_id = team_object['team_id'],
@@ -243,8 +317,7 @@ def update_all():
                         venue_city = team_object['venue_city'],
                         venue_capacity = team_object['venue_capacity']
                     ).save()
-                    team_saved = 1
-        
+            
 
     return Response(json.dumps({}), status=200, mimetype="application/json")
 
