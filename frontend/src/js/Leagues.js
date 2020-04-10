@@ -6,6 +6,8 @@ import Posts from './components/Posts';
 import Pagination from './components/Pagination';
 import axios from 'axios';
 import LeagueInstance from './LeagueInstance'
+import ModelPagesComponent from './components/ModelPagesComponent'
+
 // import './App.css';
 
 
@@ -37,20 +39,23 @@ function Leagues({match}) {
          // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
         if (isHidden == false) {
+            if ( posts[0]!=null){
             return (
-                <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
-                   <h1>Leagues</h1>
-                    <ul className='list-group mb-4'id = "PostList">
-                        {currentPosts.map(post => {
-                            return(
-                            <li key={post.id} className='list-group-item'>
-                                <Link to={"/Leagues/" + post.league_id}>{post.name}</Link>
-                                <img src = {post.logo}/>
-                                <h1>  {post.country} </h1>
-                                {/* {selectedPost = post.id} */}
-                            </li>);
-                        })}
-                    </ul>
+                <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
+                <h1>Leagues</h1>
+                    <ModelPagesComponent modelInstances = {currentPosts.map( 
+                        function(post){
+                            return {
+                                modelPageLink : "Teams/"+post.name,
+                                modelImage: post.logo  ,
+                                modelName: post.name ,
+                                modelName1: post.country ,
+                                modelName2: post.num_teams ,
+                                modelLink1:"/",
+                                modelLink2:"/" 
+                            }
+                        }
+                    )}/>
 
                     <Switch>
                         <Route path={match.url + "/:id"}>
@@ -66,6 +71,11 @@ function Leagues({match}) {
               </div>
             
             );
+            }else{
+                return (
+                    <h5> Loading ... </h5>
+                );
+            }
         } else {
             return (
                 <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>

@@ -6,6 +6,7 @@ import Posts from './components/Posts';
 import Pagination from './components/Pagination';
 import axios from 'axios';
 import TeamsInstance from './TeamsInstance'
+import ModelPagesComponent from './components/ModelPagesComponent'
 // import './App.css';
 
 
@@ -35,21 +36,23 @@ function Teams({match}) {
         // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
         if (isHidden == false) {
-            return (
-                <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
-                   <h1>Teams</h1>
-                    <ul className='list-group mb-4'id = "PostList">
-                        {currentPosts.map(post => {
-                            return(
-                            <li key={post.id} className='list-group-item'>
-                                <Link to={"/Teams/" + post.name}>{post.name}</Link>
-                                <img src = {post.logo}/>
-                                <h1>  {post.country} </h1>
-                                {/* {selectedPost = post.id} */}
-                            </li>);
-                        })}
-                    </ul>
-
+            if ( posts[0]!=null){
+                return (
+                    <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
+                    //this needs to be fixed with accurate information
+                    <ModelPagesComponent modelInstances = {currentPosts.map( 
+                        function(post){
+                            return {
+                                modelPageLink : "Teams/"+post.team_name,
+                                modelImage: post.team_logo  ,
+                                modelName: post.name ,
+                                modelName1: post.league_name ,
+                                modelName2: post.country ,
+                                modelLink1:"/",
+                                modelLink2:"/" 
+                            }
+                        }
+                    )}/>
                     <Switch>
                         <Route path={match.url + "/:id"}>
                             <TeamsInstance isHidden={isHidden} setIsHidden={setIsHidden} />
@@ -61,10 +64,15 @@ function Teams({match}) {
                         totalPosts={posts.length}
                         paginate={paginate}
                     />
-              </div>
-            
-            );
-        } else {
+                    </div>
+                );
+            } else{
+                return (
+                    <h5> Loading ... </h5>
+                );
+            }
+        }
+        else {
             return (
                 <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
                     
