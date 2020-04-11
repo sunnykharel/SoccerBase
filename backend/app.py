@@ -13,6 +13,7 @@ from flask_cors import CORS
 import time
 from newsapi.newsapi_client import NewsApiClient
 import datetime
+from mongoengine.queryset.visitor import Q
 
 app = Flask(__name__)
 CORS(app)
@@ -39,6 +40,36 @@ def getCoutriesByName(country_name):
     #print(teams_list)
     countries_list_dict = {}
     countries_list_dict['countries_list'] = countries_list
+    return (countries_list_dict)
+
+#get country by name
+@app.route('/countries_search/<country_name>')
+def getCoutriesBySearch(country_name):
+    words = country_name.split(" ")
+
+    countries_list = []
+
+    for word in words:
+        countries_list_add = [country.json() for country in Country.objects(Q(name__icontains=word) | 
+                                                                            Q(code__icontains=word) | 
+                                                                            Q(flag__icontains=word) | 
+                                                                            Q(demonym__icontains=word) | 
+                                                                            Q(capital__icontains=word) | 
+                                                                            Q(region__icontains=word) |  
+                                                                            Q(subregion__icontains=word))]
+        countries_list.extend(countries_list_add)
+
+    for numbers in words: #any words that are integers
+        if(numbers.isdigit()): # is a number
+            countries_list_add = [country.json() for country in Country.objects(Q(population__gte=int(numbers)) | 
+                                                                                Q(area__gte=int(numbers)) | 
+                                                                                Q(num_leagues__gte=int(numbers)))] 
+            countries_list.extend(countries_list_add)
+
+
+    countries_list_dict = {}
+    countries_list_dict['countries_list'] = countries_list
+    countries_list_dict['words'] = words
     return (countries_list_dict)
 
 
