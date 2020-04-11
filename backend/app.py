@@ -30,6 +30,21 @@ def getCoutriesByPage(name):
     countries_list_dict['countries_list'] = countries_list
     return (countries_list_dict)
 
+
+#get country by name
+@app.route('/countries_name/<country_name>')
+def getCoutriesByName(country_name):
+    countries_list = [country.json() for country in Country.objects(name=country_name)]
+    #print(teams_list)
+    countries_list_dict = {}
+    countries_list_dict['countries_list'] = countries_list
+    return (countries_list_dict)
+
+
+
+
+
+
 #get leagues by page
 @app.route('/leagues_page/<name>')
 def getLeaguesByPage(name):
@@ -38,6 +53,19 @@ def getLeaguesByPage(name):
     leagues_list_dict = {}
     leagues_list_dict['leagues_list'] = leagues_list
     return (leagues_list_dict)
+
+
+#get leagues by id
+@app.route('/leagues_id/<name>')
+def getLeaguesById(name):
+    leagues_list = [league.json() for league in League.objects(league_id=int(name))]
+    #print(teams_list)
+    leagues_list_dict = {}
+    leagues_list_dict['leagues_list'] = leagues_list
+    return (leagues_list_dict)
+
+
+
 
 #get teams by page
 @app.route('/teams_page/<name>')
@@ -48,6 +76,14 @@ def getTeamsByPage(name):
     teams_list_dict['teams_list'] = teams_list
     return (teams_list_dict)
 
+
+#get team by team_id
+@app.route('/teams_id/<name>')
+def getTeamsById(name):
+    teams_list = [team.json() for team in Team.objects(team_id=int(name))]
+    teams_list_dict = {}
+    teams_list_dict['teams_list'] = teams_list
+    return (teams_list_dict)
 
 
 @app.route('/testconnectiontodb')
