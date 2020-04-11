@@ -24,7 +24,8 @@ def index():
 #get countries by page
 @app.route('/countries_page/<name>')
 def getCoutriesByPage(name):
-    countries_list = [country.json() for country in Country.objects().skip((10*int(name))-10).limit(10)]
+    countries_per_page = 10
+    countries_list = [country.json() for country in Country.objects().skip((countries_per_page*int(name))-countries_per_page).limit(countries_per_page)]
     #print(teams_list)
     countries_list_dict = {}
     countries_list_dict['countries_list'] = countries_list
@@ -48,7 +49,8 @@ def getCoutriesByName(country_name):
 #get leagues by page
 @app.route('/leagues_page/<name>')
 def getLeaguesByPage(name):
-    leagues_list = [league.json() for league in League.objects().skip((10*int(name))-10).limit(10)]
+    leagues_per_page = 10
+    leagues_list = [league.json() for league in League.objects().skip((leagues_per_page*int(name))-leagues_per_page).limit(leagues_per_page)]
     #print(teams_list)
     leagues_list_dict = {}
     leagues_list_dict['leagues_list'] = leagues_list
@@ -70,7 +72,8 @@ def getLeaguesById(name):
 #get teams by page
 @app.route('/teams_page/<name>')
 def getTeamsByPage(name):
-    teams_list = [team.json() for team in Team.objects().skip((10*int(name))-10).limit(10)]
+    teams_per_page = 10
+    teams_list = [team.json() for team in Team.objects().skip((teams_per_page*int(name))-teams_per_page).limit(teams_per_page)]
     #print(teams_list)
     teams_list_dict = {}
     teams_list_dict['teams_list'] = teams_list
