@@ -21,6 +21,34 @@ CORS(app)
 def index():
     return "hello world"
 
+#get countries by page
+@app.route('/countries_page/<name>')
+def getCoutriesByPage(name):
+    countries_list = [country.json() for country in Country.objects().skip((10*int(name))-10).limit(10)]
+    #print(teams_list)
+    countries_list_dict = {}
+    countries_list_dict['countries_list'] = countries_list
+    return (countries_list_dict)
+
+#get leagues by page
+@app.route('/leagues_page/<name>')
+def getLeaguesByPage(name):
+    leagues_list = [league.json() for league in League.objects().skip((10*int(name))-10).limit(10)]
+    #print(teams_list)
+    leagues_list_dict = {}
+    leagues_list_dict['leagues_list'] = leagues_list
+    return (leagues_list_dict)
+
+#get teams by page
+@app.route('/teams_page/<name>')
+def getTeamsByPage(name):
+    teams_list = [team.json() for team in Team.objects().skip((10*int(name))-10).limit(10)]
+    #print(teams_list)
+    teams_list_dict = {}
+    teams_list_dict['teams_list'] = teams_list
+    return (teams_list_dict)
+
+
 
 @app.route('/testconnectiontodb')
 def testconnectiontodb():
