@@ -22,40 +22,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const sections = [
-  { title: 'Home', url: '#' },
-  { title: 'Players', url: '#' },
-  { title: 'Schedule', url: '#' },
-];
-
-const mainFeaturedPost = {
-  title: 'Title of a longer featured blog post',
-  description:
-    "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-  image: 'https://source.unsplash.com/random',
-  imgText: 'main image description',
-  linkText: 'Continue reading…',
-};
-
-const featuredPosts = [
-  {
-    title: 'Featured post',
-    date: 'Nov 12',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-  },
-  {
-    title: 'Post title',
-    date: 'Nov 11',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-  },
-];
-
 const posts = [post1, post2, post3];
 
 const sidebar = {
@@ -81,20 +47,23 @@ const sidebar = {
     { name: 'Facebook', icon: FacebookIcon },
   ],
 };
-
-export default function Blog() {
+/*
+This class takes the props for section names and the main featured posts
+The sections should take the format { title: 'titleName', url: 'link' }
+and you should define the information to be inserted into that link
+*/
+function InstancePage(props) {
   const classes = useStyles();
-
   return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
         
-        <Header title="Barcelona" sections={sections} />
+        <Header title={props.title} sections={props.sections} />
         <main>
-          <MainFeaturedPost post={mainFeaturedPost} />
+          <MainFeaturedPost post={props.mainFeaturedPost} />
           <Grid container spacing={4}>
-            {featuredPosts.map((post) => (
+            {props.featuredPosts.map((post) => (
               <FeaturedPost key={post.title} post={post} />
             ))}
           </Grid>
@@ -113,3 +82,5 @@ export default function Blog() {
     </React.Fragment>
   );
 }
+
+export default InstancePage

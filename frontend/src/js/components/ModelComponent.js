@@ -1,11 +1,11 @@
-import Link from '@material-ui/core/Link'
+import { Link } from "react-router-dom";
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import Grid from '@material-ui/core/Grid';
-
+import ButtonBase from "@material-ui/core/ButtonBase";
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
@@ -20,6 +20,7 @@ const useStyles = makeStyles({
         maxWidth: 345
       },
       cardButton: {
+        display: "block",
         textAlign: "initial"
       },
       media: {
@@ -30,9 +31,11 @@ const useStyles = makeStyles({
 export default function ModelComponent(props) {
     const classes = useStyles();
     console.log(props)
+
     return(
         <Grid item xs={4}>
-        <Card className={classes.card}>
+        <Card className={classes.card} >
+        <ButtonBase className={classes.cardButton} component = {Link} to={props.info.modelPageLink}>
             <CardMedia
             className={classes.media}
             image={props.info.modelImage}
@@ -43,6 +46,7 @@ export default function ModelComponent(props) {
                 {props.info.modelName}
             </Typography>
             </CardContent>
+        </ButtonBase>
         <CardActions>
             <Button size="small" color="primary">
             {props.info.modelName1}
@@ -55,6 +59,7 @@ export default function ModelComponent(props) {
         </Grid>
         );   
 }
+
 ModelComponent.defaultProps = {
     modelPageLink : "",
     modelImage: "",
@@ -64,7 +69,3 @@ ModelComponent.defaultProps = {
     modelLink1:"Link1",
     modelLink2:"link2"    
 }
-
-
-
-

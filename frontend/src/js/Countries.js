@@ -46,7 +46,7 @@ function Countries({match}) {
                     <ModelPagesComponent modelInstances = {currentPosts.map( 
                         function(post){
                             return {
-                                modelPageLink : "Countries/"+post.name,
+                                modelPageLink : ''.concat('/Countries/', post.name),
                                 modelImage: post.flag ,
                                 modelName: post.name ,
                                 modelName1: "most famous team" ,

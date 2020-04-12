@@ -46,7 +46,7 @@ function Leagues({match}) {
                     <ModelPagesComponent modelInstances = {currentPosts.map( 
                         function(post){
                             return {
-                                modelPageLink : "Teams/"+post.name,
+                                modelPageLink : "Leagues/"+post.league_id,
                                 modelImage: post.logo  ,
                                 modelName: post.name ,
                                 modelName1: post.country ,
@@ -78,7 +78,7 @@ function Leagues({match}) {
             }
         } else {
             return (
-                <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
+                <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
                     
                     <Switch>
                         <Route path={match.url + "/:id"}>

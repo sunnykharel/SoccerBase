@@ -45,7 +45,7 @@ function Teams({match}) {
                             return {
                                 modelPageLink : "Teams/"+post.team_name,
                                 modelImage: post.team_logo  ,
-                                modelName: post.name ,
+                                modelName: post.team_name ,
                                 modelName1: post.league_name ,
                                 modelName2: post.country ,
                                 modelLink1:"/",
@@ -74,7 +74,7 @@ function Teams({match}) {
         }
         else {
             return (
-                <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
+                <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
                     
                     <Switch>
                         <Route path={match.url + "/:id"}>

@@ -11,13 +11,15 @@ import './../css/App.css'
 import { render } from '@testing-library/react';
 import SoccerBaseNavBar from './components/Navbar';
 import TermsOfUse from './TermsOfUse';
-
+import CssBaseline from '@material-ui/core/CssBaseline';
+import InstancePage from './components/InstancePage/InstancePage';
 class App extends Component {
   render() {
     return (
       
         <BrowserRouter>
-          <div>
+          <React.Fragment>
+            <CssBaseline />
           <SoccerBaseNavBar />
              <Switch>
                 <Route path="/" component={Home} exact/>
@@ -26,11 +28,12 @@ class App extends Component {
                 <Route path ="/Countries" component={Countries}/>
                 <Route path ="/TermsOfUse" component={TermsOfUse}/>
                 <Route path="/aboutUs" component={aboutUs}/>
+                <Route path="/InstancePage" component={InstancePage}/>
                 {/* <Route path="/Leagues/:id" component={<PostPage/>}/> */}
                 {/* <Route path="/result" component={Result}/> */}
 
             </Switch> 
-          </div>  
+          </React.Fragment> 
         </BrowserRouter>
          
     );

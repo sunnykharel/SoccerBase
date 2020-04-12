@@ -13,6 +13,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import InstancePage from './components/InstancePage/InstancePage';
+
 // import './App.css';
 
 class TeamsInstance extends Component {
@@ -54,29 +56,51 @@ class TeamsInstance extends Component {
               maxWidth: 345,
             },
           });
-        return (   
+        
 
-           
-            <Card id="teamCard">
-         <CardActionArea>
-         <Typography gutterBottom variant="h5" component="h2">
-             Team name: {this.state.responses_arrays[this.state.i].name}
-          </Typography>
-        <Typography gutterBottom variant="h5" component="h2">
-             Country name: {this.state.responses_arrays[this.state.i].country}
-          </Typography>
-          <Typography gutterBottom variant="h5" component="h2">
-             City name: {this.state.responses_arrays[this.state.i].venue_city}
-          </Typography>
-          <Typography gutterBottom variant="h5" component="h2">
-             Team Logo:
-          </Typography>
-        <CardContent>
-        <img src = {this.state.responses_arrays[this.state.i].logo} alt="no image found"/>        
-        </CardContent>
-      </CardActionArea>
-    </Card>
-            
+          let title = this.state.responses_arrays[this.state.i].team_name
+
+          let mainHeadline = {
+              title: "Main news headline for "+ title ,
+              description:
+                  "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
+              image: 'https://source.unsplash.com/random',
+              imgText: 'main image description',
+              linkText: 'Continue reading…',
+          }
+  
+          /*
+              Update this with actual featured posts
+  
+          */
+  
+          let featuredHeadline = [
+              {
+                title: 'Featured post',
+                date: 'Nov 12',
+                description:
+                  'This is a wider card with supporting text below as a natural lead-in to additional content.',
+                image: 'https://source.unsplash.com/random',
+                imageText: 'Image Text',
+              },
+              {
+                title: 'Post title',
+                date: 'Nov 11',
+                description:
+                  'This is a wider card with supporting text below as a natural lead-in to additional content.',
+                image: 'https://source.unsplash.com/random',
+                imageText: 'Image Text',
+              },
+            ];  
+            let sections = [
+                { title: 'Home', url: '#' },
+                { title: 'Teams', url: '#' },
+                { title: 'Schedule', url: '#' },
+              ]    
+        
+        return (   
+            <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {title}   
+                sections = {sections} />
         );
     }
 
