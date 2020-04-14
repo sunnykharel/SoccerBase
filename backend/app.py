@@ -14,6 +14,7 @@ import time
 from newsapi.newsapi_client import NewsApiClient
 import datetime
 from mongoengine.queryset.visitor import Q
+import math
 
 app = Flask(__name__)
 CORS(app)
@@ -43,8 +44,9 @@ def getCoutriesByName(country_name):
     return (countries_list_dict)
 
 #get country by search
-@app.route('/countries_search/<country_name>')
-def getCoutriesBySearch(country_name):
+@app.route('/countries_search/<country_name>/<page>')
+def getCoutriesBySearch(country_name, page):
+    countries_per_page = 10
     words = country_name.split(" ")
 
     countries_list = []
@@ -68,9 +70,22 @@ def getCoutriesBySearch(country_name):
 
 
     countries_list_dict = {}
-    countries_list_dict['countries_list'] = countries_list
+    countries_list_dict['countries_list'] = countries_list[countries_per_page * int(page) - countries_per_page : countries_per_page * int(page)]
     countries_list_dict['words'] = words
+    countries_list_dict['length'] = len(countries_list)
+    countries_list_dict['num_pages'] = math.ceil(len(countries_list)/countries_per_page)
     return (countries_list_dict)
+
+#get countries sorted
+@app.route('/countries_sort/')
+def getCountriesSorted():
+    countries_list = [country.json() for country in Country.objects().order_by('num_leagues')]
+    #print(teams_list)
+    countries_list_dict = {}
+    countries_list_dict['countries_list'] = countries_list
+    return (countries_list_dict)
+    
+    
 
 
 
@@ -97,8 +112,9 @@ def getLeaguesById(name):
 
 
 #get leagues by search
-@app.route('/leagues_search/<league_name>')
-def getLeaguesBySearch(league_name):
+@app.route('/leagues_search/<league_name>/<page>')
+def getLeaguesBySearch(league_name, page):
+    leagues_per_page = 10
     words = league_name.split(" ")
 
     leagues_list = []
@@ -123,11 +139,13 @@ def getLeaguesBySearch(league_name):
 
 
     leagues_list_dict = {}
-    leagues_list_dict['leagues_list'] = leagues_list
+    leagues_list_dict['leagues_list'] = leagues_list[leagues_per_page * int(page) - leagues_per_page : leagues_per_page * int(page)]
     leagues_list_dict['words'] = words
+    leagues_list_dict['length'] = len(leagues_list)
+    leagues_list_dict['num_pages'] = math.ceil(len(leagues_list)/leagues_per_page)
     return (leagues_list_dict)
 
-
+   
 
 
 
@@ -153,8 +171,9 @@ def getTeamsById(name):
 
 
 #get teams by search
-@app.route('/teams_search/<team_name>')
-def getTeamsBySearch(team_name):
+@app.route('/teams_search/<team_name>/<page>')
+def getTeamsBySearch(team_name, page):
+    teams_per_page = 10
     words = team_name.split(" ")
 
     teams_list = []
@@ -181,24 +200,14 @@ def getTeamsBySearch(team_name):
 
 
     teams_list_dict = {}
-    teams_list_dict['teams_list'] = teams_list
+    teams_list_dict['teams_list'] = teams_list[teams_per_page * int(page) - teams_per_page : teams_per_page * int(page)]
     teams_list_dict['words'] = words
+    teams_list_dict['length'] = len(teams_list)
+    teams_list_dict['num_pages'] = math.ceil(len(teams_list)/teams_per_page)
     return (teams_list_dict)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 
