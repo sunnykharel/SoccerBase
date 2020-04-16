@@ -15,6 +15,7 @@ from newsapi.newsapi_client import NewsApiClient
 import datetime
 from mongoengine.queryset.visitor import Q
 import math
+from flask import request
 
 app = Flask(__name__)
 CORS(app)
@@ -22,6 +23,225 @@ CORS(app)
 @app.route('/')
 def index():
     return "hello world"
+
+
+
+#function for parsing args
+@app.route("/filter")
+def filter():
+    args = request.args
+
+    print(args)
+
+    if args['model'] == 'countries':
+        search = ''
+        
+        countries_list = []
+        if args['direction'] == 'lte':
+            search = args['field'] + '__' + 'lte'
+            #countries_list = [country.json() for country in Country.objects(search = args['value'])]
+            #countries_list = [country.json() for country in Country.objects(__raw__={args['field']+'__lte__' : args['value']})]
+
+        
+        if args['direction'] == 'gte':
+            search = args['field'] + '__' + 'lte= ' + args['value']
+            #countries_list = [country.json() for country in Country.objects(args['field']__lte = args['value'])]
+            countries_list = [country.json() for country in Country.objects(__raw__={args['field']+'__gte__' : args['value']})]
+            
+
+
+        countries_list_dict = {}
+        countries_list_dict['countries_list'] = countries_list
+
+        return countries_list_dict #"No query string received", 200
+
+
+    return "done"
+
+
+
+#function for parsing args
+@app.route("/sort")
+def sort():
+    args = request.args
+
+    print(args)
+
+    #sort countries
+    if args['model'] == 'countries':
+        countries_list = []
+        countries_list_dict = {}
+
+        #sort by three parameters
+        if 'third_param' in args:
+
+            #parse third parameter
+            if args['third_dir'] == 'plus':
+                third = '+' + args['third_param']
+            else:
+                third = '-' + args['third_param']
+
+            #parse second parameter
+            if args['second_dir'] == 'plus':
+                second = '+' + args['second_param']
+            else:
+                second = '-' + args['second_param']
+
+            #parse first paramter
+            if args['first_dir'] == 'plus':
+                first = '+' + args['first_param']
+            else:
+                first = '-' + args['first_param']
+
+            countries_list = [country.json() for country in Country.objects().order_by(first, second, third)]
+            
+
+        #sort by two parameters
+        if 'second_param' in args:
+            #parse second parameter
+            if args['second_dir'] == 'plus':
+                second = '+' + args['second_param']
+            else:
+                second = '-' + args['second_param']
+
+            #parse first paramter
+            if args['first_dir'] == 'plus':
+                first = '+' + args['first_param']
+            else:
+                first = '-' + args['first_param']
+
+            countries_list = [country.json() for country in Country.objects().order_by(first, second)]
+            
+        #sort by only one parameter
+        if args['first_dir'] == 'plus':
+            first = '+' + args['first_param']
+        else:
+            first = '-' + args['first_param']
+        countries_list = [country.json() for country in Country.objects().order_by(first)]
+        
+        countries_list_dict['countries_list'] = countries_list
+
+        return countries_list_dict #"No query string received", 200
+
+
+    #sort leagues
+    if args['model'] == 'leagues':
+        leagues_list = []
+        leagues_list_dict = {}
+
+        #sort by three parameters
+        if 'third_param' in args:
+
+            #parse third parameter
+            if args['third_dir'] == 'plus':
+                third = '+' + args['third_param']
+            else:
+                third = '-' + args['third_param']
+
+            #parse second parameter
+            if args['second_dir'] == 'plus':
+                second = '+' + args['second_param']
+            else:
+                second = '-' + args['second_param']
+
+            #parse first paramter
+            if args['first_dir'] == 'plus':
+                first = '+' + args['first_param']
+            else:
+                first = '-' + args['first_param']
+
+            leagues_list = [league.json() for league in League.objects().order_by(first, second, third)]
+            
+
+        #sort by two parameters
+        if 'second_param' in args:
+            #parse second parameter
+            if args['second_dir'] == 'plus':
+                second = '+' + args['second_param']
+            else:
+                second = '-' + args['second_param']
+
+            #parse first paramter
+            if args['first_dir'] == 'plus':
+                first = '+' + args['first_param']
+            else:
+                first = '-' + args['first_param']
+
+            leagues_list = [league.json() for league in League.objects().order_by(first, second)]
+            
+        #sort by only one parameter
+        if args['first_dir'] == 'plus':
+            first = '+' + args['first_param']
+        else:
+            first = '-' + args['first_param']
+        leagues_list = [league.json() for league in League.objects().order_by(first)]
+        
+        leagues_list_dict['leagues_list'] = leagues_list
+
+        return leagues_list_dict #"No query string received", 200
+
+
+    #sort teams
+    if args['model'] == 'teams':
+        teams_list = []
+        teams_list_dict = {}
+
+        #sort by three parameters
+        if 'third_param' in args:
+
+            #parse third parameter
+            if args['third_dir'] == 'plus':
+                third = '+' + args['third_param']
+            else:
+                third = '-' + args['third_param']
+
+            #parse second parameter
+            if args['second_dir'] == 'plus':
+                second = '+' + args['second_param']
+            else:
+                second = '-' + args['second_param']
+
+            #parse first paramter
+            if args['first_dir'] == 'plus':
+                first = '+' + args['first_param']
+            else:
+                first = '-' + args['first_param']
+
+            teams_list = [team.json() for team in Team.objects().order_by(first, second, third)]
+            
+
+        #sort by two parameters
+        if 'second_param' in args:
+            #parse second parameter
+            if args['second_dir'] == 'plus':
+                second = '+' + args['second_param']
+            else:
+                second = '-' + args['second_param']
+
+            #parse first paramter
+            if args['first_dir'] == 'plus':
+                first = '+' + args['first_param']
+            else:
+                first = '-' + args['first_param']
+
+            teams_list = [team.json() for team in Team.objects().order_by(first, second)]
+            
+        #sort by only one parameter
+        if args['first_dir'] == 'plus':
+            first = '+' + args['first_param']
+        else:
+            first = '-' + args['first_param']
+        teams_list = [team.json() for team in Team.objects().order_by(first)]
+        
+        teams_list_dict['teams_list'] = teams_list
+
+        return teams_list_dict #"No query string received", 200
+
+    return "nothing"
+
+
+
+
 
 #get countries by page
 @app.route('/countries_page/<name>')
