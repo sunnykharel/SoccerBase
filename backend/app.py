@@ -33,27 +33,35 @@ def filter():
 
     print(args)
 
-    if args['model'] == 'countries':
-        search = ''
-        
+    if args['model'] == 'countries':        
         countries_list = []
-        if args['direction'] == 'lte':
-            search = args['field'] + '__' + 'lte'
-            #countries_list = [country.json() for country in Country.objects(search = args['value'])]
-            #countries_list = [country.json() for country in Country.objects(__raw__={args['field']+'__lte__' : args['value']})]
+        countries_list_add = []
 
-        
-        if args['direction'] == 'gte':
-            search = args['field'] + '__' + 'lte= ' + args['value']
-            #countries_list = [country.json() for country in Country.objects(args['field']__lte = args['value'])]
-            countries_list = [country.json() for country in Country.objects(__raw__={args['field']+'__gte__' : args['value']})]
+        #filter by first parameter
+        if args['first_value'].isdigit():
+            print ('here')
+            if args['first_dir'] == 'lte':
+                countries_list_add = [country.json() for country in Country.objects(__raw__={ args['first_field']: { "$lte": int(args['first_value']) } })]
+            if args['first_dir'] == 'gte':
+                countries_list_add = [country.json() for country in Country.objects(__raw__={ args['first_field']: { "$gte": int(args['first_value']) } })]
+        else:
+            countries_list_add = [country.json() for country in Country.objects(__raw__={ args['first_field']: { "$eq": (args['first_value'].title())} })]
+
+        countries_list.extend(countries_list_add)
+
+
+
+        # if args['direction'] == 'gte':
+        #     search = args['field'] + '__' + 'lte= ' + args['value']
+        #     countries_list = [country.json() for country in Country.objects(name__iexact = 'india')]
+        #countries_list = [country.json() for country in Country.objects(__raw__={ args['first_field']: { "$gte": int(args['first_value']) } })]
             
 
 
         countries_list_dict = {}
         countries_list_dict['countries_list'] = countries_list
 
-        return countries_list_dict #"No query string received", 200
+        return countries_list_dict
 
 
     return "done"
