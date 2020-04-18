@@ -33,13 +33,37 @@ def filter():
 
     print(args)
 
+    #countries --------------------------------------------------------------------------------------------------------------------
     if args['model'] == 'countries':        
         countries_list = []
         countries_list_add = []
 
+        #filter by third parameter
+        if 'third_field' in args:
+            if args['third_value'].isdigit():
+                if args['third_dir'] == 'lte':
+                    countries_list_add = [country.json() for country in Country.objects(__raw__={ args['third_field']: { "$lte": int(args['third_value']) } })]
+                if args['third_dir'] == 'gte':
+                    countries_list_add = [country.json() for country in Country.objects(__raw__={ args['third_field']: { "$gte": int(args['third_value']) } })]
+            else:
+                countries_list_add = [country.json() for country in Country.objects(__raw__={ args['third_field']: { "$eq": (args['third_value'].title())} })]
+
+            countries_list.extend(countries_list_add)
+
+        #filter by second parameter
+        if 'second_field' in args:
+            if args['second_value'].isdigit():
+                if args['second_dir'] == 'lte':
+                    countries_list_add = [country.json() for country in Country.objects(__raw__={ args['second_field']: { "$lte": int(args['second_value']) } })]
+                if args['second_dir'] == 'gte':
+                    countries_list_add = [country.json() for country in Country.objects(__raw__={ args['second_field']: { "$gte": int(args['second_value']) } })]
+            else:
+                countries_list_add = [country.json() for country in Country.objects(__raw__={ args['second_field']: { "$eq": (args['second_value'].title())} })]
+
+            countries_list.extend(countries_list_add)
+
         #filter by first parameter
         if args['first_value'].isdigit():
-            print ('here')
             if args['first_dir'] == 'lte':
                 countries_list_add = [country.json() for country in Country.objects(__raw__={ args['first_field']: { "$lte": int(args['first_value']) } })]
             if args['first_dir'] == 'gte':
@@ -49,20 +73,104 @@ def filter():
 
         countries_list.extend(countries_list_add)
 
-
-
-        # if args['direction'] == 'gte':
-        #     search = args['field'] + '__' + 'lte= ' + args['value']
-        #     countries_list = [country.json() for country in Country.objects(name__iexact = 'india')]
-        #countries_list = [country.json() for country in Country.objects(__raw__={ args['first_field']: { "$gte": int(args['first_value']) } })]
-            
-
-
         countries_list_dict = {}
         countries_list_dict['countries_list'] = countries_list
 
         return countries_list_dict
 
+
+
+    #leagues------------------------------------------------------------------------------------------------------------
+    if args['model'] == 'leagues':        
+        leagues_list = []
+        leagues_list_add = []
+
+        #filter by third parameter
+        if 'third_field' in args:
+            if args['third_value'].isdigit():
+                if args['third_dir'] == 'lte':
+                    leagues_list_add = [league.json() for league in League.objects(__raw__={ args['third_field']: { "$lte": int(args['third_value']) } })]
+                if args['third_dir'] == 'gte':
+                    leagues_list_add = [league.json() for league in League.objects(__raw__={ args['third_field']: { "$gte": int(args['third_value']) } })]
+            else:
+                leagues_list_add = [league.json() for league in League.objects(__raw__={ args['third_field']: { "$eq": (args['third_value'].title())} })]
+
+            leagues_list.extend(leagues_list_add)
+
+        #filter by second parameter
+        if 'second_field' in args:
+            if args['second_value'].isdigit():
+                if args['second_dir'] == 'lte':
+                    leagues_list_add = [league.json() for league in League.objects(__raw__={ args['second_field']: { "$lte": int(args['second_value']) } })]
+                if args['second_dir'] == 'gte':
+                    leagues_list_add = [league.json() for league in League.objects(__raw__={ args['second_field']: { "$gte": int(args['second_value']) } })]
+            else:
+                leagues_list_add = [league.json() for league in League.objects(__raw__={ args['second_field']: { "$eq": (args['second_value'].title())} })]
+
+            leagues_list.extend(leagues_list_add)
+
+        #filter by first parameter
+        if args['first_value'].isdigit():
+            if args['first_dir'] == 'lte':
+                leagues_list_add = [league.json() for league in League.objects(__raw__={ args['first_field']: { "$lte": int(args['first_value']) } })]
+            if args['first_dir'] == 'gte':
+                leagues_list_add = [league.json() for league in League.objects(__raw__={ args['first_field']: { "$gte": int(args['first_value']) } })]
+        else:
+            leagues_list_add = [league.json() for league in League.objects(__raw__={ args['first_field']: { "$eq": (args['first_value'].title())} })]
+
+        leagues_list.extend(leagues_list_add)
+
+        leagues_list_dict = {}
+        leagues_list_dict['leagues_list'] = leagues_list
+
+        return leagues_list_dict
+
+
+
+    #teams------------------------------------------------------------------------------------------------------------
+    if args['model'] == 'teams':        
+        teams_list = []
+        teams_list_add = []
+
+        #filter by third parameter
+        if 'third_field' in args:
+            if args['third_value'].isdigit():
+                if args['third_dir'] == 'lte':
+                    teams_list_add = [team.json() for team in Team.objects(__raw__={ args['third_field']: { "$lte": int(args['third_value']) } })]
+                if args['third_dir'] == 'gte':
+                    teams_list_add = [team.json() for team in Team.objects(__raw__={ args['third_field']: { "$gte": int(args['third_value']) } })]
+            else:
+                teams_list_add = [team.json() for team in Team.objects(__raw__={ args['third_field']: { "$eq": (args['third_value'].title())} })]
+
+            teams_list.extend(teams_list_add)
+
+        #filter by second parameter
+        if 'second_field' in args:
+            if args['second_value'].isdigit():
+                if args['second_dir'] == 'lte':
+                    teams_list_add = [team.json() for team in Team.objects(__raw__={ args['second_field']: { "$lte": int(args['second_value']) } })]
+                if args['second_dir'] == 'gte':
+                    teams_list_add = [team.json() for team in Team.objects(__raw__={ args['second_field']: { "$gte": int(args['second_value']) } })]
+            else:
+                teams_list_add = [team.json() for team in Team.objects(__raw__={ args['second_field']: { "$eq": (args['second_value'].title())} })]
+
+            teams_list.extend(teams_list_add)
+
+        #filter by first parameter
+        if args['first_value'].isdigit():
+            if args['first_dir'] == 'lte':
+                teams_list_add = [team.json() for team in Team.objects(__raw__={ args['first_field']: { "$lte": int(args['first_value']) } })]
+            if args['first_dir'] == 'gte':
+                teams_list_add = [team.json() for team in Team.objects(__raw__={ args['first_field']: { "$gte": int(args['first_value']) } })]
+        else:
+            teams_list_add = [team.json() for team in Team.objects(__raw__={ args['first_field']: { "$eq": (args['first_value'].title())} })]
+
+        teams_list.extend(teams_list_add)
+
+        teams_list_dict = {}
+        teams_list_dict['teams_list'] = teams_list
+
+        return teams_list_dict
 
     return "done"
 
