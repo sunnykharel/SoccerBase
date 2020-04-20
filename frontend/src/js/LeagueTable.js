@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(name, points) {
+function createData(name, numTeams) {
   return { name, numTeams };
 }
 
