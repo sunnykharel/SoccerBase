@@ -40,12 +40,81 @@ Type this to test the request:
 http://127.0.0.1:5000/country?area={"gt":5000}&sort={"region":"-"}
 
 
+
+args = {}
+
+'area' in args
+
+area{
+    "gt":5000,
+    "lt":20000
+}
+
+area__gt = value
+
+
+for key, value in dict.items():
+
+
+**kwargs
+
+filters = {
+    'area__gt': 5000,
+    'region_iexact': "Africa",
+
+}
+
+
+
 '''
 
 @app.route('/country')
 def country():
     args = request.args
     supported_filters = ['area', 'population', 'region', 'subregion', 'num_leagues']
+    supported_sorts = ['area', 'population', 'region', 'subregion', 'num_leagues', 'name']
+    filters = {}
+    for filter_name in supported_filters:
+        if filter_name in args:
+            for operation, value in json.loads(args[filter_name]).items():
+                filters[ '{}__{}'.format(filter_name, operation) ] = value
+
+    #now to sort the query
+    order_bys = ['']
+    if 'sort' in args:
+        print(args['sort'])
+        sort_json = json.loads(args['sort'])
+        sort_value = next(iter(sort_json))
+        if sort_value in supported_sorts:
+
+            direction = sort_json[sort_value]
+            sort_string = '{}{}'.format(direction, sort_value)
+            order_bys.append(sort_string)    
+    '''
+
+    add pagination here 
+
+
+    '''
+    query = Country.objects().filter(**filters).order_by(*sorts)
+    countries_list = [country.json() for country in query]
+    countries_list_dict = {}
+    countries_list_dict['countries_list'] = countries_list
+    return json.dumps(countries_list_dict)
+
+'''
+supported filters:
+    area: numeric
+    population: numeric
+    region: alphabetical
+    subregion: alphabetical 
+    num_leagues: numeric
+'''
+
+@app.route('/team')
+def teams():
+    args = request.args
+    supported_filters = ['is_national', 'league_name', 'country', 'subregion', 'num_leagues']
     supported_sorts = ['area', 'population', 'region', 'subregion', 'num_leagues', 'name']
     filters = {}
     for filter_name in supported_filters:
@@ -67,29 +136,6 @@ def country():
     countries_list_dict = {}
     countries_list_dict['countries_list'] = countries_list
 
-
-    '''
-
-    add pagination here 
-
-
-    '''
-
-    return json.dumps(countries_list_dict)
-
-'''
-supported filters:
-    area: numeric
-    population: numeric
-    region: alphabetical
-    subregion: alphabetical 
-    num_leagues: numeric
-'''
-
-@app.route('/team')
-def teams():
-    return 'here'
-
 '''
 type_ : string
 country: string
@@ -97,7 +143,6 @@ season : string
 season_start : string
 season_end : string
 num_teams : numeric
-
 '''
 
 @app.route('/league')
