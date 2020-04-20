@@ -13,8 +13,8 @@ Tanay
 -Actual completion time: 9 hrs
 
 Sunny 
--Estimated completion time: 15 hours
--Actual completion time: 15 hours
+-Estimated completion time: 50 hours
+-Actual completion time: 75 hours
 
 Parm
 -Estimated completion time: 6 hours
