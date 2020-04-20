@@ -18,6 +18,7 @@ from flask import request
 import json
 from functools import reduce
 from mongoengine import Q
+import math
 
 
 
@@ -70,36 +71,50 @@ filters = {
 
 @app.route('/country')
 def country():
+    #cpp is the number of countries to display on each page
+    cpp = 12
     args = request.args
+    print (args)
     supported_filters = ['area', 'population', 'region', 'subregion', 'num_leagues']
     supported_sorts = ['area', 'population', 'region', 'subregion', 'num_leagues', 'name']
     filters = {}
+    
+    
     for filter_name in supported_filters:
         if filter_name in args:
             for operation, value in json.loads(args[filter_name]).items():
                 filters[ '{}__{}'.format(filter_name, operation) ] = value
 
     #now to sort the query
-    order_bys = ['']
-    if 'sort' in args:
-        print(args['sort'])
-        sort_json = json.loads(args['sort'])
-        sort_value = next(iter(sort_json))
-        if sort_value in supported_sorts:
+    sort1 = ''
+    sort2 = ''
+    sort3 = ''
 
-            direction = sort_json[sort_value]
-            sort_string = '{}{}'.format(direction, sort_value)
-            order_bys.append(sort_string)    
-    '''
+    if 'sort1' in args:
+        sort1 = args['sort1']
+    if 'sort2' in args:
+        sort2 = args['sort2']
+    if 'sort3' in args:
+        sort3 = args['sort3']
 
-    add pagination here 
+    # order_bys = ['']
+    # if 'sort' in args:
+    #     print(args['sort'])
+    #     sort_json = json.loads(args['sort'])
+    #     sort_value = next(iter(sort_json))
+    #     if sort_value in supported_sorts:
 
+    #         direction = sort_json[sort_value]
+    #         sort_string = '{}{}'.format(direction, sort_value)
+    #         order_bys.append(sort_string)    
 
-    '''
-    query = Country.objects().filter(**filters).order_by(*sorts)
+    query = Country.objects().filter(**filters).order_by(sort1, sort2, sort3)#.skip((cpp*int(args['page']))-cpp).limit(cpp)
     countries_list = [country.json() for country in query]
+
     countries_list_dict = {}
-    countries_list_dict['countries_list'] = countries_list
+    countries_list_dict['countries_list'] = countries_list[cpp * int(args['page']) - cpp : cpp * int(args['page'])]
+    countries_list_dict['num_entries'] = len(countries_list)
+    countries_list_dict['num_pages'] = math.ceil(len(countries_list)/cpp)
     return json.dumps(countries_list_dict)
 
 '''
