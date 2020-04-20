@@ -11,587 +11,120 @@ import json
 from mongoengine import *   
 from flask_cors import CORS
 import time
-from newsapi.newsapi_client import NewsApiClient
+#from newsapi.newsapi_client import NewsApiClient
 import datetime
-from mongoengine.queryset.visitor import Q
-import math
 from flask import request
+
+import json
+from functools import reduce
+from mongoengine import Q
+
+
+
+
 
 app = Flask(__name__)
 CORS(app)
+
+'''
+supported filters:
+area: numeric
+population: numeric
+region: alphabetical
+subregion: alphabetical 
+num_leagues: numeric
+
+example request ?area={'gt': 30}&sort={country: '-'}
+
+Type this to test the request:
+http://127.0.0.1:5000/country?area={"gt":5000}&sort={"region":"-"}
+
+
+'''
+
+@app.route('/country')
+def country():
+    args = request.args
+    supported_filters = ['area', 'population', 'region', 'subregion', 'num_leagues']
+    supported_sorts = ['area', 'population', 'region', 'subregion', 'num_leagues', 'name']
+    filters = {}
+    for filter_name in supported_filters:
+        if filter_name in args:
+            for operation, value in json.loads(args[filter_name]).items():
+                filters[ '{}__{}'.format(filter_name, operation) ] = value
+    query = Country.objects().filter(**filters)
+
+    #now to sort the query
+    if 'sort' in args:
+        print(args['sort'])
+        sort_json = json.loads(args['sort'])
+        sort_value = next(iter(sort_json))
+        if sort_value in supported_sorts:
+            direction = sort_json[sort_value]
+            sort_string = '{}{}'.format(direction, sort_value)
+            query = query.order_by(sort_string)     
+    countries_list = [country.json() for country in query]
+    countries_list_dict = {}
+    countries_list_dict['countries_list'] = countries_list
+
+
+    '''
+
+    add pagination here 
+
+
+    '''
+
+    return json.dumps(countries_list_dict)
+
+'''
+supported filters:
+    area: numeric
+    population: numeric
+    region: alphabetical
+    subregion: alphabetical 
+    num_leagues: numeric
+'''
+
+@app.route('/team')
+def teams():
+    return 'here'
+
+'''
+type_ : string
+country: string
+season : string
+season_start : string
+season_end : string
+num_teams : numeric
+
+'''
+
+@app.route('/league')
+def league():
+    return 'here'
+
+@app.route('/filter')
+def filter():
+    args = request.args
+    if 'search' in args:
+        return prepare_filters(args['search'])
+
+    return 'false'
+
+
 
 @app.route('/')
 def index():
     return "hello world"
 
-
-
-#function for parsing args
-@app.route("/order")
-def filter():
-    args = request.args
-
-    print(args)
-
-    #parse the sort params
-    first = ''
-    second = ''
-    third = ''
-
-    if 'third_param' in args:
-        #parse third parameter
-        if args['third_dir'] == 'plus':
-            third = '+' + args['third_param']
-        else:
-            third = '-' + args['third_param']
-
-    if 'second_param' in args:
-        #parse second parameter
-        if args['second_dir'] == 'plus':
-            second = '+' + args['second_param']
-        else:
-            second = '-' + args['second_param']
-
-    if 'first_param' in args:
-        #parse first paramter
-        if args['first_dir'] == 'plus':
-            first = '+' + args['first_param']
-        else:
-            first = '-' + args['first_param']
-
-
-    #just sorting and no filtering
-    if args['sort'] == 'true' and args['filter'] == 'false':
-        if args['model'] == 'countries':
-            countries_list_dict = {}
-            countries_list = [country.json() for country in Country.objects().order_by(first, second, third)]
-            countries_list_dict['countries_list'] = countries_list
-            return countries_list_dict
-
-        if args['model'] == 'leagues':
-            leagues_list_dict = {}
-            leagues_list = [league.json() for league in League.objects().order_by(first, second, third)]
-            leagues_list_dict['leagues_list'] = leagues_list
-            return leagues_list_dict
-
-        if args['model'] == 'teams':
-            teams_list_dict = {}
-            teams_list = [team.json() for team in Team.objects().order_by(first, second, third)]
-            teams_list_dict['teams_list'] = teams_list
-            return teams_list_dict
-
-
-    #countries --------------------------------------------------------------------------------------------------------------------
-    if args['model'] == 'countries':        
-        countries_list = []
-        countries_list_add = []
-
-        #filter by third parameter
-        if 'filter_third_field' in args:
-            if args['filter_third_value'].isdigit():
-                if args['filter_third_dir'] == 'lte':
-                    countries_list_add = [country.json() for country in Country.objects(__raw__={ args['filter_third_field']: { "$lte": int(args['filter_third_value']) } }).order_by(first, second, third)]
-                if args['filter_third_dir'] == 'gte':
-                    countries_list_add = [country.json() for country in Country.objects(__raw__={ args['filter_third_field']: { "$gte": int(args['filter_third_value']) } }).order_by(first, second, third)]
-            else:
-                countries_list_add = [country.json() for country in Country.objects(__raw__={ args['filter_third_field']: { "$eq": (args['filter_third_value'].title())} }).order_by(first, second, third)]
-
-            countries_list.extend(countries_list_add)
-
-        #filter by second parameter
-        if 'filter_second_field' in args:
-            if args['filter_second_value'].isdigit():
-                if args['filter_second_dir'] == 'lte':
-                    countries_list_add = [country.json() for country in Country.objects(__raw__={ args['filter_second_field']: { "$lte": int(args['filter_second_value']) } }).order_by(first, second, third)]
-                if args['filter_second_dir'] == 'gte':
-                    countries_list_add = [country.json() for country in Country.objects(__raw__={ args['filter_second_field']: { "$gte": int(args['filter_second_value']) } }).order_by(first, second, third)]
-            else:
-                countries_list_add = [country.json() for country in Country.objects(__raw__={ args['filter_second_field']: { "$eq": (args['filter_second_value'].title())} }).order_by(first, second, third)]
-
-            countries_list.extend(countries_list_add)
-
-        #filter by first parameter
-        if args['filter_first_value'].isdigit():
-            if args['filter_first_dir'] == 'lte':
-                countries_list_add = [country.json() for country in Country.objects(__raw__={ args['filter_first_field']: { "$lte": int(args['filter_first_value']) } }).order_by(first, second, third)]
-            if args['filter_first_dir'] == 'gte':
-                countries_list_add = [country.json() for country in Country.objects(__raw__={ args['filter_first_field']: { "$gte": int(args['filter_first_value']) } }).order_by(first, second, third)]
-        else:
-            countries_list_add = [country.json() for country in Country.objects(__raw__={ args['filter_first_field']: { "$eq": (args['filter_first_value'].title())} }).order_by(first, second, third)]
-
-        countries_list.extend(countries_list_add)
-
-        countries_list_dict = {}
-        countries_list_dict['countries_list'] = countries_list
-
-        return countries_list_dict
-
-
-
-    #leagues------------------------------------------------------------------------------------------------------------
-    if args['model'] == 'leagues':        
-        leagues_list = []
-        leagues_list_add = []
-
-        #filter by third parameter
-        if 'filter_third_field' in args:
-            if args['filter_third_value'].isdigit():
-                if args['filter_third_dir'] == 'lte':
-                    leagues_list_add = [league.json() for league in League.objects(__raw__={ args['filter_third_field']: { "$lte": int(args['filter_third_value']) } }).order_by(first, second, third)]
-                if args['filter_third_dir'] == 'gte':
-                    leagues_list_add = [league.json() for league in League.objects(__raw__={ args['filter_third_field']: { "$gte": int(args['filter_third_value']) } }).order_by(first, second, third)]
-            else:
-                leagues_list_add = [league.json() for league in League.objects(__raw__={ args['filter_third_field']: { "$eq": (args['filter_third_value'].title())} }).order_by(first, second, third)]
-
-            leagues_list.extend(leagues_list_add)
-
-        #filter by second parameter
-        if 'filter_second_field' in args:
-            if args['filter_second_value'].isdigit():
-                if args['filter_second_dir'] == 'lte':
-                    leagues_list_add = [league.json() for league in League.objects(__raw__={ args['filter_second_field']: { "$lte": int(args['filter_second_value']) } }).order_by(first, second, third)]
-                if args['filter_second_dir'] == 'gte':
-                    leagues_list_add = [league.json() for league in League.objects(__raw__={ args['filter_second_field']: { "$gte": int(args['filter_second_value']) } }).order_by(first, second, third)]
-            else:
-                leagues_list_add = [league.json() for league in League.objects(__raw__={ args['filter_second_field']: { "$eq": (args['filter_second_value'].title())} }).order_by(first, second, third)]
-
-            leagues_list.extend(leagues_list_add)
-
-        #filter by first parameter
-        if args['filter_first_value'].isdigit():
-            if args['filter_first_dir'] == 'lte':
-                leagues_list_add = [league.json() for league in League.objects(__raw__={ args['filter_first_field']: { "$lte": int(args['filter_first_value']) } }).order_by(first, second, third)]
-            if args['filter_first_dir'] == 'gte':
-                leagues_list_add = [league.json() for league in League.objects(__raw__={ args['filter_first_field']: { "$gte": int(args['filter_first_value']) } }).order_by(first, second, third)]
-        else:
-            leagues_list_add = [league.json() for league in League.objects(__raw__={ args['filter_first_field']: { "$eq": (args['filter_first_value'].title())} }).order_by(first, second, third)]
-
-        leagues_list.extend(leagues_list_add)
-
-        leagues_list_dict = {}
-        leagues_list_dict['leagues_list'] = leagues_list
-
-        return leagues_list_dict
-
-
-
-    #teams------------------------------------------------------------------------------------------------------------
-    if args['model'] == 'teams':        
-        teams_list = []
-        teams_list_add = []
-
-        #filter by third parameter
-        if 'filter_third_field' in args:
-            if args['filter_third_value'].isdigit():
-                if args['filter_third_dir'] == 'lte':
-                    teams_list_add = [team.json() for team in Team.objects(__raw__={ args['filter_third_field']: { "$lte": int(args['filter_third_value']) } }).order_by(first, second, third)]
-                if args['filter_third_dir'] == 'gte':
-                    teams_list_add = [team.json() for team in Team.objects(__raw__={ args['filter_third_field']: { "$gte": int(args['filter_third_value']) } }).order_by(first, second, third)]
-            else:
-                teams_list_add = [team.json() for team in Team.objects(__raw__={ args['filter_third_field']: { "$eq": (args['filter_third_value'].title())} }).order_by(first, second, third)]
-
-            teams_list.extend(teams_list_add)
-
-        #filter by second parameter
-        if 'filter_second_field' in args:
-            if args['filter_second_value'].isdigit():
-                if args['filter_second_dir'] == 'lte':
-                    teams_list_add = [team.json() for team in Team.objects(__raw__={ args['filter_second_field']: { "$lte": int(args['filter_second_value']) } }).order_by(first, second, third)]
-                if args['filter_second_dir'] == 'gte':
-                    teams_list_add = [team.json() for team in Team.objects(__raw__={ args['filter_second_field']: { "$gte": int(args['filter_second_value']) } }).order_by(first, second, third)]
-            else:
-                teams_list_add = [team.json() for team in Team.objects(__raw__={ args['filter_second_field']: { "$eq": (args['filter_second_value'].title())} }).order_by(first, second, third)]
-
-            teams_list.extend(teams_list_add)
-
-        #filter by first parameter
-        if args['filter_first_value'].isdigit():
-            if args['filter_first_dir'] == 'lte':
-                teams_list_add = [team.json() for team in Team.objects(__raw__={ args['filter_first_field']: { "$lte": int(args['filter_first_value']) } }).order_by(first, second, third)]
-            if args['filter_first_dir'] == 'gte':
-                teams_list_add = [team.json() for team in Team.objects(__raw__={ args['filter_first_field']: { "$gte": int(args['filter_first_value']) } }).order_by(first, second, third)]
-        else:
-            teams_list_add = [team.json() for team in Team.objects(__raw__={ args['filter_first_field']: { "$eq": (args['filter_first_value'].title())} }).order_by(first, second, third)]
-
-        teams_list.extend(teams_list_add)
-
-        teams_list_dict = {}
-        teams_list_dict['teams_list'] = teams_list
-
-        return teams_list_dict
-
-    return "done"
-
-
-#function for parsing args
-@app.route("/sort")
-def sort():
-    args = request.args
-
-    print(args)
-
-    #sort countries
-    if args['model'] == 'countries':
-        countries_list = []
-        countries_list_dict = {}
-
-        #sort by three parameters
-        if 'third_param' in args:
-
-            #parse third parameter
-            if args['third_dir'] == 'plus':
-                third = '+' + args['third_param']
-            else:
-                third = '-' + args['third_param']
-
-            #parse second parameter
-            if args['second_dir'] == 'plus':
-                second = '+' + args['second_param']
-            else:
-                second = '-' + args['second_param']
-
-            #parse first paramter
-            if args['first_dir'] == 'plus':
-                first = '+' + args['first_param']
-            else:
-                first = '-' + args['first_param']
-
-            countries_list = [country.json() for country in Country.objects().order_by(first, second, third)]
-            
-
-        #sort by two parameters
-        if 'second_param' in args:
-            #parse second parameter
-            if args['second_dir'] == 'plus':
-                second = '+' + args['second_param']
-            else:
-                second = '-' + args['second_param']
-
-            #parse first paramter
-            if args['first_dir'] == 'plus':
-                first = '+' + args['first_param']
-            else:
-                first = '-' + args['first_param']
-
-            countries_list = [country.json() for country in Country.objects().order_by(first, second)]
-            
-        #sort by only one parameter
-        if args['first_dir'] == 'plus':
-            first = '+' + args['first_param']
-        else:
-            first = '-' + args['first_param']
-        countries_list = [country.json() for country in Country.objects().order_by(first)]
-        
-        countries_list_dict['countries_list'] = countries_list
-
-        return countries_list_dict #"No query string received", 200
-
-
-    #sort leagues
-    if args['model'] == 'leagues':
-        leagues_list = []
-        leagues_list_dict = {}
-
-        #sort by three parameters
-        if 'third_param' in args:
-
-            #parse third parameter
-            if args['third_dir'] == 'plus':
-                third = '+' + args['third_param']
-            else:
-                third = '-' + args['third_param']
-
-            #parse second parameter
-            if args['second_dir'] == 'plus':
-                second = '+' + args['second_param']
-            else:
-                second = '-' + args['second_param']
-
-            #parse first paramter
-            if args['first_dir'] == 'plus':
-                first = '+' + args['first_param']
-            else:
-                first = '-' + args['first_param']
-
-            leagues_list = [league.json() for league in League.objects().order_by(first, second, third)]
-            
-
-        #sort by two parameters
-        if 'second_param' in args:
-            #parse second parameter
-            if args['second_dir'] == 'plus':
-                second = '+' + args['second_param']
-            else:
-                second = '-' + args['second_param']
-
-            #parse first paramter
-            if args['first_dir'] == 'plus':
-                first = '+' + args['first_param']
-            else:
-                first = '-' + args['first_param']
-
-            leagues_list = [league.json() for league in League.objects().order_by(first, second)]
-            
-        #sort by only one parameter
-        if args['first_dir'] == 'plus':
-            first = '+' + args['first_param']
-        else:
-            first = '-' + args['first_param']
-        leagues_list = [league.json() for league in League.objects().order_by(first)]
-        
-        leagues_list_dict['leagues_list'] = leagues_list
-
-        return leagues_list_dict #"No query string received", 200
-
-
-    #sort teams
-    if args['model'] == 'teams':
-        teams_list = []
-        teams_list_dict = {}
-
-        #sort by three parameters
-        if 'third_param' in args:
-
-            #parse third parameter
-            if args['third_dir'] == 'plus':
-                third = '+' + args['third_param']
-            else:
-                third = '-' + args['third_param']
-
-            #parse second parameter
-            if args['second_dir'] == 'plus':
-                second = '+' + args['second_param']
-            else:
-                second = '-' + args['second_param']
-
-            #parse first paramter
-            if args['first_dir'] == 'plus':
-                first = '+' + args['first_param']
-            else:
-                first = '-' + args['first_param']
-
-            teams_list = [team.json() for team in Team.objects().order_by(first, second, third)]
-            
-
-        #sort by two parameters
-        if 'second_param' in args:
-            #parse second parameter
-            if args['second_dir'] == 'plus':
-                second = '+' + args['second_param']
-            else:
-                second = '-' + args['second_param']
-
-            #parse first paramter
-            if args['first_dir'] == 'plus':
-                first = '+' + args['first_param']
-            else:
-                first = '-' + args['first_param']
-
-            teams_list = [team.json() for team in Team.objects().order_by(first, second)]
-            
-        #sort by only one parameter
-        if args['first_dir'] == 'plus':
-            first = '+' + args['first_param']
-        else:
-            first = '-' + args['first_param']
-        teams_list = [team.json() for team in Team.objects().order_by(first)]
-        
-        teams_list_dict['teams_list'] = teams_list
-
-        return teams_list_dict #"No query string received", 200
-
-    return "nothing"
-
-
-
-
-
-#get countries by page
-@app.route('/countries_page/<name>')
-def getCoutriesByPage(name):
-    countries_per_page = 10
-    countries_list = [country.json() for country in Country.objects().skip((countries_per_page*int(name))-countries_per_page).limit(countries_per_page)]
-    #print(teams_list)
-    countries_list_dict = {}
-    countries_list_dict['countries_list'] = countries_list
-    return (countries_list_dict)
-
-
-#get country by name
-@app.route('/countries_name/<country_name>')
-def getCoutriesByName(country_name):
-    countries_list = [country.json() for country in Country.objects(name=country_name)]
-    #print(teams_list)
-    countries_list_dict = {}
-    countries_list_dict['countries_list'] = countries_list
-    return (countries_list_dict)
-
-#get country by search
-@app.route('/countries_search/<country_name>/<page>')
-def getCoutriesBySearch(country_name, page):
-    countries_per_page = 10
-    words = country_name.split(" ")
-
-    countries_list = []
-
-    for word in words:
-        countries_list_add = [country.json() for country in Country.objects(Q(name__icontains=word) | 
-                                                                            Q(code__icontains=word) | 
-                                                                            Q(flag__icontains=word) | 
-                                                                            Q(demonym__icontains=word) | 
-                                                                            Q(capital__icontains=word) | 
-                                                                            Q(region__icontains=word) |  
-                                                                            Q(subregion__icontains=word))]
-        countries_list.extend(countries_list_add)
-
-    for numbers in words: #any words that are integers
-        if(numbers.isdigit()): # is a number
-            countries_list_add = [country.json() for country in Country.objects(Q(population__gte=int(numbers)) | 
-                                                                                Q(area__gte=int(numbers)) | 
-                                                                                Q(num_leagues__gte=int(numbers)))] 
-            countries_list.extend(countries_list_add)
-
-
-    countries_list_dict = {}
-    countries_list_dict['countries_list'] = countries_list[countries_per_page * int(page) - countries_per_page : countries_per_page * int(page)]
-    countries_list_dict['words'] = words
-    countries_list_dict['length'] = len(countries_list)
-    countries_list_dict['num_pages'] = math.ceil(len(countries_list)/countries_per_page)
-    return (countries_list_dict)
-
-#get countries sorted
-@app.route('/countries_sort/')
-def getCountriesSorted():
-    countries_list = [country.json() for country in Country.objects().order_by('num_leagues')]
-    #print(teams_list)
-    countries_list_dict = {}
-    countries_list_dict['countries_list'] = countries_list
-    return (countries_list_dict)
-    
-    
-
-
-
-
-#get leagues by page
-@app.route('/leagues_page/<name>')
-def getLeaguesByPage(name):
-    leagues_per_page = 10
-    leagues_list = [league.json() for league in League.objects().skip((leagues_per_page*int(name))-leagues_per_page).limit(leagues_per_page)]
-    #print(teams_list)
-    leagues_list_dict = {}
-    leagues_list_dict['leagues_list'] = leagues_list
-    return (leagues_list_dict)
-
-
-#get leagues by id
-@app.route('/leagues_id/<name>')
-def getLeaguesById(name):
-    leagues_list = [league.json() for league in League.objects(league_id=int(name))]
-    #print(teams_list)
-    leagues_list_dict = {}
-    leagues_list_dict['leagues_list'] = leagues_list
-    return (leagues_list_dict)
-
-
-#get leagues by search
-@app.route('/leagues_search/<league_name>/<page>')
-def getLeaguesBySearch(league_name, page):
-    leagues_per_page = 10
-    words = league_name.split(" ")
-
-    leagues_list = []
-
-    for word in words:
-        leagues_list_add = [league.json() for league in League.objects(Q(name__icontains=word) | 
-                                                                        Q(type___icontains=word) | 
-                                                                        Q(country__icontains=word) | 
-                                                                        Q(country_code__icontains=word) | 
-                                                                        Q(season_start__icontains=word) | 
-                                                                        Q(season_end__icontains=word) |  
-                                                                        Q(logo__icontains=word) |  
-                                                                        Q(flag__icontains=word))]
-        leagues_list.extend(leagues_list_add)
-
-    for numbers in words: #any words that are integers
-        if(numbers.isdigit()): # is a number
-            leagues_list_add = [league.json() for league in League.objects(Q(league_id=int(numbers)) | 
-                                                                            Q(season=int(numbers)) | 
-                                                                            Q(num_teams=int(numbers)))] 
-            leagues_list.extend(leagues_list_add)
-
-
-    leagues_list_dict = {}
-    leagues_list_dict['leagues_list'] = leagues_list[leagues_per_page * int(page) - leagues_per_page : leagues_per_page * int(page)]
-    leagues_list_dict['words'] = words
-    leagues_list_dict['length'] = len(leagues_list)
-    leagues_list_dict['num_pages'] = math.ceil(len(leagues_list)/leagues_per_page)
-    return (leagues_list_dict)
-
-   
-
-
-
-
-#get teams by page
-@app.route('/teams_page/<name>')
-def getTeamsByPage(name):
-    teams_per_page = 10
-    teams_list = [team.json() for team in Team.objects().skip((teams_per_page*int(name))-teams_per_page).limit(teams_per_page)]
-    #print(teams_list)
+@app.route('/yahh')
+def yahh():
+    docs = [Team, League, Country]
+    teams_list = [team.json() for team in docs[1].objects()]
     teams_list_dict = {}
     teams_list_dict['teams_list'] = teams_list
-    return (teams_list_dict)
-
-
-#get team by team_id
-@app.route('/teams_id/<name>')
-def getTeamsById(name):
-    teams_list = [team.json() for team in Team.objects(team_id=int(name))]
-    teams_list_dict = {}
-    teams_list_dict['teams_list'] = teams_list
-    return (teams_list_dict)
-
-
-#get teams by search
-@app.route('/teams_search/<team_name>/<page>')
-def getTeamsBySearch(team_name, page):
-    teams_per_page = 10
-    words = team_name.split(" ")
-
-    teams_list = []
-
-    for word in words:
-        teams_list_add = [team.json() for team in Team.objects(Q(team_name__icontains=word) | 
-                                                                Q(team_logo__icontains=word) | 
-                                                                Q(league_name__icontains=word) | 
-                                                                Q(league_logo__icontains=word) | 
-                                                                Q(country__icontains=word) | 
-                                                                Q(country_flag__icontains=word) |  
-                                                                Q(venue_name__icontains=word) |  
-                                                                Q(venue_surface__icontains=word) |  
-                                                                Q(venue_city__icontains=word))]
-        teams_list.extend(teams_list_add)
-
-    for numbers in words: #any words that are integers
-        if(numbers.isdigit()): # is a number
-            teams_list_add = [team.json() for team in Team.objects(Q(team_id=int(numbers)) | 
-                                                                    Q(league_id=int(numbers)) |
-                                                                    Q(founded=int(numbers)) |  
-                                                                    Q(venue_capacity=int(numbers)))] 
-            teams_list.extend(teams_list_add)
-
-
-    teams_list_dict = {}
-    teams_list_dict['teams_list'] = teams_list[teams_per_page * int(page) - teams_per_page : teams_per_page * int(page)]
-    teams_list_dict['words'] = words
-    teams_list_dict['length'] = len(teams_list)
-    teams_list_dict['num_pages'] = math.ceil(len(teams_list)/teams_per_page)
-    return (teams_list_dict)
-
-
-    
-
+    return json.dumps(teams_list_dict)
 
 
 @app.route('/testconnectiontodb')
@@ -626,10 +159,9 @@ def update_teams():
 @app.route("/getallteams", methods=["GET"])
 def get_all_teams():
     teams_list = [team.json() for team in Team.objects()]
-    #print(teams_list)
     teams_list_dict = {}
     teams_list_dict['teams_list'] = teams_list
-    return (teams_list_dict)
+    return json.dumps(teams_list_dict)
 
 @app.route("/getallleagues", methods=["GET"])
 def get_all_leagues():
@@ -691,12 +223,10 @@ def get_news(topic):
     description_1 = articles[0]['description'],
     img_url_1 = articles[0]['urlToImage'],
     url_1 = articles[0]['url'],
-
     headline_2 = articles[1]['title'],
     description_2 = articles[1]['description'],
     img_url_2 = articles[1]['urlToImage'],
     url_2 = articles[1]['url'],
-
     headline_3 = articles[2]['title'],
     description_3 = articles[2]['description'],
     img_url_3 = articles[2]['urlToImage'],
