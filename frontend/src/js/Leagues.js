@@ -1,4 +1,4 @@
-import { NavLink , Route, Switch, BrowserRouter} from 'react-router-dom'
+import { NavLink , Route, Switch, BrowserRouter, useHistory} from 'react-router-dom'
 import {Link, useParams} from 'react-router-dom'
 import { withRouter } from "react-router";
 import React, { useState, useEffect ,Component} from 'react';
@@ -8,8 +8,38 @@ import axios from 'axios';
 import LeagueInstance from './LeagueInstance'
 import ModelPagesComponent from './components/ModelPagesComponent'
 
-// import './App.css';
 
+import './../css/SearchBar.css'
+
+// import './App.css';
+function SearchBar(props) {
+    let history = useHistory();
+    
+    function checkForSubmit(event) {
+        if (event.key === 'Enter') {
+            history.push("/whatsup");
+        }
+    }
+
+
+    return (
+        <div className="SearchDiv">
+            <input 
+                className="searchBar" 
+                placeholder="Search for your favorites" 
+                onKeyPress={checkForSubmit}
+            />
+            <select className="selector">
+                <option>Filter By Country:</option>
+                <option>SomeCountry</option>
+            </select>
+            <select className="selector">
+                <option>Filter By League:</option>
+                <option>someleague</option>
+            </select>
+        </div>
+    );
+}
 
 function Leagues({match}) {
         const [isHidden, setIsHidden] = useState(false);
@@ -41,7 +71,12 @@ function Leagues({match}) {
         if (isHidden == false) {
             if ( posts[0]!=null){
             return (
+                <div>
+                <div className="searchBar">
+                    <SearchBar/>
+                </div>
                 <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
+                
                 <h1>Leagues</h1>
                     <ModelPagesComponent modelInstances = {currentPosts.map( 
                         function(post){
@@ -69,6 +104,7 @@ function Leagues({match}) {
                         paginate={paginate}
                     />
               </div>
+                </div>
             
             );
             }else{
