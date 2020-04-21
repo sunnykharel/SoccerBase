@@ -75,8 +75,7 @@ def country():
     cpp = 12
     args = request.args
     print (args)
-    supported_filters = ['area', 'population', 'region', 'subregion', 'num_leagues']
-    supported_sorts = ['area', 'population', 'region', 'subregion', 'num_leagues', 'name']
+    supported_filters = ['area', 'population', 'region', 'subregion', 'num_leagues', 'name']
     filters = {}
     
     
@@ -132,7 +131,7 @@ def teams():
     cpp = 12
     args = request.args
     print (args)
-    supported_filters = ['founded', 'venue_capacity', 'is_national']
+    supported_filters = ['founded', 'venue_capacity', 'is_national', 'team_name', 'league_name', 'country', 'venue_name', 'venue_surface', 'venue_city']
     filters = {}
     
     
