@@ -13,6 +13,8 @@ import SoccerBaseNavBar from './components/Navbar';
 import TermsOfUse from './TermsOfUse';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import InstancePage from './components/InstancePage/InstancePage';
+import Search from './components/Search'
+
 class App extends Component {
   render() {
     return (
@@ -29,6 +31,7 @@ class App extends Component {
                 <Route path ="/TermsOfUse" component={TermsOfUse}/>
                 <Route path="/aboutUs" component={aboutUs}/>
                 <Route path="/InstancePage" component={InstancePage}/>
+                <Route path="/search" component={Search}/>
                 {/* <Route path="/Leagues/:id" component={<PostPage/>}/> */}
                 {/* <Route path="/result" component={Result}/> */}
 
