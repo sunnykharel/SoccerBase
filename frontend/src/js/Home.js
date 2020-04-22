@@ -13,14 +13,12 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Slider from "react-slick";
 
-//import carouselStyle from "assets/jss/nextjs-material-kit-pro/pages/componentsSections/carouselStyle.js";
-
-import image2 from "./../images/Capture3.jpg";
+import image3 from "./../images/Capture3.jpg";
 import image1 from "./../images/Capture.PNG";
-import image3 from "./../images/Capture2.jpg";
+import image2 from "./../images/Capture2.jpg";
 
-// const useStyles = makeStyles(carouselStyle);
-import './../css/home.css'
+// // const useStyles = makeStyles(carouselStyle);
+// // import './../css/home.css'
 
 
 function SampleNextArrow(props) {
@@ -67,9 +65,9 @@ export default function SectionCarousel() {
     slidesToShow: 1,
     slidesToScroll: 1,
     // fade: true,
-    adaptiveHeight: true,
+    //adaptiveHeight: true,
     centerPadding: "60px",
-    nextArrow: <SampleNextArrow />,
+    // nextArrow: <SampleNextArrow />,
     // prevArrow: <SamplePrevArrow />
   };
   return (
@@ -77,7 +75,7 @@ export default function SectionCarousel() {
         {/* maybe put the search bar here? */}
         <div >
         <Slider {...settings}  style={{
-            width: "98%",
+            width: "100%",
             height: "auto"}}>
           <div className="slick">
           <img src={image1}  alt="First slide" className="slick-image" style={{

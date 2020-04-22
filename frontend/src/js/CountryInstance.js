@@ -15,6 +15,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import InstancePage from './components/InstancePage/InstancePage';
 // import './App.css';
+import TeamTable from './TeamTable';
+
 
 class CountryInstance extends Component {
     constructor(props){
