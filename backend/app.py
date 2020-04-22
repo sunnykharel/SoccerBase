@@ -34,39 +34,36 @@ population: numeric
 region: alphabetical
 subregion: alphabetical 
 num_leagues: numeric
-
 example request ?area={'gt': 30}&sort={country: '-'}
-
 Type this to test the request:
-http://127.0.0.1:5000/country?area={"gt":5000}&sort={"region":"-"}
-
-
-
+http://127.0.0.1:5000/country?area={"gt":5000}&sort="-region"}&search_params={}
 args = {}
-
 'area' in args
+
 
 area{
     "gt":5000,
     "lt":20000
 }
 
+
+
 area__gt = value
-
-
 for key, value in dict.items():
-
-
 **kwargs
-
 filters = {
     'area__gt': 5000,
     'region_iexact': "Africa",
-
 }
 
+area__gt=5000
 
 
+query = {}
+query['area'] = {"gt":5000}
+get(args, stillwater)
+
+http://127.0.0.1:5000/country?area={"gt":5000}&subregion={"iequals":"Asia"}&sort1=-region&search_parameters=fuck yeah
 '''
 
 @app.route('/country')
@@ -74,46 +71,55 @@ def country():
     #cpp is the number of countries to display on each page
     cpp = 12
     args = request.args
-    print (args)
+    print(args)
+    query = Country.objects()
+    search_subqueries = Q()
+    if 'search_parameters' in args:
+        search_parameters = args['search_parameters'].split(' ')
+        print(search_parameters)
+        for word in search_parameters:
+            search_subqueries = search_subqueries | (
+
+                Q(name__icontains=word)| 
+                Q(code__icontains=word) | 
+                Q(flag__icontains=word) | 
+                Q(demonym__icontains=word) | 
+                Q(capital__icontains=word) | 
+                Q(region__icontains=word) |  
+                Q(subregion__icontains=word)
+
+            )
+
+        print(search_subqueries)
+        query = Country.objects(search_subqueries)
     supported_filters = ['area', 'population', 'region', 'subregion', 'num_leagues', 'name']
     filters = {}
-    
-    
     for filter_name in supported_filters:
         if filter_name in args:
             for operation, value in json.loads(args[filter_name]).items():
                 filters[ '{}__{}'.format(filter_name, operation) ] = value
-
+    
+    query = query.filter(**filters)
+    
     #now to sort the query
     sort1 = ''
     sort2 = ''
-    sort3 = ''
-
+    sort3 = ''  
     if 'sort1' in args:
         sort1 = args['sort1']
     if 'sort2' in args:
         sort2 = args['sort2']
     if 'sort3' in args:
         sort3 = args['sort3']
+    query = query.order_by(sort1, sort2, sort3)
 
-    # order_bys = ['']
-    # if 'sort' in args:
-    #     print(args['sort'])
-    #     sort_json = json.loads(args['sort'])
-    #     sort_value = next(iter(sort_json))
-    #     if sort_value in supported_sorts:
-
-    #         direction = sort_json[sort_value]
-    #         sort_string = '{}{}'.format(direction, sort_value)
-    #         order_bys.append(sort_string)    
-
-    query = Country.objects().filter(**filters).order_by(sort1, sort2, sort3)#.skip((cpp*int(args['page']))-cpp).limit(cpp)
-    countries_list = [country.json() for country in query]
-
+    print("reached here")
+    
+    countries_list = [country.json() for country in query[cpp * int(args['page']) - cpp : cpp * int(args['page'])]]
     countries_list_dict = {}
-    countries_list_dict['countries_list'] = countries_list[cpp * int(args['page']) - cpp : cpp * int(args['page'])]
-    countries_list_dict['num_entries'] = len(countries_list)
-    countries_list_dict['num_pages'] = math.ceil(len(countries_list)/cpp)
+    countries_list_dict['countries_list'] = countries_list
+    countries_list_dict['num_entries'] = len(query)
+    countries_list_dict['num_pages'] = math.ceil(len(query)/cpp)
     return json.dumps(countries_list_dict)
 
 '''
@@ -130,21 +136,36 @@ def teams():
     #cpp is the number of countries to display on each page
     cpp = 12
     args = request.args
-    print (args)
     supported_filters = ['founded', 'venue_capacity', 'is_national', 'team_name', 'league_name', 'country', 'venue_name', 'venue_surface', 'venue_city']
     filters = {}
-    
-    
+    query = Team.objects()
+
+    search_subqueries = Q()
+    if 'search_parameters' in args:
+        search_parameters = args['search_parameters'].split(' ')
+        print(search_parameters)
+        for word in search_parameters:
+            search_subqueries = search_subqueries | (        
+                Q(team_name__icontains=word) | 
+                Q(team_logo__icontains=word) | 
+                Q(league_name__icontains=word) | 
+                Q(league_logo__icontains=word) | 
+                Q(country__icontains=word) | 
+                Q(country_flag__icontains=word) |  
+                Q(venue_name__icontains=word) |  
+                Q(venue_surface__icontains=word) |  
+                Q(venue_city__icontains=word)  
+            )  
+        query = Team.objects(search_subqueries) 
     for filter_name in supported_filters:
         if filter_name in args:
             for operation, value in json.loads(args[filter_name]).items():
                 filters[ '{}__{}'.format(filter_name, operation) ] = value
-
-    #now to sort the query
+    print(filters)
+    query = query.filter(**filters)    
     sort1 = ''
     sort2 = ''
-    sort3 = ''
-
+    sort3 = ''  
     if 'sort1' in args:
         sort1 = args['sort1']
     if 'sort2' in args:
@@ -152,38 +173,48 @@ def teams():
     if 'sort3' in args:
         sort3 = args['sort3']
 
-
-    query = Team.objects().filter(**filters).order_by(sort1, sort2, sort3)
-    teams_list = [team.json() for team in query]
-
+    query = query.order_by(sort1, sort2, sort3)
+    teams_list = [team.json() for team in query[cpp * int(args['page']) - cpp : cpp * int(args['page'])]]
     teams_list_dict = {}
-    teams_list_dict['teams_list'] = teams_list[cpp * int(args['page']) - cpp : cpp * int(args['page'])]
-    teams_list_dict['num_entries'] = len(teams_list)
-    teams_list_dict['num_pages'] = math.ceil(len(teams_list)/cpp)
+    teams_list_dict['teams_list'] = teams_list
+    teams_list_dict['num_entries'] = len(query)
+    teams_list_dict['num_pages'] = math.ceil(len(query)/cpp)
     return json.dumps(teams_list_dict)
-
-
 
 @app.route('/league')
 def league():
     #cpp is the number of countries to display on each page
     cpp = 12
     args = request.args
-    print (args)
     supported_filters = ['num_teams', 'league_id', 'name', 'country', 'league_id', 'type_', 'season', 'season_start', 'season_end']
     filters = {}
-    
-    
+    query = League.objects()
+
+    search_subqueries = Q()
+    if 'search_parameters' in args:
+        search_parameters = args['search_parameters'].split(' ')
+        print(search_parameters)
+        for word in search_parameters:
+            search_subqueries = search_subqueries | (        
+                Q(name__icontains=word) | 
+                Q(type___icontains=word) | 
+                Q(country__icontains=word) | 
+                Q(country_code__icontains=word) | 
+                Q(season_start__icontains=word) | 
+                Q(season_end__icontains=word) |  
+                Q(logo__icontains=word) |  
+                Q(flag__icontains=word)  
+            )  
+        query = League.objects(search_subqueries) 
     for filter_name in supported_filters:
         if filter_name in args:
             for operation, value in json.loads(args[filter_name]).items():
                 filters[ '{}__{}'.format(filter_name, operation) ] = value
-
-    #now to sort the query
+    print(filters)
+    query = query.filter(**filters)    
     sort1 = ''
     sort2 = ''
-    sort3 = ''
-
+    sort3 = ''  
     if 'sort1' in args:
         sort1 = args['sort1']
     if 'sort2' in args:
@@ -191,17 +222,13 @@ def league():
     if 'sort3' in args:
         sort3 = args['sort3']
 
-
-    query = League.objects().filter(**filters).order_by(sort1, sort2, sort3)
-    leagues_list = [league.json() for league in query]
-
-    leagues_list_dict = {}
-    leagues_list_dict['leagues_list'] = leagues_list[cpp * int(args['page']) - cpp : cpp * int(args['page'])]
-    leagues_list_dict['num_entries'] = len(leagues_list)
-    leagues_list_dict['num_pages'] = math.ceil(len(leagues_list)/cpp)
-    return json.dumps(leagues_list_dict)
-
-
+    query = query.order_by(sort1, sort2, sort3)
+    teams_list = [league.json() for league in query[cpp * int(args['page']) - cpp : cpp * int(args['page'])]]
+    teams_list_dict = {}
+    teams_list_dict['leagues_list'] = teams_list
+    teams_list_dict['num_entries'] = len(query)
+    teams_list_dict['num_pages'] = math.ceil(len(query)/cpp)
+    return json.dumps(teams_list_dict)
 
 #get country by search
 @app.route('/countries_search/<country_name>/<page>')
