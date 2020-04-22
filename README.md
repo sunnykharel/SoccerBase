@@ -1,5 +1,5 @@
 # SoccerBase
-IMDB-like web application for a class group project
+Group project IMDB-like web application for a class project
 
 
 Tanay Bidnurkar tmb3357 Github: tanay-bidnurkar
