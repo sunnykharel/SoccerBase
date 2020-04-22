@@ -7,6 +7,8 @@ import Pagination from './components/Pagination';
 import axios from 'axios';
 import LeagueInstance from './LeagueInstance'
 import ModelPagesComponent from './components/ModelPagesComponent'
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 import './../css/SearchBar.css'
 
@@ -27,12 +29,19 @@ function SearchBar(props) {
     const [popFilter, setPopFilter] = useState();
     const [areaFilter, setAreaFilter] = useState();
 
+    //3. State data for search display
+    const [filterSelected, setFilterSelected] = useState(false);
+
     let history = useHistory();
     
     function checkForSubmit(event) {
         if (event.key === 'Enter') {
             history.push("/" + createSearchURL());
         }
+    }
+
+    function getUserInput(e) {
+        setSearchInput(e.target.value);
     }
 
 
@@ -42,15 +51,27 @@ function SearchBar(props) {
                 className="searchBar" 
                 placeholder="Search for your favorites" 
                 onKeyPress={checkForSubmit}
+                onChange={getUserInput}
             />
-            <select className="selector">
-                <option>Filter By Country:</option>
-                <option>SomeCountry</option>
-            </select>
-            <select className="selector">
-                <option>Filter By League:</option>
-                <option>someleague</option>
-            </select>
+            <ToggleButton
+                selected={filterSelected}
+                onChange={() => {
+                    setFilterSelected(!filterSelected);
+                }}
+            >
+                <FilterListIcon/>
+            </ToggleButton>
+            {filterSelected && <select className="selector">
+                <option>Filter By Region:</option>
+                <option>Asia</option>
+            </select>}
+            {filterSelected && <select className="selector">
+                <option>Filter By Population:</option>
+                <option>{"< 10,0000"}</option>
+                <option>{"10,000 to 100,000"}</option>
+                <option>{"100,000 to 1,000,000"}</option>
+                <option>{"> 1,000,000"}</option>
+            </select>}
         </div>
     );
 }
