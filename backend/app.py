@@ -71,7 +71,7 @@ def country():
     #cpp is the number of countries to display on each page
     cpp = 12
     args = request.args
-    print(args)
+    #print(args)
     query = Country.objects()
     search_subqueries = Q()
     if 'search_parameters' in args:
@@ -113,7 +113,7 @@ def country():
         sort3 = args['sort3']
     query = query.order_by(sort1, sort2, sort3)
 
-    print("reached here")
+    #print("reached here")
     
     first = 0
     last = len(query)
