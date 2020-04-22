@@ -40,12 +40,7 @@ const sidebar = {
     { title: 'June 1999', url: '#' },
     { title: 'May 1999', url: '#' },
     { title: 'April 1999', url: '#' },
-  ],
-  social: [
-    { name: 'GitHub', icon: GitHubIcon },
-    { name: 'Twitter', icon: TwitterIcon },
-    { name: 'Facebook', icon: FacebookIcon },
-  ],
+  ]
 };
 /*
 This class takes the props for section names and the main featured posts
