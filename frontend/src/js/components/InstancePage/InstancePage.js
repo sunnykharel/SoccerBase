@@ -58,7 +58,11 @@ function InstancePage(props) {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        
+
+        Team/:teamname
+        Team/:teamname/players
+
+        barcelona/players
         <Header title={props.title} sections={props.sections} />
         <main>
           <MainFeaturedPost post={props.mainFeaturedPost} />

@@ -92,9 +92,14 @@ class TeamsInstance extends Component {
                 imageText: 'Image Text',
               },
             ];  
+// Here I want a link that goes like this: Teams/team_name/players
+// 
+// 
+//  Teams/Barcelona/TeamTable
+//             
             let sections = [
                 { title: 'Home', url: '#' },
-                { title: 'Teams', url: '#' },
+                { title: 'Players', url: '#' },
                 { title: 'Schedule', url: '#' },
               ]    
         
