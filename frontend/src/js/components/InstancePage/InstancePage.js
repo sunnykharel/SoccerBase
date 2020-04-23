@@ -63,8 +63,10 @@ function InstancePage(props) {
             ))}
           </Grid>
           <Grid container spacing={5} className={classes.mainGrid}>
-            <Main title="From the firehose" posts={posts} />
+            <Main title="From the firehose" posts={posts} /> 
+            {/* tableData = {props.tableData} */}
             <Sidebar
+            // title = {props.sidebar.title}
               title={sidebar.title}
               description={sidebar.description}
               archives={sidebar.archives}
@@ -73,7 +75,7 @@ function InstancePage(props) {
           </Grid>
         </main>
       </Container>
-      <Footer title="Footer" description="Something here to give the footer a purpose!" />
+      <Footer description="Brought to you by SoccerBase!" />
     </React.Fragment>
   );
 }

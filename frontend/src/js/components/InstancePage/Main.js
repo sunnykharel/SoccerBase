@@ -28,6 +28,8 @@ export default function Main(props) {
           {post}
         </Markdown>
       ))}
+      {/* <Table tableData = {props.tableData} col={props.col}/>
+      also remove post.map stuff and i have to make the table*/}
     </Grid>
   );
 }
