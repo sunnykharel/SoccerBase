@@ -11,8 +11,8 @@ import json
 from mongoengine import *   
 from flask_cors import CORS
 import time
-from newsapi import NewsApiClient
-import datetime
+from newsapi.newsapi_client import NewsApiClient
+from datetime import datetime, timedelta
 from flask import request
 
 import json
@@ -466,29 +466,37 @@ def get_news(topic):
     newsClient = NewsApiClient(api_key="bad068d6ce6c4ccfb30eb5785c360efe")
     #                                              q is search terms, category for category of news, language is english
     #                                              if possible (foreign news may not be english)
-    topHeadlines = newsClient.get_top_headlines(q = topic, category="sports", language="en")
-
+    keyWords = topic + " soccer"
+    sportsSources = newsClient.get_sources(category="sports")
+    sourceIds = ''
+    for i in range(len(sportsSources['sources'])):
+        if (i == len(sportsSources['sources']) - 1):
+            sourceIds = sourceIds = sourceIds + sportsSources['sources'][i]['id']
+        else:
+            sourceIds = sourceIds + sportsSources['sources'][i]['id'] + ","
+    threeDaysAgo = datetime.date(datetime.now()) - timedelta(3) #date 3 days ago
+    topHeadlines = newsClient.get_everything(q=keyWords, sources=sourceIds, language='en', sort_by='relevancy', from_param=threeDaysAgo)
     articles = topHeadlines['articles'][:3]
     return json.dumps(articles)
     
-    """
-    news = News(
-    topic_name = topic,
-    headline_1 = articles[0]['title'],
-    description_1 = articles[0]['description'],
-    img_url_1 = articles[0]['urlToImage'],
-    url_1 = articles[0]['url'],
-    headline_2 = articles[1]['title'],
-    description_2 = articles[1]['description'],
-    img_url_2 = articles[1]['urlToImage'],
-    url_2 = articles[1]['url'],
-    headline_3 = articles[2]['title'],
-    description_3 = articles[2]['description'],
-    img_url_3 = articles[2]['urlToImage'],
-    url_3 = articles[2]['url']
-    ).json()
-    return news
-    """
+"""
+news = News(
+topic_name = topic,
+headline_1 = articles[0]['title'],
+description_1 = articles[0]['description'],
+img_url_1 = articles[0]['urlToImage'],
+url_1 = articles[0]['url'],
+headline_2 = articles[1]['title'],
+description_2 = articles[1]['description'],
+img_url_2 = articles[1]['urlToImage'],
+url_2 = articles[1]['url'],
+headline_3 = articles[2]['title'],
+description_3 = articles[2]['description'],
+img_url_3 = articles[2]['urlToImage'],
+url_3 = articles[2]['url']
+).json()
+return news
+"""
 
 
 
