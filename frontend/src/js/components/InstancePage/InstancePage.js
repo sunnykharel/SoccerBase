@@ -63,7 +63,7 @@ function InstancePage(props) {
             ))}
           </Grid>
           <Grid container spacing={5} className={classes.mainGrid}>
-            <Main title="More information:" posts={posts} type = {props.type} element ={props.element}/> 
+            <Main title="More information:" posts={posts} type = {props.type} table={props.table} element ={props.element}/> 
             {/* tableData = {props.tableData} */}
             <Sidebar
             // title = {props.sidebar.title}
@@ -71,6 +71,8 @@ function InstancePage(props) {
               description={sidebar.description}
               archives={sidebar.archives}
               social={sidebar.social}
+              type = {props.type} 
+              element ={props.element}
             />
           </Grid>
         </main>

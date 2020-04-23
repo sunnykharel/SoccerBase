@@ -25,7 +25,6 @@ class TeamsInstance extends Component {
             responses_arrays : Array(2000).fill(""),
             news_arrays: Array(3).fill(""),
             i: 0, 
-            teamName: "loading",
             function: props.setIsHidden,
         }
     }
@@ -59,7 +58,7 @@ class TeamsInstance extends Component {
         console.log(this.props.match.params.id)
         console.log(this.state.responses_arrays)
         for(let indx = 0; indx < this.state.responses_arrays.length; indx++ ){
-            if("Manchester United" == this.state.responses_arrays[indx].team_name){
+            if("Manchester%20United" == this.state.responses_arrays[indx].team_name){
                 this.state.i = indx;
                 console.log("yo")
 

@@ -9,6 +9,9 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import TeamTable from '../../TeamTable';
+import PlayerTable from '../../PlayerTable';
+import LeagueTable from '../../LeagueTable';
 
 const useStyles = makeStyles((theme) => ({
   markdown: {
@@ -57,44 +60,54 @@ export default function Main(props) {
   if(props.type == "team"){
     return (
       <Grid item xs={12} md={8}>
-        <Typography variant="h6" gutterBottom>
-          {props.title}
+        <Typography variant="h5" gutterBottom>
+          Player Table
          
         </Typography>
         <Divider /> 
-          <div>
-  
-          {console.log(props.element)}
-          
 
-          <Card className={classes.root} variant="outlined">
-      <CardContent>
-        <Typography variant="h5" component="h2">
-        {<h5> Country: {props.element.country} </h5>}
-          <img src={props.element.team_logo} />
-        </Typography>
-        
-        <Typography className={classes.pos} color="textSecondary">
-          adjective
-        </Typography>
-        <Typography variant="body2" component="p">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
-  
-          </div>
+        <PlayerTable/>  
         
         {/* <Table tableData = {props.tableData} col={props.col}/>
         also remove post.map stuff and i have to make the table*/}
       </Grid>
     );
   }
+
+  else if(props.type == "country"){
+    return (
+      <Grid item xs={12} md={8}>
+        <Typography variant="h5" gutterBottom>
+          League Table
+         
+        </Typography>
+        <Divider /> 
+
+        <LeagueTable table = {props.table}/>  
+        
+        {/* <Table tableData = {props.tableData} col={props.col}/>
+        also remove post.map stuff and i have to make the table*/}
+      </Grid>
+    );
+  }
+
+  else if(props.type == "league"){
+    return (
+      <Grid item xs={12} md={8}>
+        <Typography variant="h5" gutterBottom>
+          Team Table
+         
+        </Typography>
+        <Divider /> 
+
+        <TeamTable/>  
+        
+        {/* <Table tableData = {props.tableData} col={props.col}/>
+        also remove post.map stuff and i have to make the table*/}
+      </Grid>
+    );
+  }
+
   
 }
 

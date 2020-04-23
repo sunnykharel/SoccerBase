@@ -21,9 +21,7 @@ function Leagues({match}) {
             const fetchPosts = async () => {
               setLoading(true);
               res = await axios.get('https://still-waters-10895.herokuapp.com/getallleagues');
-              console.log(res.data);
-              setPosts(res.data.leagues_list);
-              console.log(listante)
+              setPosts(res.data.leagues_list);              
               setLoading(false);
         };
         
@@ -59,7 +57,8 @@ function Leagues({match}) {
 
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <LeagueInstance isHidden={isHidden} setIsHidden={setIsHidden} />
+                            
+                            <LeagueInstance isHidden={isHidden} setIsHidden={setIsHidden} fuckYeah={currentPosts}/>
                         </Route>
                     </Switch>
 
