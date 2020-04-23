@@ -24,25 +24,28 @@ const rows = [
   createData('League3', 25),
 ];
 
-export default function LeagueTable() {
+export default function LeagueTable(props) {
   const classes = useStyles();
+  console.log(props.table)
 
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
+      <Table className={classes.table} size="medium" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell>League Name</TableCell>
+            <TableCell align="right">League Type</TableCell>
             <TableCell align="right">Number of Teams</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {props.table.map((row) => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.numTeams}</TableCell>
+              <TableCell align="right">{row.type}</TableCell>
+              <TableCell align="right">{row.num_teams}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -20,11 +20,16 @@ import InstancePage from './components/InstancePage/InstancePage';
 class LeagueInstance extends Component {
     constructor(props){
         super(props)
-        props.setIsHidden(true)
+        props.setIsHidden(true)      
+        console.log(props.match.params.id)        
         this.state = {
             responses_arrays : Array(514).fill(""),
             i: 0, 
+            league_json: {},
+            news_arrays: Array(3).fill(""),
+            table_arrays: Array(200).fill(""),
             function: props.setIsHidden,
+            identitooooo_lasagna_muthafucka: props.match.params.id,
         }
     }
     componentDidMount() {
@@ -32,8 +37,9 @@ class LeagueInstance extends Component {
         get news data here and update state
 
         */
-        const id = this.props.match.params.id
-        //var i;
+        const id = this.state.identitooooo_lasagna_muthafucka
+        const league_name = this.state.identitooooo_lasagna_muthafucka.split('_')[1].replace("%20", " ");
+        console.log(league_name)
         const scopez = this;
         axios.get('https://still-waters-10895.herokuapp.com/getallleagues')
         .then(function (res) {
@@ -43,104 +49,102 @@ class LeagueInstance extends Component {
                 responses_arrays: res.data.leagues_list.slice(0, res.data.leagues_list.length),
             }); 
         })
-        
+        axios.get('https://still-waters-10895.herokuapp.com/getnews/' + league_name)
+        .then(function (resp) {
+
+            console.log(resp.data)
+            //works until here
+            scopez.setState({
+                 news_arrays: resp.data.slice(0, resp.data.length),
+            }); 
+        })
+        axios.get('https://still-waters-10895.herokuapp.com/team', {
+          params: {
+            league_id:{
+              "exact": id
+            }
+          }
+        })
+        .then(function (respo) {
+
+            console.log(respo.data)
+            //works until here
+            scopez.setState({
+                 table_arrays: respo.data.leagues_list.slice(0, respo.data.length),
+            }); 
+        })
     }
 
     render(){
 
-        //var i;
+        //var i; 
         for(let indx = 0; indx < this.state.responses_arrays.length; indx++ ){
-            if(this.props.match.params.id == this.state.responses_arrays[indx].league_id){
-                this.state.i = indx;
+          if(this.state.responses_arrays){
+            if(this.props.match.params.id.split('_')[0] == ""+this.state.responses_arrays[indx]){
+                this.state.league_json = this.state.responses_arrays[indx];
                 break;
             }
-        }
+          }
+      }
+       
         const useStyles = makeStyles({
             root: {
               maxWidth: 345,
             },
           });
-
+          const defaultheadline = {
+            title: "No news found",
+            description:"No description found",
+            image: "No image found",
+            imgText: '',
+            linkText: "#",
+          }
+          let mainHeadline = defaultheadline;
+          let featuredHeadline = [defaultheadline, defaultheadline];
+          if(this.state.news_arrays.length >= 1){
+            mainHeadline = {
+              title:  this.state.news_arrays[0].title,
+              description:this.state.news_arrays[0].description,
+              image: this.state.news_arrays[0].urlToImage,
+              imgText: 'main image description',
+              linkText: this.state.news_arrays[0].url,
+          }
+        }
+        if(this.state.news_arrays.length >= 2){
+            featuredHeadline[0] ={
+                title: this.state.news_arrays[1].title,
+                date: this.state.news_arrays[1].publishedAt,
+                description:this.state.news_arrays[1].description,
+                image: this.state.news_arrays[1].urlToImage,
+                imageText: 'Image Text',
+                linkText: this.state.news_arrays[1].url,
+            }
+        }
+        if(this.state.news_arrays.length >= 3){
+            featuredHeadline[1] ={
+                title: this.state.news_arrays[2].title,
+                date: this.state.news_arrays[2].publishedAt,
+                description:this.state.news_arrays[2].description,
+                image: this.state.news_arrays[2].urlToImage,
+                imageText: 'Image Text',
+                linkText: this.state.news_arrays[2].url,
+            }
+        }
         let sections = [
-            { title: 'Home', url: '#' },
-            { title: 'Teams', url: '#' },
-            { title: 'Schedule', url: '#' },
-          ]
-
+          { title: ''},
+          { title: 'Latest News', url: "#"},
+          { title: '' },
+        ]    
         /*
           update this with actual news
         */
-        let title = this.state.responses_arrays[this.state.i].name
 
-        let mainHeadline = {
-            title: "Main news headline for "+ title ,
-            description:
-                "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-            image: 'https://source.unsplash.com/random',
-            imgText: 'main image description',
-            linkText: 'Continue reading…',
-        }
+       return (   
+        <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {this.props.match.params.id.split('_')[1]}   
+            sections = {sections} table ={this.state.table_arrays} type = {"league"} element = {this.state.league_JSON} />
+    );
 
-        /*
-            Update this with actual featured posts
-
-        */
-
-        let featuredHeadline = [
-            {
-              title: 'Featured post',
-              date: 'Nov 12',
-              description:
-                'This is a wider card with supporting text below as a natural lead-in to additional content.',
-              image: 'https://source.unsplash.com/random',
-              imageText: 'Image Text',
-            },
-            {
-              title: 'Post title',
-              date: 'Nov 11',
-              description:
-                'This is a wider card with supporting text below as a natural lead-in to additional content.',
-              image: 'https://source.unsplash.com/random',
-              imageText: 'Image Text',
-            },
-          ];
-
-
-        return (   
-            <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {title}   
-                sections = {sections} />
-
-
-            //<h1>{this.state.i} </h1>
-            
-           // <h1>{this.state.responses_arrays[0].name}</h1>
-    //         <Card id="LeagueCard">
-    //      <CardActionArea>
-    //      <Typography gutterBottom variant="h5" component="h2">
-    //          League name: {this.state.responses_arrays[this.state.i].name}
-    //       </Typography>
-          
-    //     <Typography gutterBottom variant="h5" component="h2">
-    //          Country name: {this.state.responses_arrays[this.state.i].country}({this.state.responses_arrays[this.state.i].country_code})
-    //       </Typography>
-    //       <Typography gutterBottom variant="h5" component="h2">
-    //          Season start date: {this.state.responses_arrays[this.state.i].season_start}
-    //       </Typography>
-    //       <Typography gutterBottom variant="h5" component="h2">
-    //       League Logo:
-    //       </Typography>
-    //       <img src = {this.state.responses_arrays[this.state.i].logo} alt="no image found"/>
-    //   </CardActionArea>
-    // </Card>
-            
-        );
     }
-
-
-    // componentWillUnmount() {
-    //     this.state.setIsHidden(false)
-    // }
-
   
 }
 

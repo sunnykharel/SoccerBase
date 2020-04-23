@@ -10,7 +10,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        SoccerBase
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -33,9 +33,9 @@ export default function Footer(props) {
   return (
     <footer className={classes.footer}>
       <Container maxWidth="lg">
-        <Typography variant="h6" align="center" gutterBottom>
-          {title}
-        </Typography>
+        {/* <Typography variant="h6" align="center" gutterBottom>
+          {"wtf"}
+        </Typography> */}
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
           {description}
         </Typography>

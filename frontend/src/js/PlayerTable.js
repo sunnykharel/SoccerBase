@@ -37,7 +37,7 @@ export default function PlayerTable() {
 
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
+      <Table className={classes.table} size="medium" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell>Player Name</TableCell>

@@ -11,7 +11,7 @@ import TeamsInstance from './TeamsInstance'
 
 function TermsOfUse({match}) {
             return (
-                <div style={{backgroundColor : "#BA55D3", paddingTop : "10px",  paddingBottom : "600px"}}>
+                <div style={{ paddingTop : "10px",  paddingBottom : "600px"}}>
                     
                    <h1>Terms Of Use </h1>
                    <hr/>
