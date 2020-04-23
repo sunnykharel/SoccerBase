@@ -31,7 +31,7 @@ class App extends Component {
                 <Route path ="/TermsOfUse" component={TermsOfUse}/>
                 <Route path="/aboutUs" component={aboutUs}/>
                 <Route path="/InstancePage" component={InstancePage}/>
-                <Route path="/search" component={Search}/>
+                <Route path="/search/:id" component={Search}/>
                 {/* <Route path="/Leagues/:id" component={<PostPage/>}/> */}
                 {/* <Route path="/result" component={Result}/> */}
 
