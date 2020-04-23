@@ -63,7 +63,7 @@ function InstancePage(props) {
             ))}
           </Grid>
           <Grid container spacing={5} className={classes.mainGrid}>
-            <Main title="From the firehose" posts={posts} /> 
+            <Main title="More information:" posts={posts} type = {props.type} element ={props.element}/> 
             {/* tableData = {props.tableData} */}
             <Sidebar
             // title = {props.sidebar.title}

@@ -55,20 +55,25 @@ class TeamsInstance extends Component {
     render(){
 
         //var i;
+        console.log(this.state.responses_arrays[0].team_name);
+        console.log(this.props.match.params.id)
+        console.log(this.state.responses_arrays)
         for(let indx = 0; indx < this.state.responses_arrays.length; indx++ ){
-            if(this.props.match.params.id == this.state.responses_arrays[indx].team_name){
+            if("Manchester United" == this.state.responses_arrays[indx].team_name){
                 this.state.i = indx;
+                console.log("yo")
+
                 var flag = true;
                 break;
+                
             }
         }
+
         const useStyles = makeStyles({
             root: {
               maxWidth: 345,
             },
           });
-        
-
         
           var titleX = this.state.responses_arrays[this.state.i].team_name
           console.log(titleX)
@@ -137,7 +142,7 @@ class TeamsInstance extends Component {
               };
         return (   
             <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {this.props.match.params.id}   
-                sections = {sections} />
+                sections = {sections} type = {"team"} element = {this.state.responses_arrays[this.state.i]} sidebar={sidebar}/>
         );
     }
 
