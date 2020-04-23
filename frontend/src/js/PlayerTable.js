@@ -1,63 +1,99 @@
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+
+const columns = [
+  { id: 'player_name', label: 'Player Name', minWidth: 240 },
+  { id: 'age', label: 'Age', minWidth: 100 },
+  {
+    id: 'position',
+    label: 'Position',
+    minWidth: 170,
+    align: 'right',
+    format: (value) => value.toLocaleString(),
+  },
+];
+
+function createData(player_name, age, position) {
+  return { player_name, age, position };
+}
+
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
+  root: {
+    width: '100%',
+  },
+  container: {
+    maxHeight: 440,
   },
 });
 
-function createData(name, age, position) {
-  return { name, age, position };
-}
-
-const rows = [
-  createData('Player1', 20, 'PositionA'),
-  createData('Player2', 20, 'PositionA'),
-  createData('Player3', 20, 'PositionA'),
-  createData('Player4', 20, 'PositionB'),
-  createData('Player5', 20, 'PositionB'),
-  createData('Player6', 20, 'PositionB'),
-  createData('Player7', 20, 'PositionC'),
-  createData('Player8', 20, 'PositionC'),
-  createData('Player9', 20, 'PositionC'),
-  createData('Player10', 20, 'PositionD'),
-  createData('Player11', 20, 'PositionE'),
-];
-
 export default function PlayerTable(props) {
   const classes = useStyles();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} size="medium" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Player Name</TableCell>
-            <TableCell align="right">Age</TableCell>
-            <TableCell align="right">Position</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.table.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.player_name}
-              </TableCell>
-              <TableCell align="right">{row.age}</TableCell>
-              <TableCell align="right">{row.position}</TableCell>
+    <Paper className={classes.root}>
+      <TableContainer className={classes.container}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {props.table.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              return (
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  {columns.map((column) => {
+                    const value = row[column.id];
+                    return (
+                      <TableCell key={column.id} align={column.align}>
+                        {column.format && typeof value === 'number' ? column.format(value) : value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 15, 25, 50]}
+        component="div"
+        count={props.table.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 }
-

@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 
 export default function ModelComponent(props) {
     const classes = useStyles();
-    console.log(props)
+    //console.log(props)
 
     return(
         <Grid item xs={4}>

@@ -66,7 +66,7 @@ class TeamsInstance extends Component {
         })
         .then(function (respo) {
 
-            console.log(respo.data)
+           // console.log(respo.data)
             //works until here
             scopez.setState({
                  table_arrays1: respo.data.api.players.slice(0, respo.data.api.players.length),
@@ -80,7 +80,7 @@ class TeamsInstance extends Component {
             })
             .then(function (respo) {
     
-                console.log(respo.data)
+               // console.log(respo.data)
                 //works until here
                 scopez.setState({
                      table_arrays2: respo.data.api.players.slice(0, respo.data.api.players.length),
@@ -93,15 +93,14 @@ class TeamsInstance extends Component {
     render(){
 
         //var i;
-        console.log(this.state.responses_arrays[0].team_name);
-        console.log(this.props.match.params.id)
-        console.log(this.state.responses_arrays)
+       // console.log(this.state.responses_arrays[0].team_name);
+       // console.log(this.props.match.params.id)
+        var key = (parseInt(this.props.match.params.id.split('_')[0]))
         for(let indx = 0; indx < this.state.responses_arrays.length; indx++ ){
-            if("Manchester%20United" == this.state.responses_arrays[indx].team_name){
+            //console.log(this.state.id)
+            if(key == this.state.responses_arrays[indx].team_id){
                 this.state.i = indx;
-                console.log("yo")
-
-                var flag = true;
+               // console.log("yo")
                 break;
                 
             }
@@ -113,8 +112,8 @@ class TeamsInstance extends Component {
             },
           });
         
-          var titleX = this.state.responses_arrays[this.state.i].team_name
-          console.log(titleX)
+        //   var titleX = this.state.responses_arrays[this.state.i].team_name
+        //   console.log(titleX)
 
           const defaultheadline = {
             title: "No news found",
@@ -160,38 +159,20 @@ class TeamsInstance extends Component {
                 { title: 'Latest News', url: "#"},
                 { title: '' },
               ]    
-            let sidebar = {
-                title: 'About',
-                description:
-                  'Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.',
-                archives: [
-                  { title: 'March 2020', url: '#' },
-                  { title: 'February 2020', url: '#' },
-                  { title: 'January 2020', url: '#' },
-                  { title: 'November 1999', url: '#' },
-                  { title: 'October 1999', url: '#' },
-                  { title: 'September 1999', url: '#' },
-                  { title: 'August 1999', url: '#' },
-                  { title: 'July 1999', url: '#' },
-                  { title: 'June 1999', url: '#' },
-                  { title: 'May 1999', url: '#' },
-                  { title: 'April 1999', url: '#' },
-                ]
-              };
+           
         var tablez= []
         if(this.state.table_arrays1>this.state.table_arrays2){
             tablez=this.state.table_arrays1
         }else{
             tablez=this.state.table_arrays2
         }
-        console.log(tablez)
-        console.log(this.state.table_arrays2)
-        console.log(this.state.table_arrays2)
-
+        //console.log(tablez)
+        // console.log("hello")
+        // console.log(this.state.i)
 
         return (   
             <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {this.props.match.params.id.split('_')[1]}   
-                sections = {sections} table = {tablez} type = {"team"} element = {this.state.responses_arrays[this.state.i]} sidebar={sidebar}/>
+                sections = {sections} table = {tablez} type = {"team"} element = {this.state.responses_arrays[this.state.i]} />
         );
     }
 
