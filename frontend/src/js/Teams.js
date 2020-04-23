@@ -43,7 +43,7 @@ function Teams({match}) {
                     <ModelPagesComponent modelInstances = {currentPosts.map( 
                         function(post){
                             return {
-                                modelPageLink : "Teams/"+post.team_name,
+                                modelPageLink : "Teams/"+post.team_id+"_"+post.team_name,
                                 modelImage: post.team_logo  ,
                                 modelName: post.team_name ,
                                 modelName1: post.league_name ,

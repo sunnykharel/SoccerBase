@@ -24,6 +24,8 @@ class CountryInstance extends Component {
         props.setIsHidden(true)
         this.state = {
             responses_arrays : Array(2000).fill(""),
+            news_arrays: Array(3).fill(""),
+            table_arrays: Array(100).fill(""),
             i: 0, 
             function: props.setIsHidden,
         }
@@ -40,6 +42,32 @@ class CountryInstance extends Component {
                 responses_arrays: res.data.countries_list.slice(0, res.data.countries_list.length),
             }); 
         })
+        axios.get('https://still-waters-10895.herokuapp.com/getnews/' + id)
+        .then(function (resp) {
+
+            console.log(resp.data)
+            //works until here
+            scopez.setState({
+                 news_arrays: resp.data.slice(0, resp.data.length),
+            }); 
+        })
+        axios.get('https://still-waters-10895.herokuapp.com/league?', {
+          params: {
+            country:{
+              "exact": id
+            }
+          }
+        })
+        .then(function (respo) {
+
+            console.log(respo.data)
+            //works until here
+            scopez.setState({
+                 table_arrays: respo.data.leagues_list.slice(0, respo.data.length),
+            }); 
+        })
+                  
+
         
     }
 
@@ -58,54 +86,75 @@ class CountryInstance extends Component {
             },
           });
 
-          let sections = [
-            { title: 'Home', url: '#' },
-            { title: 'Teams', url: '#' },
-            { title: 'Schedule', url: '#' },
-          ]
-
-        /*
-          update this with actual news
-        */
-        let title = this.state.responses_arrays[this.state.i].name
-
-        let mainHeadline = {
-            title: "Main news headline for "+ title ,
-            description:
-                "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-            image: 'https://source.unsplash.com/random',
-            imgText: 'main image description',
-            linkText: 'Continue reading…',
+          const defaultheadline = {
+            title: "No news found",
+            description:"No description found",
+            image: "No image found",
+            imgText: '',
+            linkText: "#",
+          }
+          let mainHeadline = defaultheadline;
+          let featuredHeadline = [defaultheadline, defaultheadline];
+          if(this.state.news_arrays.length >= 1){
+            mainHeadline = {
+              title:  this.state.news_arrays[0].title,
+              description:this.state.news_arrays[0].description,
+              image: this.state.news_arrays[0].urlToImage,
+              imgText: 'main image description',
+              linkText: this.state.news_arrays[0].url,
+          }
         }
+        if(this.state.news_arrays.length >= 2){
+            featuredHeadline[0] ={
+                title: this.state.news_arrays[1].title,
+                date: this.state.news_arrays[1].publishedAt,
+                description:this.state.news_arrays[1].description,
+                image: this.state.news_arrays[1].urlToImage,
+                imageText: 'Image Text',
+                linkText: this.state.news_arrays[1].url,
+            }
+        }
+        if(this.state.news_arrays.length >= 3){
+            featuredHeadline[1] ={
+                title: this.state.news_arrays[2].title,
+                date: this.state.news_arrays[2].publishedAt,
+                description:this.state.news_arrays[2].description,
+                image: this.state.news_arrays[2].urlToImage,
+                imageText: 'Image Text',
+                linkText: this.state.news_arrays[2].url,
+            }
+        }
+          
+            let sections = [
+                { title: ''},
+                { title: 'Latest News', url: "#"},
+                { title: '' },
+              ]    
+            let sidebar = {
+                title: 'About',
+                description:
+                  'Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.',
+                archives: [
+                  { title: 'March 2020', url: '#' },
+                  { title: 'February 2020', url: '#' },
+                  { title: 'January 2020', url: '#' },
+                  { title: 'November 1999', url: '#' },
+                  { title: 'October 1999', url: '#' },
+                  { title: 'September 1999', url: '#' },
+                  { title: 'August 1999', url: '#' },
+                  { title: 'July 1999', url: '#' },
+                  { title: 'June 1999', url: '#' },
+                  { title: 'May 1999', url: '#' },
+                  { title: 'April 1999', url: '#' },
+                ]
+              };
+            console.log(this.state.responses_arrays[0])
+            console.log(this.state.table_arrays)
 
-        /*
-            Update this with actual featured posts
-
-        */
-
-        let featuredHeadline = [
-            {
-              title: 'Featured post',
-              date: 'Nov 12',
-              description:
-                'This is a wider card with supporting text below as a natural lead-in to additional content.',
-              image: 'https://source.unsplash.com/random',
-              imageText: 'Image Text',
-            },
-            {
-              title: 'Post title',
-              date: 'Nov 11',
-              description:
-                'This is a wider card with supporting text below as a natural lead-in to additional content.',
-              image: 'https://source.unsplash.com/random',
-              imageText: 'Image Text',
-            },
-          ];
-
-        return (   
-            <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {title}   
-                sections = {sections} />            
-        );
+            return (   
+              <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {this.props.match.params.id}   
+                  sections = {sections} table ={this.state.table_arrays} type = {"country"} element = {this.state.responses_arrays[this.state.i]} sidebar={sidebar}/>
+          );
     }
 
     // componentWillUnmount() {

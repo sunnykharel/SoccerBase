@@ -11,7 +11,7 @@ import json
 from mongoengine import *   
 from flask_cors import CORS
 import time
-#from newsapi.newsapi_client import NewsApiClient
+from newsapi import NewsApiClient
 import datetime
 from flask import request
 
@@ -115,7 +115,15 @@ def country():
 
     #print("reached here")
     
-    countries_list = [country.json() for country in query[cpp * int(args['page']) - cpp : cpp * int(args['page'])]]
+    first = 0
+    last = len(query)
+    if 'page' in args:
+        first = cpp * int(args['page']) - cpp 
+        last = cpp * int(args['page'])
+
+
+
+    countries_list = [country.json() for country in query[first : last]]
     countries_list_dict = {}
     countries_list_dict['countries_list'] = countries_list
     countries_list_dict['num_entries'] = len(query)
@@ -136,7 +144,7 @@ def teams():
     #cpp is the number of countries to display on each page
     cpp = 12
     args = request.args
-    supported_filters = ['founded', 'venue_capacity', 'is_national', 'team_name', 'league_name', 'country', 'venue_name', 'venue_surface', 'venue_city']
+    supported_filters = ['founded', 'venue_capacity', 'is_national', 'team_name', 'league_name', 'league_id', 'country', 'venue_name', 'venue_surface', 'venue_city']
     filters = {}
     query = Team.objects()
 
@@ -173,8 +181,15 @@ def teams():
     if 'sort3' in args:
         sort3 = args['sort3']
 
+    first = 0
+    last = len(query)
+    if 'page' in args:
+        first = cpp * int(args['page']) - cpp 
+        last = cpp * int(args['page'])
+
+
     query = query.order_by(sort1, sort2, sort3)
-    teams_list = [team.json() for team in query[cpp * int(args['page']) - cpp : cpp * int(args['page'])]]
+    teams_list = [team.json() for team in query[first: last]]
     teams_list_dict = {}
     teams_list_dict['teams_list'] = teams_list
     teams_list_dict['num_entries'] = len(query)
@@ -222,8 +237,16 @@ def league():
     if 'sort3' in args:
         sort3 = args['sort3']
 
+
+    first = 0
+    last = len(query)
+    if 'page' in args:
+        first = cpp * int(args['page']) - cpp 
+        last = cpp * int(args['page'])
+
+
     query = query.order_by(sort1, sort2, sort3)
-    teams_list = [league.json() for league in query[cpp * int(args['page']) - cpp : cpp * int(args['page'])]]
+    teams_list = [league.json() for league in query[ first : last]]
     teams_list_dict = {}
     teams_list_dict['leagues_list'] = teams_list
     teams_list_dict['num_entries'] = len(query)

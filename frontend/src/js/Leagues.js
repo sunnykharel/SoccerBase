@@ -21,9 +21,7 @@ function Leagues({match}) {
             const fetchPosts = async () => {
               setLoading(true);
               res = await axios.get('https://still-waters-10895.herokuapp.com/getallleagues');
-              console.log(res.data);
-              setPosts(res.data.leagues_list);
-              console.log(listante)
+              setPosts(res.data.leagues_list);              
               setLoading(false);
         };
         
@@ -46,7 +44,7 @@ function Leagues({match}) {
                     <ModelPagesComponent modelInstances = {currentPosts.map( 
                         function(post){
                             return {
-                                modelPageLink : "Leagues/"+post.league_id,
+                                modelPageLink : "Leagues/"+post.league_id+"_"+post.name,
                                 modelImage: post.logo  ,
                                 modelName: post.name ,
                                 modelName1: post.country ,
@@ -59,7 +57,8 @@ function Leagues({match}) {
 
                     <Switch>
                         <Route path={match.url + "/:id"}>
-                            <LeagueInstance isHidden={isHidden} setIsHidden={setIsHidden} />
+                            
+                            <LeagueInstance isHidden={isHidden} setIsHidden={setIsHidden}/>
                         </Route>
                     </Switch>
 

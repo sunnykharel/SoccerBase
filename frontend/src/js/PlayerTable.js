@@ -32,12 +32,12 @@ const rows = [
   createData('Player11', 20, 'PositionE'),
 ];
 
-export default function PlayerTable() {
+export default function PlayerTable(props) {
   const classes = useStyles();
 
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
+      <Table className={classes.table} size="medium" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell>Player Name</TableCell>
@@ -46,10 +46,10 @@ export default function PlayerTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {props.table.map((row) => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.player_name}
               </TableCell>
               <TableCell align="right">{row.age}</TableCell>
               <TableCell align="right">{row.position}</TableCell>

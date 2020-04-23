@@ -53,7 +53,11 @@ function InstancePage(props) {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        
+
+        Team/:teamname
+        Team/:teamname/players
+
+        barcelona/players
         <Header title={props.title} sections={props.sections} />
         <main>
           <MainFeaturedPost post={props.mainFeaturedPost} />
@@ -63,7 +67,7 @@ function InstancePage(props) {
             ))}
           </Grid>
           <Grid container spacing={5} className={classes.mainGrid}>
-            <Main title="From the firehose" posts={posts} /> 
+            <Main title="More information:" posts={posts} type = {props.type} table={props.table} element ={props.element}/> 
             {/* tableData = {props.tableData} */}
             <Sidebar
             // title = {props.sidebar.title}
@@ -71,6 +75,8 @@ function InstancePage(props) {
               description={sidebar.description}
               archives={sidebar.archives}
               social={sidebar.social}
+              type = {props.type} 
+              element ={props.element}
             />
           </Grid>
         </main>
