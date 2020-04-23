@@ -42,9 +42,9 @@ export default function Header(props) {
         >
           {title}
         </Typography>
-        <IconButton>
+        {/* <IconButton>
           <SearchIcon />
-        </IconButton>
+        </IconButton> */}
       </Toolbar>
       <Toolbar variant="dense" className={classes.toolbarSecondary}>
         {sections.map((section) => (

@@ -77,11 +77,11 @@ class LeagueInstance extends Component {
 
     render(){
 
-        //var i; 
+      var key = (parseInt(this.props.match.params.id.split('_')[0]))
         for(let indx = 0; indx < this.state.responses_arrays.length; indx++ ){
           if(this.state.responses_arrays){
-            if(this.props.match.params.id.split('_')[0] == ""+this.state.responses_arrays[indx]){
-                this.state.league_json = this.state.responses_arrays[indx];
+            if(key == this.state.responses_arrays[indx].league_id){
+              this.state.i = indx;;
                 break;
             }
           }
@@ -138,10 +138,10 @@ class LeagueInstance extends Component {
         /*
           update this with actual news
         */
-       console.log(this.state.table_arrays)
+       console.log(this.state.responses_arrays[this.state.i])
        return (   
         <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {this.props.match.params.id.split('_')[1]}   
-            sections = {sections} table ={this.state.table_arrays} type = {"league"} element = {this.state.league_JSON} />
+            sections = {sections} table ={this.state.table_arrays} type = {"league"} element = {this.state.responses_arrays[this.state.i]} />
     );
 
     }

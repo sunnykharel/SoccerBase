@@ -14,7 +14,7 @@ export default function ModelPagesComponent(props) {
   const classes = useStyles();
   //pass in the elements of the row into props
   function FormRow(props) {
-      console.log(props.modelInstancesSlice)
+    //  console.log(props.modelInstancesSlice)
     return (
       <React.Fragment>
         {props.modelInstancesSlice.map((modelInstance) => {
