@@ -1,4 +1,4 @@
-import { NavLink , Route, Switch, BrowserRouter, useHistory} from 'react-router-dom'
+import { NavLink , Route, Switch, BrowserRouter, useHistory, useLocation} from 'react-router-dom'
 import {Link, useParams} from 'react-router-dom'
 import { withRouter } from "react-router";
 import React, { useState, useEffect ,Component} from 'react';
@@ -19,8 +19,12 @@ function Search(props) {
         
         fetchPosts();
     }, []);*/}
+
+    let history = useHistory();
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~" + props.location.state.isWorking);
+
     return (
-        <h1> SEARCH RESULTS BABY </h1>
+        <h1> SEARCH RESULTS BABY {history.location.state.isWorking}</h1>
     );
 
 }

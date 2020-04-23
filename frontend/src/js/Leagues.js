@@ -1,4 +1,4 @@
-import { NavLink , Route, Switch, BrowserRouter, useHistory} from 'react-router-dom'
+import { NavLink , Route, Switch, BrowserRouter, useHistory, useLocation} from 'react-router-dom'
 import {Link, useParams} from 'react-router-dom'
 import { withRouter } from "react-router";
 import React, { useState, useEffect ,Component} from 'react';
@@ -12,22 +12,53 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 import './../css/SearchBar.css'
 
+//creates search parameter string
+function searchInputUrl(searchInput) {
+    var result = "";
+    if (searchInput) {
+        result += "search_parameters=" + searchInput;
+    }
+    return result;
+}
+
+//creates region filter string
+function regionFilterUrl(regionFilter) {
+    var result ="";
+    if (regionFilter) {
+        result += "region=" + regionFilter;
+    }
+    return result;
+}
+
+//creates sub regiion filter string
+function subRegionFilterUrl(subRegionFilter) {
+    var result = "";
+    if (subRegionFilter) {
+        result += "subregion=" + subRegionFilter;
+    }
+    return result;
+}
+
 //CreateSearchURL
-function createSearchURL(searchInput, regionFilter, subRegionFilter, popFilter, areaFilter) {
-    return "search";
+function createSearchURL(model, searchInput, regionFilter, subRegionFilter, popFilter, areaFilter) {
+    var result = "" + model + "?" + searchInputUrl(searchInput) + "&"
+        + regionFilterUrl(regionFilter) + "&" + subRegionFilterUrl(subRegionFilter)
+        + "&";
+    
+    return "/search/" + result;
 }
 
 //SearchBar Componenent
 function SearchBar(props) {
     //Query data:
     //1. User search keywords/input text
-    const [searchInput, setSearchInput] = useState("");
+    const [searchInput, setSearchInput] = useState(null);
     
     //2. Filters
-    const [regionFilter, setRegionFilter] = useState();
-    const [subRegionFilter, setSubRegionFilter] = useState();
-    const [popFilter, setPopFilter] = useState();
-    const [areaFilter, setAreaFilter] = useState();
+    const [regionFilter, setRegionFilter] = useState(null);
+    const [subRegionFilter, setSubRegionFilter] = useState(null);
+    const [popFilter, setPopFilter] = useState(null);
+    const [areaFilter, setAreaFilter] = useState(null);
 
     //3. State data for search display
     const [filterSelected, setFilterSelected] = useState(false);
@@ -36,7 +67,10 @@ function SearchBar(props) {
     
     function checkForSubmit(event) {
         if (event.key === 'Enter') {
-            history.push("/" + createSearchURL());
+            history.push({
+                pathname: createSearchURL("league", searchInput, regionFilter, subRegionFilter),
+                state: {isWorking: "itis!!"}
+            });
         }
     }
 
