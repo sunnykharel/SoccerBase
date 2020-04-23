@@ -33,8 +33,8 @@ export default function Header(props) {
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography
-          component="h2"
-          variant="h5"
+          component="h3"
+          variant="h2"
           color="inherit"
           align="center"
           noWrap
