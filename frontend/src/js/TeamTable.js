@@ -42,7 +42,7 @@ export default function TeamTable(props) {
           {props.table.map((row) => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row">
-              <a href={"http://www.soccerbase.appspot.com/Teams/"+(row.team_name+"").replace(' ', '%20')} > {row.team_name}</a>
+              <a href={"http://www.soccerbase.appspot.com/Teams/"+row.team_id+"_"+(row.team_name+"").replace(' ', '%20')} > {row.team_name}</a>
               </TableCell>
               <TableCell align="right">{row.points}</TableCell>
             </TableRow>
