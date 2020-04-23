@@ -37,7 +37,7 @@ class LeagueInstance extends Component {
         get news data here and update state
 
         */
-        const id = this.state.identitooooo_lasagna_muthafucka
+        const id = parseInt(this.state.identitooooo_lasagna_muthafucka.split('_')[0])
         const league_name = this.state.identitooooo_lasagna_muthafucka.split('_')[1].replace("%20", " ");
         console.log(league_name)
         const scopez = this;
@@ -61,7 +61,7 @@ class LeagueInstance extends Component {
         axios.get('https://still-waters-10895.herokuapp.com/team', {
           params: {
             league_id:{
-              "exact": id
+              "exact":  id
             }
           }
         })
@@ -70,7 +70,7 @@ class LeagueInstance extends Component {
             console.log(respo.data)
             //works until here
             scopez.setState({
-                 table_arrays: respo.data.leagues_list.slice(0, respo.data.length),
+                 table_arrays: respo.data.teams_list.slice(0, respo.data.teams_list.length),
             }); 
         })
     }
@@ -138,7 +138,7 @@ class LeagueInstance extends Component {
         /*
           update this with actual news
         */
-
+       console.log(this.state.table_arrays)
        return (   
         <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {this.props.match.params.id.split('_')[1]}   
             sections = {sections} table ={this.state.table_arrays} type = {"league"} element = {this.state.league_JSON} />

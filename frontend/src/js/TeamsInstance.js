@@ -22,14 +22,23 @@ class TeamsInstance extends Component {
         super(props)
         props.setIsHidden(true)
         this.state = {
+            table_arrays: Array(4).fill({}),
+            table_arrays1: Array(4).fill({}),
+            table_arrays2: Array(4).fill({}),
             responses_arrays : Array(2000).fill(""),
             news_arrays: Array(3).fill(""),
             i: 0, 
             function: props.setIsHidden,
+            identitooooo_lasagna_muthafucka: props.match.params.id,
         }
     }
     componentDidMount() {
-        const id = this.props.match.params.id
+        /*
+        get news data here and update state
+
+        */
+        const id = parseInt(this.state.identitooooo_lasagna_muthafucka.split('_')[0])
+        const team_name = this.state.identitooooo_lasagna_muthafucka.split('_')[1].replace("%20", " ");
         //var i;
         const scopez = this;
         axios.get('https://still-waters-10895.herokuapp.com/getallteams')
@@ -40,7 +49,7 @@ class TeamsInstance extends Component {
                 responses_arrays: res.data.teams_list.slice(0, res.data.teams_list.length),
             }); 
         })
-        axios.get('https://still-waters-10895.herokuapp.com/getnews/' + id)
+        axios.get('https://still-waters-10895.herokuapp.com/getnews/' + team_name)
         .then(function (resp) {
 
             console.log(resp.data)
@@ -48,8 +57,38 @@ class TeamsInstance extends Component {
             scopez.setState({
                  news_arrays: resp.data.slice(0, resp.data.length),
             }); 
-        })                
-    }
+        })    
+        axios.get("https://api-football-v1.p.rapidapi.com/v2/players/squad/"+id+"/2019-2020" , {
+            headers:{
+                'X-RapidAPI-Key-Host': "api-football-v1.p.rapidapi.com",
+                'X-RapidAPI-Key': "c114e8403emsh6c4e6c8d45757cbp131072jsn941330efea5f"
+            }
+        })
+        .then(function (respo) {
+
+            console.log(respo.data)
+            //works until here
+            scopez.setState({
+                 table_arrays1: respo.data.api.players.slice(0, respo.data.api.players.length),
+            }); 
+        })
+        axios.get("https://api-football-v1.p.rapidapi.com/v2/players/squad/"+id+"/2019" , {
+                headers:{
+                    'X-RapidAPI-Key-Host': "api-football-v1.p.rapidapi.com",
+                    'X-RapidAPI-Key': "c114e8403emsh6c4e6c8d45757cbp131072jsn941330efea5f"
+                }
+            })
+            .then(function (respo) {
+    
+                console.log(respo.data)
+                //works until here
+                scopez.setState({
+                     table_arrays2: respo.data.api.players.slice(0, respo.data.api.players.length),
+                });
+            });  
+
+        
+        }
     
     render(){
 
@@ -139,9 +178,20 @@ class TeamsInstance extends Component {
                   { title: 'April 1999', url: '#' },
                 ]
               };
+        var tablez= []
+        if(this.state.table_arrays1>this.state.table_arrays2){
+            tablez=this.state.table_arrays1
+        }else{
+            tablez=this.state.table_arrays2
+        }
+        console.log(tablez)
+        console.log(this.state.table_arrays2)
+        console.log(this.state.table_arrays2)
+
+
         return (   
-            <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {this.props.match.params.id}   
-                sections = {sections} type = {"team"} element = {this.state.responses_arrays[this.state.i]} sidebar={sidebar}/>
+            <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {this.props.match.params.id.split('_')[1]}   
+                sections = {sections} table = {tablez} type = {"team"} element = {this.state.responses_arrays[this.state.i]} sidebar={sidebar}/>
         );
     }
 

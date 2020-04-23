@@ -66,7 +66,7 @@ export default function Main(props) {
         </Typography>
         <Divider /> 
 
-        <PlayerTable/>  
+        <PlayerTable table={props.table}/>  
         
         {/* <Table tableData = {props.tableData} col={props.col}/>
         also remove post.map stuff and i have to make the table*/}
@@ -100,7 +100,7 @@ export default function Main(props) {
         </Typography>
         <Divider /> 
 
-        <TeamTable/>  
+        <TeamTable table = {props.table}/>  
         
         {/* <Table tableData = {props.tableData} col={props.col}/>
         also remove post.map stuff and i have to make the table*/}

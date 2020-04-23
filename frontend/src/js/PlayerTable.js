@@ -32,7 +32,7 @@ const rows = [
   createData('Player11', 20, 'PositionE'),
 ];
 
-export default function PlayerTable() {
+export default function PlayerTable(props) {
   const classes = useStyles();
 
   return (
@@ -46,10 +46,10 @@ export default function PlayerTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {props.table.map((row) => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.player_name}
               </TableCell>
               <TableCell align="right">{row.age}</TableCell>
               <TableCell align="right">{row.position}</TableCell>

@@ -42,7 +42,8 @@ export default function LeagueTable(props) {
           {props.table.map((row) => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row">
-                {row.name}
+
+                <a href={"http://www.soccerbase.appspot.com/Leagues/"+row.league_id+"_"+(row.name+"").replace(' ', '%20')} > {row.name}</a>
               </TableCell>
               <TableCell align="right">{row.type}</TableCell>
               <TableCell align="right">{row.num_teams}</TableCell>

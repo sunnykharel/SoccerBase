@@ -26,12 +26,12 @@ const rows = [
   createData('Team5', 9),
 ];
 
-export default function TeamTable() {
+export default function TeamTable(props) {
   const classes = useStyles();
-
+  console.log(props.table)
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
+      <Table className={classes.table} size="medium" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell>Team Name</TableCell>
@@ -39,10 +39,10 @@ export default function TeamTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {props.table.map((row) => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row">
-                {row.name}
+              <a href={"http://www.soccerbase.appspot.com/Teams/"+(row.team_name+"").replace(' ', '%20')} > {row.team_name}</a>
               </TableCell>
               <TableCell align="right">{row.points}</TableCell>
             </TableRow>
