@@ -17,7 +17,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
           {/* can add class = "pagination for ul" */}
         {pageNumbers.map(number => (
           <li key={number} className='page-item' >
-            <a onClick={() => {page = parseInt(number); paginate(number)}} href='#' className='page-link' >  
+            <a onClick={() => {page = parseInt(number); paginate(number)}} href="javascript:void()" className='page-link' >  
             {/* can add # in href to stop page refresh thing and it should have been !# but that just takes to homepage */}
               {number}
             </a>

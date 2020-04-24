@@ -78,10 +78,10 @@ function Search(props) {
                             } else if (props.history.location.state.model === "team") {
                                 return {
                                     modelPageLink : "/Teams/" + post.team_id + "_" + post.team_name,
-                                    modelImage: post.logo  ,
-                                    modelName: post.name ,
-                                    modelName1: post.country ,
-                                    modelName2: post.num_teams ,
+                                    modelImage: post.team_logo  ,
+                                    modelName: post.team_name ,
+                                    modelName1: post.league_name ,
+                                    modelName2: post.country ,
                                     modelLink1:"/",
                                     modelLink2:"/" 
                                 }
@@ -89,10 +89,10 @@ function Search(props) {
                             } else {
                                 return {
                                     modelPageLink : "/Countries/"+ post.name,
-                                    modelImage: post.logo  ,
+                                    modelImage: post.flag ,
                                     modelName: post.name ,
-                                    modelName1: post.country ,
-                                    modelName2: post.num_teams ,
+                                    modelName1: "most famous team" ,
+                                    modelName2: "most famous league" ,
                                     modelLink1:"/",
                                     modelLink2:"/" 
                                 }
