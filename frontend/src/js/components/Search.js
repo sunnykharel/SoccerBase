@@ -18,13 +18,21 @@ function Search(props) {
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(12);
     
+    const [isSearch, setIsSearch] = useState(true);
+
     useEffect((res) => {
         const fetchPosts = async () => {
             setLoading(true);
             res = await axios.get('https://still-waters-10895.herokuapp.com/'
                 + props.history.location.state.search);
             console.log(res.data);
-            setPosts(res.data.leagues_list);
+            if (props.history.location.state.model === "league") {
+                setPosts(res.data.leagues_list);
+            } else if (props.history.location.state.model === "team") {
+                setPosts(res.data.teams_list);
+            } else {
+                setPosts(res.data.countries_list);
+            }
             console.log(listante)
             setLoading(false);
         };
@@ -41,16 +49,15 @@ function Search(props) {
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
     let history = useHistory();
-    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~" + props.history.location.state.isWorking);
-    console.log("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~" + props.history.location.state.search);
+    //console.log("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~" + props.history.location.state.search);
 
     if (isHidden == false) {
         if ( posts[0]!=null){
         return (
             <div>
-                <div className="searchBar">
-                    <SearchBar/>
-                </div>
+                {/*<div className="searchBar">
+                    <SearchBar isSearch={isSearch}/>
+                </div>*/}
                 <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
                 
                     <h1>Leagues</h1>

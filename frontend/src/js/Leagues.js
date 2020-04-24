@@ -18,6 +18,12 @@ function Leagues({match}) {
         const [loading, setLoading] = useState(false);
         const [currentPage, setCurrentPage] = useState(1);
         const [postsPerPage] = useState(12);
+        
+        const [isSearch, setIsSearch] = useState(false);
+        const [isCountry, setIsCountry] = useState(false);
+        const [isTeam, setIsTeam] = useState(false);
+        const [isLeague, setIsLeague] = useState(true);
+
         useEffect((res) => {
             const fetchPosts = async () => {
               setLoading(true);
@@ -44,10 +50,15 @@ function Leagues({match}) {
             return (
                 <div>
                     <div className="searchBar">
-                        <SearchBar/>
+                        <SearchBar 
+                            isSearch={isSearch} 
+                            isCountry={isCountry} 
+                            isTeam={isTeam}
+                            isLeague={isLeague}
+                            model="league"
+                        />
                     </div>
                     <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
-                    
                         <h1>Leagues</h1>
                         <ModelPagesComponent modelInstances = {currentPosts.map( 
                             function(post){

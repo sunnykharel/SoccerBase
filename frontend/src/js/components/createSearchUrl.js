@@ -27,11 +27,24 @@ function subRegionFilterUrl(subRegionFilter) {
     return result;
 }
 
+function createSortUrl(sortBy, sortOrder) {
+    var result = "";
+    if (sortBy && sortOrder) {
+        if ("Descending" === sortOrder) {
+            result += "sort1=-" + sortBy;
+        } else {
+            result += "sort1=" + sortBy;
+        }
+    }
+    return result;
+}
+
 //CreateSearchURL
-function createSearchUrl(model, searchInput, regionFilter, subRegionFilter, popFilter, areaFilter) {
+function createSearchUrl(model, searchInput, regionFilter, subRegionFilter, popFilter, 
+    areaFilter, sortBy, sortOrder) {
     var result = "" + model + "?" + searchInputUrl(searchInput) + "&"
         + regionFilterUrl(regionFilter) + "&" + subRegionFilterUrl(subRegionFilter)
-        + "&";
+        + "&" + createSortUrl(sortBy, sortOrder);
     
     return "/search/" + result;
 }

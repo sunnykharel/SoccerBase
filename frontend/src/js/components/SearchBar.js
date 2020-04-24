@@ -24,6 +24,8 @@ function SearchBar(props) {
     const [subRegionFilter, setSubRegionFilter] = useState(null);
     const [popFilter, setPopFilter] = useState(null);
     const [areaFilter, setAreaFilter] = useState(null);
+    const [sortBy, setSortBy] = useState(null);
+    const [sortOrder, setSortOrder] = useState(null);
 
     //3. State data for search display
     const [filterSelected, setFilterSelected] = useState(false);
@@ -31,21 +33,47 @@ function SearchBar(props) {
     let history = useHistory();
 
     function checkForSubmit(event) {
-        let searchUrl = createSearchUrl("league", searchInput, regionFilter, subRegionFilter);
+        let searchUrl = createSearchUrl(props.model, searchInput, regionFilter, subRegionFilter,
+            popFilter, areaFilter, sortBy, sortOrder);
         if (event.key === 'Enter') {
+            
+            var route;
+            if (props.isSearch) {
+                route = history.replace;
+            } else {
+                route = history.push;
+            }
             history.push({
                 pathname: searchUrl,
-                state:  {   isWorking: "itis!!",
-                            search: searchUrl.slice(8)
-                        }
+                state:  {   
+                    model:props.model,
+                    search: searchUrl.slice(8)
+                }
             });
         }
     }
 
+    //Get User Inputs onChange
     function getUserInput(e) {
         setSearchInput(e.target.value);
     }
 
+    function getSortBy(e) {
+        setSortBy(e.target.value);
+    }
+
+    function getSortOrder(e) {
+        setSortOrder(e.target.value);
+    }
+
+    useEffect(() => { 
+        console.log("sortby set to" + sortBy); 
+        console.log("sortOrder set to" + sortOrder);
+    }, [sortBy, sortOrder]);
+
+    function getRegionFilter(e) {
+        setRegionFilter(e.target.value);
+    }
 
     return (
         <div className="SearchDiv">
@@ -55,6 +83,31 @@ function SearchBar(props) {
                 onKeyPress={checkForSubmit}
                 onChange={getUserInput}
             />
+            
+            {(filterSelected && props.isCountry) && 
+            <select className="selector" onChange={getRegionFilter}>
+                <option>Filter By Region:</option>
+                <option value="africa">Africa</option>
+                <option value="americas">Americas</option>
+                <option value="asia">Asia</option>
+                <option value="europe">Europe</option>
+                <option value="oceania">Oceania</option>
+            </select>}
+            
+            {filterSelected && <select className="selector" onChange={getSortBy}>
+                <option>Sort By:</option>
+                <option value="name">Name</option>
+                { !props.isCountry && <option value="country">Country</option>}
+            </select>}
+
+            {filterSelected && <select className="selector" onChange={getSortOrder}>
+                <option>Sort Order:</option>
+                <option value="Ascending">Ascending</option>
+                <option value="Descending">Descending</option>
+            </select>}
+            
+
+
             <ToggleButton
                 selected={filterSelected}
                 onChange={() => {
@@ -63,17 +116,6 @@ function SearchBar(props) {
             >
                 <FilterListIcon/>
             </ToggleButton>
-            {filterSelected && <select className="selector">
-                <option>Filter By Region:</option>
-                <option>Asia</option>
-            </select>}
-            {filterSelected && <select className="selector">
-                <option>Filter By Population:</option>
-                <option>{"< 10,0000"}</option>
-                <option>{"10,000 to 100,000"}</option>
-                <option>{"100,000 to 1,000,000"}</option>
-                <option>{"> 1,000,000"}</option>
-            </select>}
         </div>
     );
 }
