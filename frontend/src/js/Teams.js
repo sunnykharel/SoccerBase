@@ -8,7 +8,7 @@ import axios from 'axios';
 import TeamsInstance from './TeamsInstance'
 import ModelPagesComponent from './components/ModelPagesComponent'
 // import './App.css';
-
+import SearchBar from './components/SearchBar'
 
 function Teams({match}) {
         const [isHidden, setIsHidden] = useState(false);
@@ -35,35 +35,52 @@ function Teams({match}) {
         // const selectedPost = null;
         // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
+        const [isSearch, setIsSearch] = useState(false);
+        const [isCountry, setIsCountry] = useState(false);
+        const [isTeam, setIsTeam] = useState(true);
+        const [isLeague, setIsLeague] = useState(false);
+
         if (isHidden == false) {
             if ( posts[0]!=null){
                 return (
-                    <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
-                    
-                    <ModelPagesComponent modelInstances = {currentPosts.map( 
-                        function(post){
-                            return {
-                                modelPageLink : "Teams/"+post.team_id+"_"+post.team_name,
-                                modelImage: post.team_logo  ,
-                                modelName: post.team_name ,
-                                modelName1: "League: " + post.league_name ,
-                                modelName2: "Country: " + post.country ,
-                                modelLink1:"/",
-                                modelLink2:"/" 
-                            }
-                        }
-                    )}/>
-                    <Switch>
-                        <Route path={match.url + "/:id"}>
-                            <TeamsInstance isHidden={isHidden} setIsHidden={setIsHidden} />
-                        </Route>
-                    </Switch>
 
-                    <Pagination
-                        postsPerPage={postsPerPage}
-                        totalPosts={posts.length}
-                        paginate={paginate}
-                    />
+                    <div>
+                        <div>
+                            <SearchBar 
+                                isSearch={isSearch}
+                                isCountry={isCountry}
+                                isTeam={isTeam}
+                                isLeague={isLeague}
+                                model="team"
+                            />
+                        </div>
+                        <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
+
+                            <h1>Teams</h1>
+                            <ModelPagesComponent modelInstances = {currentPosts.map( 
+                                function(post){
+                                    return {
+                                        modelPageLink : "Teams/"+post.team_id+"_"+post.team_name,
+                                        modelImage: post.team_logo  ,
+                                        modelName: post.team_name ,
+                                        modelName1: "League: " + post.league_name ,
+                                        modelName2: "Country: " + post.country ,
+                                        modelLink1:"/",
+                                        modelLink2:"/" 
+                                    }
+                                }
+                            )}/>
+                            <Switch>
+                                <Route path={match.url + "/:id"}>
+                                    <TeamsInstance isHidden={isHidden} setIsHidden={setIsHidden} />
+                                </Route>
+                            </Switch>
+                            <Pagination
+                                postsPerPage={postsPerPage}
+                                totalPosts={posts.length}
+                                paginate={paginate}
+                            />
+                        </div>
                     </div>
                 );
             } else{

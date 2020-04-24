@@ -37,6 +37,7 @@ class LeagueInstance extends Component {
         get news data here and update state
 
         */
+        console.log(this.state.identitooooo_lasagna_muthafucka);
         const id = parseInt(this.state.identitooooo_lasagna_muthafucka.split('_')[0])
         const league_name = this.state.identitooooo_lasagna_muthafucka.split('_')[1].replace("%20", " ");
         console.log(league_name)
