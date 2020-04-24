@@ -79,7 +79,7 @@ function SearchBar(props) {
         <div className="SearchDiv">
             <input 
                 className="searchBar" 
-                placeholder="Search for your favorites" 
+                placeholder="Search for your favorites - Press the Enter Key on your KeyBoard to Search" 
                 onKeyPress={checkForSubmit}
                 onChange={getUserInput}
             />
