@@ -193,12 +193,22 @@ class About extends Component {
         httpIssues.send();
         
         scope.setState({
-          totalUnitTests: 25,
-          nithinUnitTests: 6,
-          askarUnitTests: 4,
-          sunnyUnitTests: 6,
-          parmUnitTests: 5,
-          tanayUnitTests: 4
+          totalUnitTests: 38,
+          nithinUnitTests: 9,
+          askarUnitTests: 6,
+          sunnyUnitTests: 8,
+          parmUnitTests: 7,
+          tanayUnitTests: 8,
+          parmCommits: 18,
+          parmIssues: 2,
+          nithinCommits: 11,
+          nithinIssues: 3,
+          askarCommits: 26,
+          askarIssues: 4,
+          tanayCommits: 15,
+          tanayIssues: 7,
+          sunnyCommits: 24,
+          sunnyIssues: 3,
         });         
     }
 

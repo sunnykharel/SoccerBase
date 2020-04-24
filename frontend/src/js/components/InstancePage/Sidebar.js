@@ -35,9 +35,15 @@ export default function Sidebar(props) {
         <Typography variant="h5" component="h2">
           {<h5> Team Logo:</h5>}
           <img src={props.element.team_logo} />
-          {<h5> Country: {props.element.country} </h5>}
+          {<h5> Country: 
+            <a href={"http://www.soccerbase.appspot.com/Countries/"+props.element.country} >  {props.element.country} </a>    
+          </h5>}
           {<h5> Year Founded: {props.element.founded} </h5>}
-          {<h5> League: {props.element.league_name} </h5>}
+          {console.log(props.element.name)}
+         
+          {<h5> League: 
+            <a href={"http://www.soccerbase.appspot.com/Leagues/"+props.element.league_id+"_"+(props.element.league_name+"").replace(' ', '%20')} >  {props.element.league_name} </a>   
+          </h5>}
           {<h5> Venue City: {props.element.venue_city} </h5>}
           {<h5> Stadium Name: {props.element.venue_name} </h5>}
           {<h5> Type of Field: {props.element.venue_surface} </h5>}
@@ -87,7 +93,9 @@ export default function Sidebar(props) {
             <Typography variant="h5" component="h2">
               {<h5> League Logo:</h5>}
               <img src={props.element.logo} />
-              {<h5> Country: {props.element.country} </h5>}
+              {<h5> Country: 
+            <a href={"http://www.soccerbase.appspot.com/Countries/"+props.element.country} >  {props.element.country} </a>    
+          </h5>}
               {<h5> Country Code: {props.element.country_code} </h5>}
               {<h5> League Type: {props.element.type} </h5>}
               {<h5> Number of Teams: {props.element.num_teams} </h5>}

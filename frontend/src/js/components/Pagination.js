@@ -11,7 +11,8 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
   }
 
   return (
-    <nav style={{backgroundColor : "#BA55D3", border: "none"}}>
+    <nav style={{backgroundColor : "#FFFFFF", border: "none"}}>
+      {/* maybe remove the parent element here to get rid of the box */}
       <ul >
           {/* can add class = "pagination for ul" */}
         {pageNumbers.map(number => (

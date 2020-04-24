@@ -39,7 +39,7 @@ function Teams({match}) {
             if ( posts[0]!=null){
                 return (
                     <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
-                    //this needs to be fixed with accurate information
+                    
                     <ModelPagesComponent modelInstances = {currentPosts.map( 
                         function(post){
                             return {
