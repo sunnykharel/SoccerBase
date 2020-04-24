@@ -102,17 +102,17 @@ function Search(props) {
 
                     <Switch>
                         <Route path={props.match.url + "/:id"}>
-                            {props.isLeague && 
+                            {(props.history.location.state.model === "league") && 
                             <LeagueInstance 
                                 isHidden={isHidden} 
                                 setIsHidden={setIsHidden} 
                             />}
-                            {props.isTeam &&
+                            {(props.history.location.state.model === "team") &&
                             <TeamsInstance
                                 isHidden={isHidden}
                                 setIsHidden={setIsHidden}
                             />}
-                            {props.isCountry &&
+                            {(props.history.location.state.model === "country") &&
                             <CountryInstance
                                 isHidden={isHidden}
                                 setIsHidden={setIsHidden}
@@ -140,17 +140,17 @@ function Search(props) {
                 
                 <Switch>
                     <Route path={props.match.url + "/:id"}>
-                        {props.isLeague && 
+                        {(props.history.location.state.model === "league") && 
                         <LeagueInstance 
                             isHidden={isHidden} 
                             setIsHidden={setIsHidden} 
                         />}
-                        {props.isTeam &&
+                        {(props.history.location.state.model === "team") &&
                         <TeamsInstance
                             isHidden={isHidden}
                             setIsHidden={setIsHidden}
                         />}
-                        {props.isCountry &&
+                        {(props.history.location.state.model === "country") &&
                         <CountryInstance
                             isHidden={isHidden}
                             setIsHidden={setIsHidden}
