@@ -46,8 +46,8 @@ function Teams({match}) {
                                 modelPageLink : "Teams/"+post.team_id+"_"+post.team_name,
                                 modelImage: post.team_logo  ,
                                 modelName: post.team_name ,
-                                modelName1: post.league_name ,
-                                modelName2: post.country ,
+                                modelName1: "League: " + post.league_name ,
+                                modelName2: "Country: " + post.country ,
                                 modelLink1:"/",
                                 modelLink2:"/" 
                             }

@@ -42,15 +42,15 @@ function Countries({match}) {
             if ( posts[0]!=null){
                 return (
                     <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
-                    //this needs to be fixed with accurate information
+                  
                     <ModelPagesComponent modelInstances = {currentPosts.map( 
                         function(post){
                             return {
                                 modelPageLink : ''.concat('/Countries/', post.name),
                                 modelImage: post.flag ,
                                 modelName: post.name ,
-                                modelName1: "most famous team" ,
-                                modelName2: "most famous league" ,
+                                modelName1: "Capital: " + post.capital ,
+                                modelName2: "Num Leagues: " + post.num_leagues,
                                 modelLink1:"/",
                                 modelLink2:"/" 
                             }

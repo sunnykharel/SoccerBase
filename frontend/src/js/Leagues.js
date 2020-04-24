@@ -47,8 +47,8 @@ function Leagues({match}) {
                                 modelPageLink : "Leagues/"+post.league_id+"_"+post.name,
                                 modelImage: post.logo  ,
                                 modelName: post.name ,
-                                modelName1: post.country ,
-                                modelName2: post.num_teams ,
+                                modelName1: "Country: " + post.country ,
+                                modelName2: "Num Teams: " + post.num_teams ,
                                 modelLink1:"/",
                                 modelLink2:"/" 
                             }
