@@ -1,0 +1,17 @@
+.searchBar{
+    margin: auto;
+    padding: 5px;
+}
+
+.selector{
+    display: flex;
+    flex-shrink: 3;
+    margin: auto;
+    padding: 2px;
+}
+
+.SearchDiv{
+    display:flex;
+    flex-direction: row;
+    padding: 5px;
+}

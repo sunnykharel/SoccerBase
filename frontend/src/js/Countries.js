@@ -7,7 +7,7 @@ import Pagination from './components/Pagination';
 import axios from 'axios';
 import CountryInstance from './CountryInstance'
 import ModelPagesComponent from './components/ModelPagesComponent'
-
+import SearchBar from './components/SearchBar'
 // import './App.css';
 
 
@@ -18,6 +18,11 @@ function Countries({match}) {
         const [loading, setLoading] = useState(false);
         const [currentPage, setCurrentPage] = useState(1);
         const [postsPerPage] = useState(12);
+        
+        const [isCountry, setIsCountry] = useState(true);
+        const [isTeam, setIsTeam] = useState(false);
+        const [isLeague, setIsLeague] = useState(false);
+
         useEffect((res) => {
             const fetchPosts = async () => {
               setLoading(true);
@@ -41,32 +46,43 @@ function Countries({match}) {
         if (isHidden == false) {
             if ( posts[0]!=null){
                 return (
-                    <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
-                    //this needs to be fixed with accurate information
-                    <ModelPagesComponent modelInstances = {currentPosts.map( 
-                        function(post){
-                            return {
-                                modelPageLink : ''.concat('/Countries/', post.name),
+
+                    <div>
+                        <div>
+                            <SearchBar 
+                                isCountry={isCountry}
+                                isTeam={isTeam}
+                                isLeague={isLeague}
+                                model="country"
+                            />
+                        </div>
+                        <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
+                            <h1>Countries</h1>
+                            <ModelPagesComponent modelInstances = {currentPosts.map( 
+                                function(post){
+                                    return {
+                                        modelPageLink : ''.concat('/Countries/', post.name),
                                 modelImage: post.flag ,
                                 modelName: post.name ,
-                                modelName1: "most famous team" ,
-                                modelName2: "most famous league" ,
+                                modelName1: "Capital: " + post.capital ,
+                                modelName2: "Num Leagues: " + post.num_leagues,
                                 modelLink1:"/",
                                 modelLink2:"/" 
-                            }
-                        }
-                    )}/>
-                    <Switch>
-                        <Route path={match.url + "/:id"}>
-                            <CountryInstance isHidden={isHidden} setIsHidden={setIsHidden} />
-                        </Route>
-                    </Switch>
+                                    }
+                                }
+                            )}/>
+                            <Switch>
+                                <Route path={match.url + "/:id"}>
+                                    <CountryInstance isHidden={isHidden} setIsHidden={setIsHidden} />
+                                </Route>
+                            </Switch>
 
-                    <Pagination
-                        postsPerPage={postsPerPage}
-                        totalPosts={posts.length}
-                        paginate={paginate}
-                    />
+                            <Pagination
+                                postsPerPage={postsPerPage}
+                                totalPosts={posts.length}
+                                paginate={paginate}
+                            />
+                        </div>
                     </div>
                 );
             }else{
