@@ -222,9 +222,11 @@ def league():
 @app.route("/getnews/<topic>", methods=["GET"])
 def get_news(topic):
 
-    newsClient = NewsApiClient(api_key="bad068d6ce6c4ccfb30eb5785c360efe")
-    #                                              q is search terms, category for category of news, language is english
-    #                                              if possible (foreign news may not be english)
+    api_key_val = os.environ.get('API_FOOTBALL_KEY_1')
+
+    newsClient = NewsApiClient(api_key=api_key_val)
+    # q is search terms, category for category of news, language is english
+    # if possible (foreign news may not be english)
     keyWords = topic + " soccer"
     sportsSources = newsClient.get_sources(category="sports")
     sourceIds = ''
@@ -238,11 +240,6 @@ def get_news(topic):
     articles = topHeadlines['articles'][:3]
     return json.dumps(articles)
 
-@app.route('/testing/')
-def testing():
-    load_dotenv()
-    return os.environ.get('API_FOOTBALL_KEY_1')
-
 
 @app.route("/updateall", methods=["GET"])
 def update_all():
@@ -255,7 +252,7 @@ def update_all():
     headers = {
         'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
         'x-rapidapi-key': api_key
-        }
+    }
 
     country_url = "https://ajayakv-rest-countries-v1.p.rapidapi.com/rest/v1/all"
 
@@ -314,7 +311,6 @@ def update_all():
 
         for league_entry in leaguesInCountryResponse['api']['leagues']:
             league_names.append(league_entry['name'])
-
 
             league = League(
                 league_id = league_entry['league_id'],
