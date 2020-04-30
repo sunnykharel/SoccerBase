@@ -43,7 +43,6 @@ class Country(Document):
             "subregion": self.subregion
         }
         return country_dict
-        #return json.dumps(country_dict)
 
     meta = {
             "collection":"Countries" 
@@ -79,7 +78,6 @@ class League(Document):
             "num_teams": self.num_teams
         }
         return league_dict
-        #return json.dumps(league_dict)
 
     meta = {
         "collection":"Leagues"
@@ -119,7 +117,6 @@ class Team(Document):
             "venue_capacity" : self.venue_capacity
         }
         return team_dict
-        #return json.dumps(team_dict)
     
     meta = {
         "collection":"Teams"
