@@ -9,6 +9,7 @@ import CountryInstance from './CountryInstance'
 import ModelPagesComponent from './components/ModelPagesComponent'
 import SearchBar from './components/SearchBar'
 // import './App.css';
+import PaginationB from './components/PaginationB'
 
 
 function Countries({match}) {
@@ -56,9 +57,9 @@ function Countries({match}) {
                                 model="country"
                             />
                         </div>
-                        <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
+                        <div className="text-center" style={{paddingTop : "10px",  paddingBottom : "10px"}}>
                             <h1>Countries</h1>
-                            <ModelPagesComponent modelInstances = {currentPosts.map( 
+                            {/* <ModelPagesComponent modelInstances = {currentPosts.map( 
                                 function(post){
                                     return {
                                         modelPageLink : ''.concat('/Countries/', post.name),
@@ -70,17 +71,24 @@ function Countries({match}) {
                                 modelLink2:"/" 
                                     }
                                 }
-                            )}/>
+                            )}/> */}
                             <Switch>
                                 <Route path={match.url + "/:id"}>
                                     <CountryInstance isHidden={isHidden} setIsHidden={setIsHidden} />
                                 </Route>
                             </Switch>
 
-                            <Pagination
+                            {/* <Pagination
                                 postsPerPage={postsPerPage}
                                 totalPosts={posts.length}
                                 paginate={paginate}
+                            /> */}
+                            <PaginationB
+                                postsPerPage={postsPerPage}
+                                totalPosts={posts.length}
+                                posts = {posts}
+                                type = {"country"}
+                                onChangePage={paginate}
                             />
                         </div>
                     </div>
