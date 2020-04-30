@@ -9,7 +9,8 @@ import LeagueInstance from './LeagueInstance'
 import ModelPagesComponent from './components/ModelPagesComponent'
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import FilterListIcon from '@material-ui/icons/FilterList';
-
+import PaginationLogic from './PaginationLogic';
+import PaginationB from './components/PaginationB'
 import SearchBar from './components/SearchBar';
 
 function Leagues({match}) {
@@ -57,9 +58,9 @@ function Leagues({match}) {
                             model="league"
                         />
                     </div>
-                    <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
+                    <div className="text-center" style={{paddingTop : "10px",  paddingBottom : "10px"}}>
                         <h1>Leagues</h1>
-                        <ModelPagesComponent modelInstances = {currentPosts.map( 
+                        {/* <ModelPagesComponent modelInstances = {currentPosts.map( 
                             function(post){
                                 return {
                                     modelPageLink : "Leagues/"+post.league_id+"_"+post.name,
@@ -71,7 +72,7 @@ function Leagues({match}) {
                                 modelLink2:"/" 
                                 }
                             }
-                        )}/>
+                        )}/> */}
 
                         <Switch>
                             <Route path={match.url + "/:id"}>
@@ -79,11 +80,18 @@ function Leagues({match}) {
                             </Route>
                         </Switch>
 
-                        <Pagination
+                        {/* <Pagination
                             postsPerPage={postsPerPage}
                             totalPosts={posts.length}
                             paginate={paginate}
-                        />
+                        /> */}
+                                <PaginationB
+                                postsPerPage={postsPerPage}
+                                totalPosts={posts.length}
+                                posts = {posts}
+                                type = {"league"}
+                                onChangePage={paginate}
+                            />
                     </div>
                 </div>
             

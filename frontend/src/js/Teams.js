@@ -9,6 +9,7 @@ import TeamsInstance from './TeamsInstance'
 import ModelPagesComponent from './components/ModelPagesComponent'
 // import './App.css';
 import SearchBar from './components/SearchBar'
+import PaginationB from './components/PaginationB'
 
 function Teams({match}) {
         const [isHidden, setIsHidden] = useState(false);
@@ -40,6 +41,8 @@ function Teams({match}) {
         const [isTeam, setIsTeam] = useState(true);
         const [isLeague, setIsLeague] = useState(false);
 
+          console.log(posts)
+
         if (isHidden == false) {
             if ( posts[0]!=null){
                 return (
@@ -54,10 +57,10 @@ function Teams({match}) {
                                 model="team"
                             />
                         </div>
-                        <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
+                        <div className="text-center" style={{paddingTop : "10px",  paddingBottom : "600px"}}>
 
                             <h1>Teams</h1>
-                            <ModelPagesComponent modelInstances = {currentPosts.map( 
+                            {/* <ModelPagesComponent modelInstances = {currentPosts.map( 
                                 function(post){
                                     return {
                                         modelPageLink : "Teams/"+post.team_id+"_"+post.team_name,
@@ -69,16 +72,24 @@ function Teams({match}) {
                                         modelLink2:"/" 
                                     }
                                 }
-                            )}/>
+                            )}/> */}
                             <Switch>
                                 <Route path={match.url + "/:id"}>
                                     <TeamsInstance isHidden={isHidden} setIsHidden={setIsHidden} />
                                 </Route>
                             </Switch>
-                            <Pagination
+                            {/* <Pagination
                                 postsPerPage={postsPerPage}
                                 totalPosts={posts.length}
+                                posts = {posts}
                                 paginate={paginate}
+                            /> */}
+                            <PaginationB
+                                postsPerPage={postsPerPage}
+                                totalPosts={posts.length}
+                                posts = {posts}
+                                type = {"team"}
+                                onChangePage={paginate}
                             />
                         </div>
                     </div>
