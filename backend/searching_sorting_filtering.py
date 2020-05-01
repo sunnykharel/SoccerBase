@@ -3,6 +3,7 @@
 #to exit venv do the deactivate command to terminal
 from flask import Flask, Response, jsonify
 from schema import *
+from collect_data import *
 import http.client
 from os import environ
 import requests
@@ -22,9 +23,11 @@ import math
 from dotenv import load_dotenv
 import os
 
-
 app = Flask(__name__)
 CORS(app)
+
+
+
 
 @app.route('/')
 def index():
@@ -35,6 +38,11 @@ def index():
 def testconnectiontodb():
     tester = Tester( name = 'test').save()
     return "success"
+
+@app.route('/updateall')
+def route():
+    return update_all()
+
 
 #country endpoint - includes searching, sorting, and filtering
 @app.route('/country')

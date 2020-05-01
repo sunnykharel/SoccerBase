@@ -26,19 +26,9 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/')
-def index():
-    return "hello world"
-
-
-@app.route('/testconnectiontodb')
-def testconnectiontodb():
-    tester = Tester( name = 'test').save()
-    return "success"
-
 @app.route("/updateall", methods=["GET"])
 def update_all():
-    client = MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false")
+    #client = MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false")
     load_dotenv()
    
     api_key = os.environ.get('API_FOOTBALL_KEY_1')
@@ -66,6 +56,13 @@ def update_all():
     
     for country_entry in response['api']['countries']:
         country_names.append(country_entry['country'])
+
+        #get all leagues in 2019 in this country
+        leaguesInCountry = "https://api-football-v1.p.rapidapi.com/v2/leagues/country/{}/2019".format(country_entry['country'])
+
+        leaguesInCountryResponse = requests.request("GET", leaguesInCountry, headers=headers).json()
+
+        #pprint(leaguesInCountryResponse)
 
         _population = 0
         _demonym = ''
@@ -96,16 +93,14 @@ def update_all():
             subregion = _subregion
         ).save()
         
-
-        #get all leagues in 2019 in this country
-        leaguesInCountry = "https://api-football-v1.p.rapidapi.com/v2/leagues/country/{}/2019".format(country_entry['country'])
-
-        leaguesInCountryResponse = requests.request("GET", leaguesInCountry, headers=headers).json()
-
-        #pprint(leaguesInCountryResponse)
-
+        
         for league_entry in leaguesInCountryResponse['api']['leagues']:
             league_names.append(league_entry['name'])
+
+            #get all teams in this league for 2019 season
+            teamsInLeague = "https://api-football-v1.p.rapidapi.com/v2/teams/league/{}".format(league_entry['league_id'])
+
+            teamsInLeagueResponse = requests.request("GET", teamsInLeague, headers=headers).json()
 
             league = League(
                 league_id = league_entry['league_id'],
@@ -122,10 +117,7 @@ def update_all():
                 num_teams = len(teamsInLeagueResponse['api']['teams'])
             ).save()
             
-            #get all teams in this league for 2019 season
-            teamsInLeague = "https://api-football-v1.p.rapidapi.com/v2/teams/league/{}".format(league_entry['league_id'])
-
-            teamsInLeagueResponse = requests.request("GET", teamsInLeague, headers=headers).json()
+            
 
             for team_object in teamsInLeagueResponse['api']['teams']:
                 team_names.append(team_object['name'])
