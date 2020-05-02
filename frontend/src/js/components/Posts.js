@@ -35,10 +35,7 @@ const Posts = ({ posts, loading }) => {
     function newPost(aPost){
         var a = aPost.title;
         const c = b ;
-        // thePost = aPost;
-    // alert(a);
-        //console.log(<PostPage thepost = {aPost}/>);
-        
+   
         var b = document.getElementById("PostList");
         b.parentElement.innerHTML = a;
         

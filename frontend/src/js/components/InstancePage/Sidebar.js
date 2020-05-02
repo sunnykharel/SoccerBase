@@ -39,7 +39,6 @@ export default function Sidebar(props) {
             <a href={"http://www.soccerbase.appspot.com/Countries/"+props.element.country} >  {props.element.country} </a>    
           </h5>}
           {<h5> Year Founded: {props.element.founded} </h5>}
-          {console.log(props.element.name)}
          
           {<h5> League: 
             <a href={"http://www.soccerbase.appspot.com/Leagues/"+props.element.league_id+"_"+(props.element.league_name+"").replace(' ', '%20')} >  {props.element.league_name} </a>   

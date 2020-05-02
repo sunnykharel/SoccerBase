@@ -8,7 +8,6 @@ import axios from 'axios';
 import CountryInstance from './CountryInstance'
 import ModelPagesComponent from './components/ModelPagesComponent'
 import SearchBar from './components/SearchBar'
-// import './App.css';
 import PaginationB from './components/PaginationB'
 
 
@@ -29,7 +28,6 @@ function Countries({match}) {
               setLoading(true);
               res = await axios.get('https://still-waters-10895.herokuapp.com/getallcountries');
               setPosts(res.data.countries_list);
-              console.log(res.data.countries_list)
               setLoading(false);
         };
         
@@ -39,9 +37,7 @@ function Countries({match}) {
            // Get current posts
         const indexOfLastPost = currentPage * postsPerPage;
         const indexOfFirstPost = indexOfLastPost - postsPerPage;
-        console.log(posts)
         const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-        // const selectedPost = null;
         // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
         if (isHidden == false) {
@@ -59,30 +55,13 @@ function Countries({match}) {
                         </div>
                         <div className="text-center" style={{paddingTop : "10px",  paddingBottom : "10px"}}>
                             <h1>Countries</h1>
-                            {/* <ModelPagesComponent modelInstances = {currentPosts.map( 
-                                function(post){
-                                    return {
-                                        modelPageLink : ''.concat('/Countries/', post.name),
-                                modelImage: post.flag ,
-                                modelName: post.name ,
-                                modelName1: "Capital: " + post.capital ,
-                                modelName2: "Num Leagues: " + post.num_leagues,
-                                modelLink1:"/",
-                                modelLink2:"/" 
-                                    }
-                                }
-                            )}/> */}
+                            }
                             <Switch>
                                 <Route path={match.url + "/:id"}>
                                     <CountryInstance isHidden={isHidden} setIsHidden={setIsHidden} />
                                 </Route>
                             </Switch>
 
-                            {/* <Pagination
-                                postsPerPage={postsPerPage}
-                                totalPosts={posts.length}
-                                paginate={paginate}
-                            /> */}
                             <PaginationB
                                 postsPerPage={postsPerPage}
                                 totalPosts={posts.length}

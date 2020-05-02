@@ -7,7 +7,7 @@ import Pagination from './components/Pagination';
 import axios from 'axios';
 import TeamsInstance from './TeamsInstance'
 import ModelPagesComponent from './components/ModelPagesComponent'
-// import './App.css';
+
 import SearchBar from './components/SearchBar'
 import PaginationB from './components/PaginationB'
 
@@ -21,7 +21,6 @@ function Teams({match}) {
             const fetchPosts = async () => {
               setLoading(true);
               res = await axios.get('https://still-waters-10895.herokuapp.com/getallteams');
-              console.log(res.data);
               setPosts(res.data.teams_list);
               setLoading(false);
         };
@@ -33,7 +32,6 @@ function Teams({match}) {
         const indexOfLastPost = currentPage * postsPerPage;
         const indexOfFirstPost = indexOfLastPost - postsPerPage;
         const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-        // const selectedPost = null;
         // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
         const [isSearch, setIsSearch] = useState(false);
@@ -41,7 +39,6 @@ function Teams({match}) {
         const [isTeam, setIsTeam] = useState(true);
         const [isLeague, setIsLeague] = useState(false);
 
-          console.log(posts)
 
         if (isHidden == false) {
             if ( posts[0]!=null){
@@ -60,30 +57,12 @@ function Teams({match}) {
                         <div className="text-center" style={{paddingTop : "10px",  paddingBottom : "600px"}}>
 
                             <h1>Teams</h1>
-                            {/* <ModelPagesComponent modelInstances = {currentPosts.map( 
-                                function(post){
-                                    return {
-                                        modelPageLink : "Teams/"+post.team_id+"_"+post.team_name,
-                                        modelImage: post.team_logo  ,
-                                        modelName: post.team_name ,
-                                        modelName1: "League: " + post.league_name ,
-                                        modelName2: "Country: " + post.country ,
-                                        modelLink1:"/",
-                                        modelLink2:"/" 
-                                    }
-                                }
-                            )}/> */}
+                           
                             <Switch>
                                 <Route path={match.url + "/:id"}>
                                     <TeamsInstance isHidden={isHidden} setIsHidden={setIsHidden} />
                                 </Route>
                             </Switch>
-                            {/* <Pagination
-                                postsPerPage={postsPerPage}
-                                totalPosts={posts.length}
-                                posts = {posts}
-                                paginate={paginate}
-                            /> */}
                             <PaginationB
                                 postsPerPage={postsPerPage}
                                 totalPosts={posts.length}

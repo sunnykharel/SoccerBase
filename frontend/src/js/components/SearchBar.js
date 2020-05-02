@@ -67,8 +67,7 @@ function SearchBar(props) {
     }
 
     useEffect(() => { 
-        console.log("sortby set to" + sortBy); 
-        console.log("sortOrder set to" + sortOrder);
+
     }, [sortBy, sortOrder]);
 
     function getRegionFilter(e) {

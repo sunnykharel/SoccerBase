@@ -17,7 +17,7 @@ class App extends React.Component {
             pageOfItems: []
         };
 
-        // bind function in constructor instead of render (https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md)
+      
         this.onChangePage = this.onChangePage.bind(this);
     }
 
@@ -32,12 +32,7 @@ class App extends React.Component {
                 <div>
                     <div className="container">
                         <div className="text-center">
-                            {console.log(this.state.pageOfItems)}
-                            {console.log(this.state.listArray)}
-    
-                            {/* {this.state.pageOfItems.map(item =>
-                                <div key={item.id}>{item.team_name}</div>
-                            )} */}
+                            
                             <ModelPagesComponent modelInstances = {this.state.pageOfItems.map( 
                                     function(post){
                                         return {
@@ -63,12 +58,7 @@ class App extends React.Component {
                 <div>
                     <div className="container">
                         <div className="text-center">
-                            {console.log(this.state.pageOfItems)}
-                            {console.log(this.state.listArray)}
-    
-                            {/* {this.state.pageOfItems.map(item =>
-                                <div key={item.id}>{item.team_name}</div>
-                            )} */}
+                            
                             <ModelPagesComponent modelInstances = {this.state.pageOfItems.map( 
                                     function(post){
                                         return {
@@ -94,12 +84,7 @@ class App extends React.Component {
                 <div>
                     <div className="container">
                         <div className="text-center">
-                            {console.log(this.state.pageOfItems)}
-                            {console.log(this.state.listArray)}
-    
-                            {/* {this.state.pageOfItems.map(item =>
-                                <div key={item.id}>{item.team_name}</div>
-                            )} */}
+                           
                             <ModelPagesComponent modelInstances = {this.state.pageOfItems.map( 
                                     function(post){
                                         return {

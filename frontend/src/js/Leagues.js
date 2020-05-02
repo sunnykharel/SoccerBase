@@ -41,7 +41,6 @@ function Leagues({match}) {
         const indexOfFirstPost = indexOfLastPost - postsPerPage;
         const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
         const listante = posts.slice(0, posts.length);
-        // const selectedPost = null;
          // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
         if (isHidden == false) {
@@ -60,31 +59,12 @@ function Leagues({match}) {
                     </div>
                     <div className="text-center" style={{paddingTop : "10px",  paddingBottom : "10px"}}>
                         <h1>Leagues</h1>
-                        {/* <ModelPagesComponent modelInstances = {currentPosts.map( 
-                            function(post){
-                                return {
-                                    modelPageLink : "Leagues/"+post.league_id+"_"+post.name,
-                                modelImage: post.logo  ,
-                                modelName: post.name ,
-                                modelName1: "Country: " + post.country ,
-                                modelName2: "Num Teams: " + post.num_teams ,
-                                modelLink1:"/",
-                                modelLink2:"/" 
-                                }
-                            }
-                        )}/> */}
 
                         <Switch>
                             <Route path={match.url + "/:id"}>
                                 <LeagueInstance isHidden={isHidden} setIsHidden={setIsHidden} />
                             </Route>
                         </Switch>
-
-                        {/* <Pagination
-                            postsPerPage={postsPerPage}
-                            totalPosts={posts.length}
-                            paginate={paginate}
-                        /> */}
                                 <PaginationB
                                 postsPerPage={postsPerPage}
                                 totalPosts={posts.length}

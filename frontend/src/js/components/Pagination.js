@@ -12,7 +12,6 @@ const Pagination = ({ postsPerPage, totalPosts, posts, paginate }) => {
 
   return (
     <nav className="text-center" style={{backgroundColor : "#FFFFFF", border: "none"}}>
-      {/* maybe remove the parent element here to get rid of the box */}
       <ul >
           {/* can add class = "pagination for ul" */}
         {pageNumbers.map(number => (
@@ -27,11 +26,6 @@ const Pagination = ({ postsPerPage, totalPosts, posts, paginate }) => {
       <h6 style={{paddingTop: "40px"}}> Current Page: {page}</h6>
     </nav>
 
-    // <div>
-    
-    // <PaginationLogic items={posts} onChangePage={paginate}/>
-
-    // </div>
   );
 };
 

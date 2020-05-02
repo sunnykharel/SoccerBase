@@ -30,13 +30,6 @@ const useStyles = makeStyles({
 
 export default function ModelComponent(props) {
     const classes = useStyles();
-    //console.log(props)
-   
-    /*console.log(props.info.modelPageLink);
-    var link = props.info.modelPageLink;
-    var urlArray = link.split('/');
-    var urlString = urlArray[link.length-2] + "/" + urlArray[link.length-1];
-    */
 
     return(
         <Grid item xs={4}>

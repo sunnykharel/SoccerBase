@@ -36,8 +36,6 @@ class CountryInstance extends Component {
         const scopez = this;
         axios.get('https://still-waters-10895.herokuapp.com/getallcountries')
         .then(function (res) {
-            console.log(id)
-            console.log(res)
             scopez.setState({
                 responses_arrays: res.data.countries_list.slice(0, res.data.countries_list.length),
             }); 
@@ -45,8 +43,6 @@ class CountryInstance extends Component {
         axios.get('https://still-waters-10895.herokuapp.com/getnews/' + id)
         .then(function (resp) {
 
-            console.log(resp.data)
-            //works until here
             scopez.setState({
                  news_arrays: resp.data.slice(0, resp.data.length),
             }); 
@@ -60,8 +56,6 @@ class CountryInstance extends Component {
         })
         .then(function (respo) {
 
-            console.log(respo.data)
-            //works until here
             scopez.setState({
                  table_arrays: respo.data.leagues_list.slice(0, respo.data.length),
             }); 
@@ -93,37 +87,32 @@ class CountryInstance extends Component {
             imgText: '',
             linkText: "#",
           }
+          //change array size to match expected news article size
           let mainHeadline = defaultheadline;
-          let featuredHeadline = [defaultheadline, defaultheadline];
-          if(this.state.news_arrays.length >= 1){
-            mainHeadline = {
-              title:  this.state.news_arrays[0].title,
-              description:this.state.news_arrays[0].description,
-              image: this.state.news_arrays[0].urlToImage,
-              imgText: 'main image description',
-              linkText: this.state.news_arrays[0].url,
+          let featuredHeadline = new Array(2).fill(defaultheadline);
+
+          for(let a = 0; a < this.state.news_arrays.length; a++){
+            if(a == 0){
+                mainHeadline = {
+                    title:  this.state.news_arrays[0].title,
+                    description:this.state.news_arrays[0].description,
+                    image: this.state.news_arrays[0].urlToImage,
+                    imgText: 'main image description',
+                    linkText: this.state.news_arrays[0].url,
+            }
+        }
+            else{
+                featuredHeadline[a-1] = {
+                    title: this.state.news_arrays[a-1].title,
+                    date: this.state.news_arrays[a-1].publishedAt,
+                    description:this.state.news_arrays[a-1].description,
+                    image: this.state.news_arrays[a-1].urlToImage,
+                    imageText: 'Image Text',
+                    linkText: this.state.news_arrays[a-1].url,
+                }
+            }
+
           }
-        }
-        if(this.state.news_arrays.length >= 2){
-            featuredHeadline[0] ={
-                title: this.state.news_arrays[1].title,
-                date: this.state.news_arrays[1].publishedAt,
-                description:this.state.news_arrays[1].description,
-                image: this.state.news_arrays[1].urlToImage,
-                imageText: 'Image Text',
-                linkText: this.state.news_arrays[1].url,
-            }
-        }
-        if(this.state.news_arrays.length >= 3){
-            featuredHeadline[1] ={
-                title: this.state.news_arrays[2].title,
-                date: this.state.news_arrays[2].publishedAt,
-                description:this.state.news_arrays[2].description,
-                image: this.state.news_arrays[2].urlToImage,
-                imageText: 'Image Text',
-                linkText: this.state.news_arrays[2].url,
-            }
-        }
           
             let sections = [
                 { title: ''},
@@ -131,22 +120,12 @@ class CountryInstance extends Component {
                 { title: '' },
               ]    
             
-
-              console.log(this.state.responses_arrays)
-
-            console.log(this.state.i)
-
-            console.log(this.state.responses_arrays[this.state.i])
-
             return (   
               <InstancePage featuredPosts = {featuredHeadline} mainFeaturedPost = {mainHeadline} title = {this.props.match.params.id}   
                   sections = {sections} table ={this.state.table_arrays} type = {"country"} element = {this.state.responses_arrays[this.state.i]} />
           );
     }
 
-    // componentWillUnmount() {
-    //     this.state.setIsHidden(false)
-    // }
 
   
 }

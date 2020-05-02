@@ -123,7 +123,6 @@ class About extends Component {
         
         //Parse response
         httpContCommits.onload = function() {
-            console.log(httpContCommits.responseText);
             if (this.status == 200) {
                 var commsByContr = JSON.parse(httpContCommits.responseText);
                 for (let i = 0; i < commsByContr.length; i++) {
@@ -141,10 +140,7 @@ class About extends Component {
                         scope.setState({ parmCommits: String(commit.total)});
                     }
                 }
-            } else {
-                console.log(httpContCommits.responseText);
-                console.log("ERROR: failed to fetch commits by contributor");
-            }
+            } 
         
         }
         httpContCommits.send()
@@ -155,7 +151,6 @@ class About extends Component {
         httpIssues.open("GET",urlIssues, true);
         httpIssues.setRequestHeader("Authorization", "Basic " + btoa("tempforproj:Verybadpassword1!"));
         httpIssues.onload = function() {
-          console.log(httpIssues.responseText);
           if (this.status == 200){
             var issues = JSON.parse(httpIssues.responseText);
             let parm = 0;
