@@ -68,8 +68,6 @@ export default function Main(props) {
 
         <PlayerTable table={props.table}/>  
         
-        {/* <Table tableData = {props.tableData} col={props.col}/>
-        also remove post.map stuff and i have to make the table*/}
       </Grid>
     );
   }
@@ -84,9 +82,7 @@ export default function Main(props) {
         <Divider /> 
 
         <LeagueTable table = {props.table}/>  
-        
-        {/* <Table tableData = {props.tableData} col={props.col}/>
-        also remove post.map stuff and i have to make the table*/}
+      
       </Grid>
     );
   }
@@ -102,8 +98,6 @@ export default function Main(props) {
 
         <TeamTable table = {props.table}/>  
         
-        {/* <Table tableData = {props.tableData} col={props.col}/>
-        also remove post.map stuff and i have to make the table*/}
       </Grid>
     );
   }

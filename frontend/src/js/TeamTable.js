@@ -51,9 +51,7 @@ export default function PlayerTable(props) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  // for(let i=0; i<props.table.length; i++){
-  //   props.table[i] = <a href={"http://www.soccerbase.appspot.com/Teams/"+props.team_id+"_"+(props.team_name+"").replace(' ', '%20')} > {props.team_name}</a>
-  // }
+  
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>

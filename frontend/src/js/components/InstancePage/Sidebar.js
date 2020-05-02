@@ -99,11 +99,9 @@ export default function Sidebar(props) {
               {<h5> League Type: {props.element.type} </h5>}
               {<h5> Number of Teams: {props.element.num_teams} </h5>}
               {<h5> Season Start Date: {props.element.season_start} </h5>}
-              {<h5> Season End Date: {props.element.season_end} </h5>}
-              
+              {<h5> Season End Date: {props.element.season_end} </h5>}    
     
             </Typography>
-            
           </CardContent>
           
         </Grid>
