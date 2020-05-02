@@ -83,7 +83,7 @@ function Leagues({match}) {
             }
         } else {
             return (
-                <div style={{paddingTop : "10px",  paddingBottom : "600px"}}>
+                <div style={{paddingTop : "10px",  paddingBottom : "20px"}}>
                     
                     <Switch>
                         <Route path={match.url + "/:id"}>

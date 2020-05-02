@@ -8,6 +8,7 @@ import LeagueInstance from './../LeagueInstance';
 import TeamsInstance from './../TeamsInstance';
 import CountryInstance from './../CountryInstance';
 import Pagination from './Pagination.js';
+import PaginationB from './PaginationB'
 
 import SearchBar from './SearchBar';
 
@@ -122,6 +123,7 @@ function Search(props) {
                         totalPosts={posts.length}
                         paginate={paginate}
                     />
+                    
                 </div>
             </div>
         

@@ -29,8 +29,8 @@ class App extends React.Component {
     render() {
         if(this.props.type == "team"){
             return (
-                <div>
-                    <div className="container">
+                <div className="text-center">
+                    <div className="text-center" className="container">
                         <div className="text-center">
                             
                             <ModelPagesComponent modelInstances = {this.state.pageOfItems.map( 

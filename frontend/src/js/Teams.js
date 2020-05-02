@@ -54,7 +54,7 @@ function Teams({match}) {
                                 model="team"
                             />
                         </div>
-                        <div className="text-center" style={{paddingTop : "10px",  paddingBottom : "600px"}}>
+                        <div  className="text-center" style={{paddingTop : "10px",  paddingBottom : "20px", position: "center"}}>
 
                             <h1>Teams</h1>
                            

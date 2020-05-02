@@ -61,14 +61,15 @@ function Countries({match}) {
                                     <CountryInstance isHidden={isHidden} setIsHidden={setIsHidden} />
                                 </Route>
                             </Switch>
-
-                            <PaginationB
+                           
+                            <PaginationB 
                                 postsPerPage={postsPerPage}
                                 totalPosts={posts.length}
                                 posts = {posts}
                                 type = {"country"}
                                 onChangePage={paginate}
                             />
+                            
                         </div>
                     </div>
                 );
@@ -79,7 +80,7 @@ function Countries({match}) {
             }
         } else {
             return (
-                <div style={{ paddingTop : "10px",  paddingBottom : "600px"}}>
+                <div style={{ paddingTop : "10px",  paddingBottom : "20px"}}>
                     
                     <Switch>
                         <Route path={match.url + "/:id"}>
